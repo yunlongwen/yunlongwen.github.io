@@ -1,0 +1,217 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Android中hdpi、mdpi等文件夹的区别 | MTE</title>
+<link rel="shortcut icon" href="https://yunlongwen.github.io/favicon.ico?v=1640828559144">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://yunlongwen.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Android中hdpi、mdpi等文件夹的区别 | MTE - Atom Feed" href="https://yunlongwen.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="我们知道在Android设备中两台尺寸相同的设备，像素尺寸可能是不同的，比如一台设备每英寸160px，另一台设备每英寸480px，那么如果有一个宽为160px的控件，在第一台设备中显示为一英寸宽，而在第二台设备中显示为1/3英寸，所以官方推..." />
+    <meta name="keywords" content="Android,UI" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://yunlongwen.github.io">
+  <img class="avatar" src="https://yunlongwen.github.io/images/avatar.png?v=1640828559144" alt="">
+  </a>
+  <h1 class="site-title">
+    MTE
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/yunlongwen/" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Android中hdpi、mdpi等文件夹的区别
+            </h2>
+            <div class="post-info">
+              <span>
+                2021-12-30
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://yunlongwen.github.io/tag/gz079JLlw/" class="post-tag">
+                  # Android
+                </a>
+              
+                <a href="https://yunlongwen.github.io/tag/kaI1O0IJmC/" class="post-tag">
+                  # UI
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>我们知道在Android设备中两台尺寸相同的设备，像素尺寸可能是不同的，比如一台设备每英寸160px，另一台设备每英寸480px，那么如果有一个宽为160px的控件，在第一台设备中显示为一英寸宽，而在第二台设备中显示为1/3英寸，所以官方推荐用dp度量长度，其中px和dp的换算公式如下:<br>
+px = dp * (dpi / 160)<br>
+dpi代表每英寸像素点数</p>
+<p>还是原来的问题，假设现在把160px改为160dp，则第一台设备换算成px为160px，尺寸为一英寸，第二台设备换算成px为480px，由于设备密度是480，所以刚好也是一英寸。这样保证了同一个单位在不同设备上显示效果相同。知道了dpi这个概念之后我们再来看hdpi这些文件夹的说明<br>
+ldpi	适用于低密度 (ldpi) 屏幕 (0~ 120dpi) 的资源。<br>
+mdpi	适用于中密度 (mdpi) 屏幕 (120~ 160dpi) 的资源（这是基准密度）<br>
+hdpi	适用于高密度 (hdpi) 屏幕 (160~ 240dpi) 的资源。<br>
+xhdpi	适用于加高 (xhdpi) 密度屏幕 (240~ 320dpi) 的资源。<br>
+xxhdpi	适用于超超高密度 (xxhdpi) 屏幕 (320~ 480dpi) 的资源。<br>
+xxxhdpi	适用于超超超高密度 (xxxhdpi) 屏幕 (480~ 640dpi) 的资源。</p>
+<p>以上是摘自官方文档的说明。那这些资源文件夹下该存放多少尺寸的图片呢？总的来说应该遵循3:4:6:8:12:16 缩放比，比如说你有一张48X48的图片放在mdpi下，那其他资源文件夹下应该存放的图片的尺寸为</p>
+<p>48x48（1.0x 基准）- 中密度 (mdpi)<br>
+72x72 (1.5x) - 高密度 (hdpi)<br>
+96x96 (2.0x) - 超高密度 (xhdpi)<br>
+144x144 (3.0x) - 超超高密度 (xxhdpi)<br>
+192x192 (4.0x) - 超超超高密度 (xxxhdpi)</p>
+<p>Android会根据当前的设备dpi值去选取相应的资源图片，比如如果设备dpi为420，那会优先去加载xxhdpi下的资源图片，因为xxhdpi存放的是320-480dpi的图片，那如果xxhdpi中没有资源图片怎么办，系统会去选取下一个最佳匹配项以进行缩放显示。一般是先找高分辨率资源，再找低分辨率资源。比如设备dpi是420，资源的查找顺序如下：</p>
+<p>xxhdpi<br>
+xxxhdpi<br>
+xhdpi<br>
+hdpi<br>
+mdpi/drawable<br>
+ldpi<br>
+注：这里不考虑nodpi等情况。drawable下的dpi同mdpi</p>
+<p>一般是先找高分辨率资源，再找低分辨率资源，但是也不唯一，实际在测试mdpi模拟器设备时的顺序为</p>
+<p>mdpi<br>
+hdpi<br>
+xhdpi<br>
+ldpi<br>
+xxhdpi<br>
+xxxhdpi<br>
+有关界面上图片的显示尺寸可以参考郭神的博客，这里只做一个结论：<br>
+界面上显示的图片大小 = 设备dpi / 图片所在资源文件夹的最大dpi * 图片原始尺寸</p>
+<p>比如一张1200X800的图片放在420dpi设备的xxhdpi资源下，则显示的宽为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mn>420</mn><mn>480</mn></mfrac><mo>∗</mo><mn>1200</mn><mo>=</mo><mn>1050</mn></mrow><annotation encoding="application/x-tex">\frac{420}{480} * 1200=1050</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span><span class="mord mtight">8</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span><span class="mord mtight">2</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">2</span><span class="mord">0</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">5</span><span class="mord">0</span></span></span></span>像素，高为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mn>420</mn><mn>480</mn></mfrac><mo>∗</mo><mn>800</mn><mo>=</mo><mn>700</mn></mrow><annotation encoding="application/x-tex">\frac{420}{480} * 800=700</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span><span class="mord mtight">8</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span><span class="mord mtight">2</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">8</span><span class="mord">0</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">7</span><span class="mord">0</span><span class="mord">0</span></span></span></span>像素，相应的，其他资源文件的宽高可以得到：</p>
+<p>密度限定符	宽	高<br>
+ldpi	4200	2800<br>
+mdpi	3150	2100<br>
+hdpi	2100	1400<br>
+xhdpi	1575	1050<br>
+xxxhdpi	788	525<br>
+我们可以看到如果一张1200X800的图片只放在ldpi下，那产生的图片将非常大，如果按每个像素4个字节来算的话，那产生的内存约为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>4200</mn><mo>∗</mo><mn>2800</mn><mo>∗</mo><mn>4</mn><mo>=</mo><mn>47040000</mn><mo>≈</mo><mtext>  </mtext><mn>47</mn><mi>M</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">4200*2800*4=47040000\approx\;47MB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span><span class="mord">2</span><span class="mord">0</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord">8</span><span class="mord">0</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span><span class="mord">7</span><span class="mord">0</span><span class="mord">4</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">4</span><span class="mord">7</span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span></span></span></span>,如果图片一多，直接就oom了。不过现在的图片加载库已经帮我们做好内存管理这块了。</p>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://yunlongwen.github.io/post/shu/">
+              <h3 class="post-title">
+                书
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  
+  <a class="rss" href="https://yunlongwen.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
