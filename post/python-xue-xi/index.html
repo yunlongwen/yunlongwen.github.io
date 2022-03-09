@@ -1,0 +1,253 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python学习 | MTE</title>
+<link rel="shortcut icon" href="https://yunlongwen.github.io/favicon.ico?v=1646825227939">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://yunlongwen.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Python学习 | MTE - Atom Feed" href="https://yunlongwen.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="Python 解析器
+当我们编写Python代码时，我们得到的是一个包含Python代码的以.py为扩展名的文本文件。要运行代码，就需要Python解释器去执行.py文件。
+由于整个Python语言从规范到解释器都是开源的，所以理论上，只要..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://yunlongwen.github.io">
+  <img class="avatar" src="https://yunlongwen.github.io/images/avatar.png?v=1646825227939" alt="">
+  </a>
+  <h1 class="site-title">
+    MTE
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about/index.html" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/yunlongwen/" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Python学习
+            </h2>
+            <div class="post-info">
+              <span>
+                2022-03-09
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="python-解析器">Python 解析器</h1>
+<p>当我们编写Python代码时，我们得到的是一个包含Python代码的以.py为扩展名的文本文件。要运行代码，就需要Python解释器去执行.py文件。</p>
+<p>由于整个Python语言从规范到解释器都是开源的，所以理论上，只要水平够高，任何人都可以编写Python解释器来执行Python代码（当然难度很大）。事实上，确实存在多种Python解释器。</p>
+<p>CPython<br>
+当我们从Python官方网站下载并安装好Python 3.x后，我们就直接获得了一个官方版本的解释器：CPython。这个解释器是用C语言开发的，所以叫CPython。在命令行下运行python就是启动CPython解释器。</p>
+<p>CPython是使用最广的Python解释器。教程的所有代码也都在CPython下执行。</p>
+<p>IPython<br>
+IPython是基于CPython之上的一个交互式解释器，也就是说，IPython只是在交互方式上有所增强，但是执行Python代码的功能和CPython是完全一样的。好比很多国产浏览器虽然外观不同，但内核其实都是调用了IE。</p>
+<p>CPython用&gt;&gt;&gt;作为提示符，而IPython用In [序号]:作为提示符。</p>
+<p>PyPy<br>
+PyPy是另一个Python解释器，它的目标是执行速度。PyPy采用JIT技术，对Python代码进行动态编译（注意不是解释），所以可以显著提高Python代码的执行速度。</p>
+<p>绝大部分Python代码都可以在PyPy下运行，但是PyPy和CPython有一些是不同的，这就导致相同的Python代码在两种解释器下执行可能会有不同的结果。如果你的代码要放到PyPy下执行，就需要了解PyPy和CPython的不同点。</p>
+<p>Jython<br>
+Jython是运行在Java平台上的Python解释器，可以直接把Python代码编译成Java字节码执行。</p>
+<p>IronPython<br>
+IronPython和Jython类似，只不过IronPython是运行在微软.Net平台上的Python解释器，可以直接把Python代码编译成.Net的字节码。</p>
+<h1 id="第一个程序-输入输出">第一个程序 输入输出</h1>
+<p>用print()在括号中加上字符串，就可以向屏幕上输出指定的文字。比如输出'hello, world'，用代码实现如下：</p>
+<pre><code>print('hello, world')
+</code></pre>
+<p>print()函数也可以接受多个字符串，用逗号“,”隔开，就可以连成一串输出：</p>
+<pre><code>print('The quick brown fox', 'jumps over', 'the lazy dog')
+</code></pre>
+<p>The quick brown fox jumps over the lazy dog<br>
+print()会依次打印每个字符串，遇到逗号“,”会输出一个空格，因此，输出的字符串是这样拼起来的：</p>
+<p>print-explain</p>
+<p>print()也可以打印整数，或者计算结果：</p>
+<pre><code>print(300)
+</code></pre>
+<p>300<br>
+print(100 + 200)<br>
+300<br>
+因此，我们可以把计算100 + 200的结果打印得更漂亮一点：</p>
+<pre><code>print('100 + 200 =', 100 + 200)
+</code></pre>
+<p>100 + 200 = 300<br>
+注意，对于100 + 200，Python解释器自动计算出结果300，但是，'100 + 200 ='是字符串而非数学公式，Python把它视为字符串，请自行解释上述打印结果。</p>
+<p>输入<br>
+现在，你已经可以用print()输出你想要的结果了。但是，如果要让用户从电脑输入一些字符怎么办？Python提供了一个input()，可以让用户输入字符串，并存放到一个变量里。比如输入用户的名字：</p>
+<pre><code>name = input()
+</code></pre>
+<p>Michael<br>
+当你输入name = input()并按下回车后，Python交互式命令行就在等待你的输入了。这时，你可以输入任意字符，然后按回车后完成输入。</p>
+<p>输入完成后，不会有任何提示，Python交互式命令行又回到&gt;&gt;&gt;状态了。那我们刚才输入的内容到哪去了？答案是存放到name变量里了。可以直接输入name查看变量内容：</p>
+<pre><code>name
+'Michael'
+</code></pre>
+<p>什么是变量？请回忆初中数学所学的代数基础知识：</p>
+<p>设正方形的边长为a，则正方形的面积为a x a。把边长a看做一个变量，我们就可以根据a的值计算正方形的面积，比如：</p>
+<p>若a=2，则面积为a x a = 2 x 2 = 4；</p>
+<p>若a=3.5，则面积为a x a = 3.5 x 3.5 = 12.25。</p>
+<p>在计算机程序中，变量不仅可以为整数或浮点数，还可以是字符串，因此，name作为一个变量就是一个字符串。</p>
+<p>要打印出name变量的内容，除了直接写name然后按回车外，还可以用print()函数：</p>
+<pre><code>print(name)
+</code></pre>
+<p>Michael<br>
+有了输入和输出，我们就可以把上次打印'hello, world'的程序改成有点意义的程序了：</p>
+<pre><code>name = input()
+print('hello,', name)
+</code></pre>
+<p>运行上面的程序，第一行代码会让用户输入任意字符作为自己的名字，然后存入name变量中；第二行代码会根据用户的名字向用户说hello，比如输入Michael：</p>
+<pre><code>C:\Workspace&gt; python hello.py
+Michael
+hello, Michael
+</code></pre>
+<p>但是程序运行的时候，没有任何提示信息告诉用户：“嘿，赶紧输入你的名字”，这样显得很不友好。幸好，input()可以让你显示一个字符串来提示用户，于是我们把代码改成：</p>
+<pre><code>name = input('please enter your name: ')
+print('hello,', name)
+</code></pre>
+<p>再次运行这个程序，你会发现，程序一运行，会首先打印出please enter your name:，这样，用户就可以根据提示，输入名字后，得到hello, xxx的输出：</p>
+<pre><code>C:\Workspace&gt; python hello.py
+please enter your name: Michael
+hello, Michael
+</code></pre>
+<p>每次运行该程序，根据用户输入的不同，输出结果也会不同。</p>
+<p>在命令行下，输入和输出就是这么简单。</p>
+<p>小结<br>
+任何计算机程序都是为了执行一个特定的任务，有了输入，用户才能告诉计算机程序所需的信息，有了输出，程序运行后才能告诉用户任务的结果。</p>
+<p>输入是Input，输出是Output，因此，我们把输入输出统称为Input/Output，或者简写为IO。</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#python-%E8%A7%A3%E6%9E%90%E5%99%A8">Python 解析器</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F-%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA">第一个程序 输入输出</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://yunlongwen.github.io/post/lan-ya/">
+              <h3 class="post-title">
+                蓝牙
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  
+  <a class="rss" href="https://yunlongwen.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
