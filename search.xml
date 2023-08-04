@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>AOSP 源码文件结构</title>
+    <url>/2023/08/04/Android/aosp/2023-0719-aosp/</url>
+    <content><![CDATA[<h2 id="源码结构"><a href="#源码结构" class="headerlink" title="源码结构"></a>源码结构</h2><p>以源码 <a href="https://android.googlesource.com/platform/packages/services/Car/+/refs/heads/android13-release">android13-release</a> 分支为例:</p>
+<ul>
+<li>Android.bp -&gt; build&#x2F;soong&#x2F;root.bp</li>
+<li>art&#x2F; Android ART虚拟机相关实现(替代dalvik虚拟机):虚拟机、运行库、dex2oat等工具、模拟器等。这个会提前把字节码编译成二进制机器码保存起来,执行的时候加载速度比较快。Dalvik虚拟机则是在加载以后再去编译的,所以速度上ART会比Dalvik快一点。牺牲空间来赢取时间。</li>
+<li>bionic&#x2F; 谷歌为android重新实现的C语言函数库,Android系统与Linux内核的桥梁。</li>
+<li>bootable&#x2F; 系统启动引导相关程序。bootloader 的实现,各厂家会有自己的版本,例如 MTK&#x2F;MST 所用名为 Mboot bootloader。 </li>
+<li>bootstrap.bash -&gt; build&#x2F;soong&#x2F;bootstrap.bash*</li>
+<li>build&#x2F; AOSP源码编译相关:系统make编译规则、blueprint、kati、soong,以及envsetup.sh等配置及工具。用于构建 Android 系统的工具,也就是用于编译 Android 系统的。 </li>
+<li>BUILD -&gt; build&#x2F;bazel&#x2F;bazel.BUILD </li>
+<li>.ccls-cache&#x2F; </li>
+<li>cts&#x2F; Android 兼容性测试套件 </li>
+<li>dalvik&#x2F; dalvik虚拟机,用于解析执行dex文件的虚拟机 </li>
+<li>developers&#x2F; 提供给Android开发者的一些样例,可以导入到AS中编译 </li>
+<li>development&#x2F; 同developers类似,提供一些样例、工具 </li>
+<li>device&#x2F; 和具体设备相关的配置、文件、及修改,各厂家会放入里面响应目录 </li>
+<li>device&#x2F;vendor_name&#x2F;product_name。 </li>
+<li>external&#x2F; Android使用的一些开源的功能模块 </li>
+<li>frameworks&#x2F; 系统架构,Android核心框架 </li>
+<li>hardware&#x2F; 部分厂家开源的硬解适配层 HAL 代码,硬件抽象层。添加自定义属性位置<ul>
+<li>interfaces&#x2F;automotive&#x2F;vehicle&#x2F;<ul>
+<li>2.0&#x2F; HIDL 实现 </li>
+<li>aidl&#x2F; AIDL 实现 <ul>
+<li>Android.bp </li>
+<li>impl&#x2F; </li>
+<li>Android.bp </li>
+<li>default_config&#x2F;include&#x2F; <ul>
+<li>DefaultConfig.h</li>
+</ul>
+</li>
+<li>VehicleProperty.aidl</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>kernel&#x2F; Linux kernel 源码 </li>
+<li>libcore&#x2F; java核心库 包括java api的源码 </li>
+<li>libnativehelper&#x2F; native帮助库,实现JNI的相关文件。支持Android类库,但与android.*无关,与VM无关的本机函数,用于实现系统的方法类库,以C实现。 </li>
+<li>Makefile 这个不是目录,include build&#x2F;make&#x2F;core&#x2F;main.mk,核心编译规则 </li>
+<li>out&#x2F; 输出目录,编译AOSP时候产生的临时目录。临时文件和 最后生成的ROM镜像 都存放在里面 <ul>
+<li>target&#x2F;product&#x2F; <ul>
+<li>emulator64_arm64 <ul>
+<li>sdk-repo-linux-system-images-eng.tw-iot.zip 生成的系统镜像压缩包</li>
+</ul>
+</li>
+<li>emulator_car_x86_64</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>output.log </li>
+<li>packages&#x2F; 应用程序包,一些系统的应用就在这里了,比如说蓝牙,Launcher,相机,拨号,settings之类的。供⻋机 app使用的 carlib,CarService 相关接口,调用 HAL 自定义属性,自定义权限修改位置。 <ul>
+<li>services&#x2F;Car&#x2F; <ul>
+<li>apex_car_framework&#x2F; <ul>
+<li>Android.bp</li>
+</ul>
+</li>
+<li>car-lib&#x2F;src&#x2F;android&#x2F;car&#x2F; <ul>
+<li>Car.java</li>
+<li>VehiclePropertyIds.java </li>
+<li>internal&#x2F; </li>
+<li>PropertyPermissionMapping.java</li>
+</ul>
+</li>
+<li>cpp&#x2F;vhal&#x2F;client&#x2F;<br>  Android.bp</li>
+<li>service&#x2F; <ul>
+<li>Android.bp </li>
+<li>AndroidManifest.xml </li>
+<li>src&#x2F;com&#x2F;android&#x2F;car&#x2F;hal&#x2F; <ul>
+<li>PropertyHalServiceIds.java</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>pdk&#x2F; PDK工具和测试代码的存放处,PDK套件用于帮助厂家适配新版本,完成HAL的开发</li>
+<li>platform_testing&#x2F; 平台测试,为andorid 平台开发人员提供的测试及指导</li>
+<li>prebuilts&#x2F; Android预编译的一些工具,如build-tools、qemu模拟器、gdb、gcc、sdk&#x2F;ndk库等</li>
+<li>.repo&#x2F; 代码仓库配置</li>
+<li>sdk&#x2F; Android SDK</li>
+<li>system&#x2F; Android底层文件系统库、应用和组件</li>
+<li>test&#x2F; VTS 测试套件 </li>
+<li>toolchain&#x2F; 存放编译工具链 </li>
+<li>tools&#x2F; Android工具文件 </li>
+<li>vendor&#x2F; 存放各厂家自己定制的文件、实现,如app、配置、新增api、库等 </li>
+<li>WORKSPACE -&gt; build&#x2F;bazel&#x2F;bazel.WORKSPACE</li>
+</ul>
+<h2 id="源码查询工具"><a href="#源码查询工具" class="headerlink" title="源码查询工具"></a>源码查询工具</h2><p><a href="https://cs.android.com/android/platform/superproject/+/android13-release:packages/">官方在线查询工具</a></p>
+]]></content>
+      <categories>
+        <category>安卓</category>
+        <category>aosp</category>
+      </categories>
+      <tags>
+        <tag>aosp</tag>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>下载编译源代码</title>
+    <url>/2023/08/04/Android/aosp/2023-0721-download-compiled/</url>
+    <content><![CDATA[<h2 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h2><h3 id="初始化Manifest"><a href="#初始化Manifest" class="headerlink" title="初始化Manifest"></a>初始化Manifest</h3><p>repo init –depth&#x3D;1 -u <a href="https://android.googlesource.com/platform/manifest">https://android.googlesource.com/platform/manifest</a> -b android13-release<br>镜像使用：将 <a href="https://android.googlesource.com/">https://android.googlesource.com/</a> 全部使用 <a href="https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/">https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/</a> 代替即可。</p>
+<p>repo init –depth&#x3D;1 -u <a href="https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest">https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest</a> -b android13-release</p>
+<table>
+<thead>
+<tr>
+<th>-b</th>
+<th>指定下载分支为android13-release</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–depth&#x3D;1</td>
+<td>只下载最新的提交，不下载历史记录，会加速很多</td>
+</tr>
+</tbody></table>
+<p>此Manifest非彼Manifest,他是用来描述Repo的目录结构的,它显式的描述每一个工程是从哪个代<br>码仓库来的,是哪个分支,哪个Tag。它在$DIR&#x2F;.repo目录下存在一个default.xml,里面就是这个manifest文件。我们在$DIR&#x2F;.repo&#x2F;local_manifests&#x2F;*<br>.xml创建本地文件,里面配置修改的工程。</p>
+<pre><code>&lt;manifest&gt;
+    &lt;project path=&quot;manifest&quot; name=&quot;tools/manifest&quot; /&gt;
+    &lt;project path=&quot;platform-manifest&quot; name=&quot;platform/manifest&quot; /&gt;
+&lt;/manifest&gt;
+</code></pre>
+<h3 id="同步源代码"><a href="#同步源代码" class="headerlink" title="同步源代码"></a>同步源代码</h3><p>使用命令行将仓库的代码下载到本地：<br>repo sync -c –no-clone-bundle –no-tags -j8<br>参数说明</p>
+<table>
+<thead>
+<tr>
+<th>-c</th>
+<th>使用当前分支，不下载其他分支源代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–no-clone-bundle</td>
+<td>不下载bundle的文件</td>
+</tr>
+<tr>
+<td>–no-tags</td>
+<td>不下载tags</td>
+</tr>
+<tr>
+<td>-j8</td>
+<td>使用8个线程进行下载</td>
+</tr>
+</tbody></table>
+<h2 id="编译源代码"><a href="#编译源代码" class="headerlink" title="编译源代码"></a>编译源代码</h2><p>在完成源代码下载之后，需要进行源代码的编译工作，产生重要的镜像文件(Image)</p>
+<h3 id="设置编译环境"><a href="#设置编译环境" class="headerlink" title="设置编译环境"></a>设置编译环境</h3><pre><code class="commandline">source build/envsetup.sh
+</code></pre>
+<p>每次启动 terminal 的时候都需要重新设置编译环境,否则会出现找不到文件路径和命令的情况。</p>
+<h3 id="选择编译目标"><a href="#选择编译目标" class="headerlink" title="选择编译目标"></a>选择编译目标</h3><pre><code class="commandline">lunch
+</code></pre>
+<p>选择适配的目标构建版本（开发板或者模拟器），所有构建目标都采用 BUILD-BUILDTYPE 形式，其中 BUILD 是表示特定功能组合的代号。BUILDTYPE<br>是以下类型之一：</p>
+<table>
+<thead>
+<tr>
+<th>构建类型</th>
+<th>使用情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user</td>
+<td>权限受限；适用于生产环境</td>
+</tr>
+<tr>
+<td>userdebug</td>
+<td>与“user”类似，但具有 root 权限和调试功能；是进行调试时的首选编译类型</td>
+</tr>
+<tr>
+<td>eng</td>
+<td>具有额外调试工具的开发配置</td>
+</tr>
+</tbody></table>
+<p>根据我们的模拟器环境,选择x86(Intel芯片的mac)或者 arm(m系列的mac)的系统镜像。<br>备注：⻋机模拟器运行类型以“sdk_car_”开头</p>
+<h3 id="编译代码"><a href="#编译代码" class="headerlink" title="编译代码"></a>编译代码</h3><p>使用envsetup脚本中提供的编译命令，来进行系统镜像的编译</p>
+<pre><code class="commandline">m -j8
+</code></pre>
+<p>参数说明</p>
+<table>
+<thead>
+<tr>
+<th>-j8</th>
+<th>使用8个线程进行下载</th>
+</tr>
+</thead>
+</table>
+<p>可以通过在 m 命令行中列出相应名称来构建特定模块，而不是构建完整的设备映像。此外，m 还针对各种特殊目的提供了一些伪目标。以下是一些示例：</p>
+<ul>
+<li>droid - m droid 是正常 build。此目标在此处，因为默认目标需要名称。</li>
+<li>all - m all 会构建 m droid 构建的所有内容，加上不包含 droid 标记的所有内容。构建服务器会运行此命令，以确保包含在树中且包含</li>
+<li>Android.mk 文件的所有元素都会构建。</li>
+<li>m - 从树的顶部运行构建系统。这很有用，因为您可以在子目录中运行 make。如果您设置了 TOP<br>环境变量，它便会使用此变量。如果您未设置此变量，它便会从当前目录中查找相应的树，以尝试找到树的顶层。您可以通过运行不包含参数的<br>m 来构建整个源代码树，也可以通过指定相应名称来构建特定目标。</li>
+<li>mma - 构建当前目录中的所有模块及其依赖项。</li>
+<li>mmma - 构建提供的目录中的所有模块及其依赖项。</li>
+<li>croot - cd 到树顶部。</li>
+<li>clean - m clean 会删除此配置的所有输出和中间文件。此内容与 rm -rf out&#x2F; 相同。<br>说明：</li>
+</ul>
+<pre><code class="commandline">make/m
+</code></pre>
+<p>该命令会编译所有的代码。我们可以通过添加参数-jN来并发加速执行,这将极大加速我们编译系统速度。<br>第一次编译如果是-j12的话,时间大概是6小时,如果默认的话,时间会变成12小时。</p>
+<pre><code class="commandline">mm/mmm
+</code></pre>
+<p>如果每次的编译都要等待6个小时,那么我们的工作就很难开展。Android系统支持增量编译，还支持独立编译Module。mm命令就提供我们一种可能性,它编译当前目录下的所有模块。以services.jar为例，mm编译的时间在10分钟，可以极大的提高我们的开发效率。</p>
+<h3 id="修改源代码"><a href="#修改源代码" class="headerlink" title="修改源代码"></a>修改源代码</h3><p>官方给我们提供了很多快捷指令来帮助我们修改更新源代码，关于修改验证会在后续的章节详细介绍，这里不做过多的讲解。以下罗列一些常见的指令：</p>
+<ul>
+<li>croot 快速切换回源代码根目录</li>
+<li>cgrep 在本地所有的C&#x2F;C++文件中寻找内容</li>
+<li>jgrep 在本地所有的Java文件中寻找内容</li>
+</ul>
+<h3 id="编译产生物"><a href="#编译产生物" class="headerlink" title="编译产生物"></a>编译产生物</h3><h4 id="编译镜像"><a href="#编译镜像" class="headerlink" title="编译镜像"></a>编译镜像</h4><p>编译完成后,会产生编译好的镜像。位于以下目录中：</p>
+<pre><code>$DIR/out/target/product/$Lunch_Target/
+</code></pre>
+<p>这里面有两个镜像非常重要，一个是Boot.img，另一个是System.img</p>
+<table>
+<thead>
+<tr>
+<th>- Boot.img</th>
+<th>主要包含Linux kernel以及Ramdisk根文件系统</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>- System.img</td>
+<td>包含整个Android系统,&#x2F;system目录的内容,包含系统应用,Android框架等等</td>
+</tr>
+<tr>
+<td>- Userdata.img</td>
+<td>包含了用户安装的应用信息跟数据,在&#x2F;data目录</td>
+</tr>
+</tbody></table>
+<h4 id="系统常用jar包路径"><a href="#系统常用jar包路径" class="headerlink" title="系统常用jar包路径"></a>系统常用jar包路径</h4><p>当需要进行系统应用或者服务开发时，有一些API是内部internel级别或者hide级别，需要我们引入AOSP的原生jar包来解决。</p>
+<p>如何找到对应目录的jar包？</p>
+<ul>
+<li>在AOSP根目录下通过<code>find -name “*xxx*</code>查找到所有路径</li>
+<li>在Android13后，应该在这个路径下进行挑选：<code>./out/soong/.intermediates/packages/…/android_common/**</code><br>或者<code>out/target/common/obj/JAVA_LIBRARIES/</code>目录下寻找。</li>
+</ul>
+<p>出现多个不同地址jar包如何选择？<br>这些jar包会出现在多个路径中，例如：’withres-withoutdex&#x2F;’, ‘aligned&#x2F;’, ‘dex&#x2F;’,’turbine-combined&#x2F;’, ‘turbine&#x2F;’, ‘javac&#x2F;‘等等：</p>
+<ul>
+<li>withres-withoutdex: 这个目录下的JAR文件包含了所有的.class文件和资源文件，但没有被打包成dex格式。</li>
+<li>aligned: 这个目录下的JAR文件包含了所有的.class文件和资源文件，并且已经被对齐和压缩过。</li>
+<li>dex: 这个目录下的JAR文件是一个标准的dex文件，里面包含了所有的.class文件。</li>
+<li>turbine-combined: 这个目录下的JAR文件包含了用于编译Java代码的Turbine编译器生成的代码。</li>
+<li>turbine: 这个目录下的JAR文件包含了Turbine编译器生成的代码，但是这些代码没有被合并成单个文件。</li>
+<li>javac: 这个目录下的JAR文件包含了用于编译Java代码的Javac编译器生成的代码。<br>注意：如果需要引入jar包参与编译，不能选择turbine或者turbine-combined的jar包，否则会遇到desugar异常。</li>
+</ul>
+<p>下面罗列一些常见的<a href="https://drive.google.com/drive/folders/13U4WTmeYd48nqe0aC_LGuOagPwcggdpZ?usp=sharing">jar包地址</a>：<br>Framework.jar<br><del>AOSP&#x2F;out&#x2F;soong&#x2F;.intermediates&#x2F;frameworks&#x2F;base&#x2F;framework-minus-apex&#x2F;android_common&#x2F;combined&#x2F;framework-minus-apex.jar<br>注意：这个framework.jar不能从</del>AOSP&#x2F;out&#x2F;target&#x2F;product&#x2F;emulator_car_x86_64&#x2F;system&#x2F;framework&#x2F;framework.jar，这里面的jar包不全，缺少东西</p>
+<p>Framework-bluetooth.jar<br>~AOSP&#x2F;out&#x2F;target&#x2F;common&#x2F;obj&#x2F;JAVA_LIBRARIES&#x2F;framework-bluetooth.com.android.btservices_intermediates&#x2F;classes.jar</p>
+<p>Framework-wifi.jar<br>~AOSP&#x2F;out&#x2F;target&#x2F;common&#x2F;obj&#x2F;JAVA_LIBRARIES&#x2F;framework-wifi.com.android.wifi_intermediates&#x2F;classes.jar</p>
+<p>Car-lib.jar<br>~<br>AOSP&#x2F;out&#x2F;soong&#x2F;.intermediates&#x2F;packages&#x2F;services&#x2F;Car&#x2F;car-lib&#x2F;android.car&#x2F;android_common&#x2F;withres-withoutdex&#x2F;android.car.jar</p>
+<p>Core-libart.jar<br>~AOSP&#x2F;out&#x2F;soong&#x2F;.intermediates&#x2F;libcore&#x2F;core-libart&#x2F;android_common_apex31&#x2F;withres-withoutdex&#x2F;core-libart.jar</p>
+]]></content>
+      <categories>
+        <category>安卓</category>
+        <category>aosp</category>
+      </categories>
+      <tags>
+        <tag>aosp</tag>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于</title>
+    <url>/2023/08/04/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/about/</url>
+    <content><![CDATA[<h2 id="这是一个拷贝"><a href="#这是一个拷贝" class="headerlink" title="这是一个拷贝"></a>这是一个拷贝</h2><p><a href="https://www.notion.so/ef92213b9d5a4c6ea1b35f7446033615?pvs=21">全文 · 基于认知提升的价值交付手册</a> 由Thoughtworks CTO 徐昊监制， BeeArt 181 全体团队小伙伴共同编写，真实记录团队中所采用的实践方法与思考观点</p>
+<p>我是按照劫色划分去拷贝文章，将持续更新。</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>交付手册</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Q1：项目经理应不应该只盯交付 Deadline？</title>
+    <url>/2023/08/04/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/Q1:%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86%E5%BA%94%E4%B8%8D%E5%BA%94%E8%AF%A5%E5%8F%AA%E7%9B%AF%E4%BA%A4%E4%BB%98Deadline/</url>
+    <content><![CDATA[<aside>
+💡 **核心观点：在知识构建领域，对任务与时间的管理是无效的；只有对「认知提升」进行管理，才可能有效**
+
+</aside>
+
+<p><img src="/assets/images/8.png"></p>
+<p>问题思考脑图</p>
+<h1 id="🤔-问题引言"><a href="#🤔-问题引言" class="headerlink" title="🤔 问题引言"></a><strong>🤔</strong> 问题引言</h1><p>几乎所有的专业项目管理课程都会教授如何制定计划、如何执行计划、如何追赶进度、如何监管风险等等。但这一切的前提都是需要项目经理手握一张「项目进度表」，软件研发行业也会成为「甘特图」，以下是一张项目进度表的示例。但无论项目进度表是什么样的，其中总包含这样几个元素：</p>
+<ol>
+<li>项目目标或愿景：大家可以一起使劲的理由</li>
+<li>分解任务项：为了达到目标需要分解成几个可达成的子项</li>
+<li>任务关系：观察任务之间是否存有依赖关系，是否可以并行</li>
+<li>风险项：在整体项目中最可能出现的风险与替代方案</li>
+<li>责任人：为了更加明确认责主题，同时激发个体责任心</li>
+<li>时长：作为任务项所需要花费的时长与精力</li>
+<li>里程碑：确认阶段目标与里程碑时间点，有时会加上度量指标</li>
+<li>最优路径：通过以上约束限制，找出项目达成节点的「最佳」完成顺序</li>
+<li>预算：计算任务项支出成本与预测收益，从而判断项目的财务状况</li>
+</ol>
+<p><img src="/assets/images/15.png"></p>
+<p>当你有了以上一张表后，项目经理随后几乎所有的时间都需要确保这张表格的<strong>「照常发生」</strong><br>，但哪有一帆风顺的项目，因此才会有项目经理天天救火、心力交瘁、项目进度一再拖延、新 PDCA（Plan - Delay - Cancle -<br>Apologized）诞生的局面。</p>
+<p>但这背后其实都揭示了一个问题：你的进度表中为了所谓的「数字好看」，背后叠加了多少假设？假设需求背景大家都清楚、假设需求范围不会蔓延、假设时间估算是靠谱的、假设团队没有人请假、假设监管是起效果的…</p>
+<p>那么恭喜你，在计划之初团队做下的这些假设，在项目管理的过程中必然要保证这些假设的发生。稍有偏差，假设的计划表就会不堪一击。</p>
+<p>而你的计划表也不过是华丽的空中楼阁，不是一份 <strong>足够抗击脆弱</strong> 的 <strong>可信赖的</strong> 交付策略</p>
+<h1 id="1-项目经理管的是什么？"><a href="#1-项目经理管的是什么？" class="headerlink" title="1. 项目经理管的是什么？"></a>1. 项目经理管的是什么？</h1><p>如果依照之前的推论，软件研发中真正的产品是「是蕴含在软件中的知识」，那么项目管理真正要管的即为「软件中的知识管理」。</p>
+<p>由此，在知识管理的领域中，任务与进度变得不再可控。难度可以类比于「编辑管理作家写书的进度」、「画廊管理艺术家创作的进度」，知识的获取、灵感的转化变成整个过程的重点。</p>
+<p>那么项目经理也需要将大量的时间花在，如何管理软件中的知识。借鉴知识管理领域中，可知其中有三部分：</p>
+<aside>
+💡 美国学者 Tom Davenport 在 1994 年提出：**知识管理是获取、分配和有效利用的过程。**
+
+</aside>
+
+<ul>
+<li>知识的获取：如何可以最快速获取最准确的信息</li>
+<li>知识的构建：如何可以搭建出团队容易理解的知识地图</li>
+<li>知识的运用：如何可以更高效更高频的运用团队知识</li>
+</ul>
+<p>与其他团队管理知识的顺序不同，BeeArt 团队更多的考虑顺序将从知识运用 - 知识构建 - 知识获取，毕竟 <strong>消费才能拉动内需</strong>。</p>
+<h1 id="2-如何管理知识的运用"><a href="#2-如何管理知识的运用" class="headerlink" title="2. 如何管理知识的运用"></a>2. 如何管理知识的运用</h1><p>为了避免团队成为「数字仓鼠🐹」，陷入文档编写与收藏的谬误，感觉某个人写完一篇文档，就等于全团队学习到。</p>
+<p>但实际上团队应该正视「知晓某事」并不是「知道某事」；「一人知晓某事」并不是「团队知晓某事」。因此，项目经理需要最先优化的是在软件开发的流程中，什么知识最应该被运用？</p>
+<ol>
+<li>用户：你的软件的用户是谁？他们的目标是什么？痛点是什么？</li>
+<li>解决方案：最初你设定的解决方案是什么？解决了用户哪些方面的问题？与自身企业、团队的目标关系是什么？</li>
+<li>如何成功匹配：整个方案中你的假设是什么？什么时候去做验证？</li>
+</ol>
+<p>我相信以上这些问题，在大部分软件交付的初期都被讨论梳理汇报过，不过最后都被放入了团队的「收藏夹」中。只有在新人 OnBoarding<br>的时候，翻出来看看，但也不会检查吸收的效果。可是，团队成员在查看文档库时，更像是将信息进行搬运（而非加工），途中没有增加任何知识。如果日常工作中再不加以运用，那这些搬运的知识将会很快被大脑清洗掉（潜意识会默认过滤掉大量无用信息，这一点很难觉察到）</p>
+<p>因此，我们需要一种方式，在日常的软件研发过程中，不断的提醒大脑，团队的知识是什么？我们的假设是否是正确的？</p>
+<h2 id="2-1-知识运用-故事卡范式"><a href="#2-1-知识运用-故事卡范式" class="headerlink" title="2.1 知识运用 - 故事卡范式"></a>2.1 知识运用 - 故事卡范式</h2><p>在敏捷研发中<strong>「故事卡」</strong>正是日常软件中被高频使用的「需求载体」，更是研发与业务之间的<strong>「知识集中交换地」</strong></p>
+<p>由此团队重新定义了「故事卡」的生命周期与范式：</p>
+<table>
+<thead>
+<tr>
+<th><strong>缩略图：</strong>需要采用用户故事三句话中的「so that 价值」作为卡片标题，同时表明 用户画像（照片）、Epic 归属（白板中 Container）、迭代号（I8）、迭代内优先级（Iteration Priority:9）、复杂度点数（8）、负责人（KW）</th>
+<th><strong>详情：</strong>分为三段共同描述，由业务分析师 BA 着重阐述用户故事三句话、由业务与技术共同完成 AC 部分（业务和技术各写一版，IPM上讨论）、由用户体验设计师 UX 附设计稿或 DS 运用规则</th>
+<th><strong>Logseq 知识库：</strong>由技术人员共同将故事卡中故事与领域模型对应，并完成模型展开与工序拆分（详见实践集），并将每个工序标注预计完成时间与研发工程师</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/assets/images/16.png"></td>
+<td><img src="/assets/images/17.png"></td>
+<td><img src="/assets/images/18.png"></td>
+</tr>
+<tr>
+<td>Trello 中故事卡 - 缩略图</td>
+<td>Trello 中故事卡 - 详情</td>
+<td>Logseq 中故事卡 - 详情</td>
+</tr>
+</tbody></table>
+<h2 id="2-2-管理知识运用-工作堆积与认知堵塞点"><a href="#2-2-管理知识运用-工作堆积与认知堵塞点" class="headerlink" title="2.2 管理知识运用 - 工作堆积与认知堵塞点"></a>2.2 管理知识运用 - 工作堆积与认知堵塞点</h2><p>通过团队每日最高频接触的「故事卡」，如此可以确保团队知识的运用场景</p>
+<p>而作为项目经理，每天着重需要管理的「时间进度」也就变更成为寻找<strong>「工作堆积与认知堵塞点」</strong></p>
+<aside>
+📖 一种考虑整个系统吞吐量的方法是 **约束理论**。约束理论认为任何系统在某一时间只存在一个约束（偶尔也会存在两个）。要提高系统的整体吞吐量率，那么必须首先找出那个约束，并确保它能够全速工作，然后再寻咋某些办法，或者增加约束的容量，来分流一部分工作到其他非约束部分，或者完全消除约束。 
+— 《解析极限编程 - 拥抱变化》第 86 页
+
+</aside>
+
+<p>同样的，在软件研发过程中，一张故事卡也是具有生命周期的，是由需求转化为方案、转化为验收标准、转化为研发工序，其中需要经过业务分析师、用户体验设计师、研发、测试工程师等角色。</p>
+<p>因此每一步都需要时间，但如果一张故事卡在某一个环节 <strong>停留</strong><br>过久后，花费的时间过长后，整个流程变出现了堆积点，这个堆积点会造成整个流程的瓶颈，降低吞吐率。而造成的背后很有可能就是团队的认知堵塞点。</p>
+<p>作为项目经理可以结合每日站会上团队更新的累积流图中判断出，本迭代内哪里出现了工作堆积，需要如何处理与应对。</p>
+<ul>
+<li>需求侧出现堆积：需要引入用户调研、需要引入产品路演从而消除业务对产品的不确定…</li>
+<li>研发侧出现堆积：需要判断是否是故事卡拆分过大、还是研发对需求上下文不理解导致频繁沟通与返工…</li>
+<li>测试侧出现堆积：需要判断是否测试人手不足、还是自动化测试过少…</li>
+</ul>
+<h1 id="3-如何管理知识的构建"><a href="#3-如何管理知识的构建" class="headerlink" title="3. 如何管理知识的构建"></a>3. 如何管理知识的构建</h1><p>在知识的构建部分需要先理解什么是「认知负荷」，谈到认知负荷，我们可以简单地将其理解为任何一个人在给定的时间内大脑中所能保存的信息量是有上限的。对于任何一个团队来说，简单地将所有团队成员的认知能力累加起来即可。</p>
+<p>结合 <a href="https://en.wikipedia.org/wiki/Cynefin_framework">Cynefin Framework</a> 中，可以简单的理解为团队整体对某个知识的认知「从<br>Complex 到 Complicated 到 Obvious」的 <strong>总攀登阶梯数。</strong></p>
+<p>但是现在，当项目经理给一个团队分配职责或者软件构建的时候，我们几乎不会考虑认知负荷。可能是因为认知水平与负荷都难以量化，又或者本身就希望团队能够不假思索地完成被交代的工作。</p>
+<p>如果不考虑认知负荷，团队会做过多大量疲于奔命的工作，从而导致了计划延迟、质量等问题。团队中无意超出认知负荷的实例有：</p>
+<ol>
+<li>提出不可能的任务：让现有研发工程师 3个月内复制 ChatGPT</li>
+<li>过分自治：研发工程师身兼多个系统与平台的研发</li>
+<li>阶段目标过多：阶段内的故事卡横跨多个领域与目标用户</li>
+</ol>
+<p><img src="/assets/images/19.png"></p>
+<p>因此，我们鼓励项目经理在思考团队任务时，去限制他们的认知负荷。将认知负荷明确作为团队规模、分配职责和建立团队边界的有力工具。</p>
+<h2 id="3-1-认知负荷的种类"><a href="#3-1-认知负荷的种类" class="headerlink" title="3.1 认知负荷的种类"></a>3.1 认知负荷的种类</h2><p>在 1988年，心理学家 John Sweller 将认知负荷定义为「工作记忆中使用的脑力劳动总量」。Sweller 定义了三种不同的认知负荷：</p>
+<ul>
+<li><strong>内在认知负荷，</strong>与问题领域的基本任务相关，比如：Java 类的结构是什么样的？TDD<br>知识本身。就像「冰山的自重」，在我们学习任何知识的时候，都一定会带来认知负荷，属于中性，谈不上好坏<ul>
+<li><strong>外在认知负荷，</strong>与任务处理的环境相关，比如：我要如何重新部署这个组建？我要如何配置这个服务？类似于<br>「北极熊带来的额外压力」，它会加重本来就不轻的认知负荷，使得学习更为困难，是「坏」的负荷</li>
+<li><strong>相关认知负荷，</strong>与那些需要格外关注学习和高性能方面的任务相关，比如：这个服务是如何与其他服务进行交互的？它是「海水的浮力」，它会减轻学习过程中的认知负荷，是「好」的负荷</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/20.png"></p>
+<p>有了这幅图作为隐喻，对认知负荷的三个种类的理解就应该比较容易了！</p>
+<ul>
+<li><strong>内在认知负荷</strong>，对于特定的学习者（所掌握的先进知识）、特定的学习材料（难度），内在认知负荷是确定的。例如：在软件研发中，你的用户是谁，你的软件是属于什么行业的，所包含了哪些知识？</li>
+<li><strong>外在认知负荷</strong><br>，是由信息的组织方式和呈现方式带来的，信息的组织方式。在日常任务重应是最为重视的，同样的内容，用不同的信息呈现方式，知识吸收效果（以及认知负荷）是不同的。例如：同样是表述场景与功能之间关系，功能列表与用户故事地图就是不同的呈现方式</li>
+<li><strong>相关认知负荷</strong>，这是唯一能够产生「浮力」的要素，因此对于知识传递起到 <strong>关键性作用</strong><br>。在项目中好的知识管理，应该将知识分类呈现，并建立一定的关联关系。例如：在拆分工序的时候引入模型展开，不仅可以降低拆分工序的难度，同时也加深对模型的认知与理解。</li>
+</ul>
+<h2 id="3-2-管理知识构建-团队中三张地图"><a href="#3-2-管理知识构建-团队中三张地图" class="headerlink" title="3.2 管理知识构建 - 团队中三张地图"></a>3.2 管理知识构建 - 团队中三张地图</h2><p>在软件研发的过程中，作为项目经理有三张地图可以帮助团队降低知识的「外在认知负荷」，将产品中有效的信息串联起来</p>
+<table>
+<thead>
+<tr>
+<th>需求地图：用户故事地图，可以关联 <strong>用户目标</strong> 与 <strong>产品的需求模块</strong>，讲清楚每个需求存在的价值</th>
+<th>研发地图：领域模型图，可以关联 <strong>产品需求模块</strong> 与 <strong>软件实现架构</strong>，保证软件实现与业务逻辑之间相匹配</th>
+<th>管理地图：估点与速率偏差统计，可以将 <strong>实际损耗人天</strong> 与 <strong>估算进行偏差统计</strong>，从而找到团队认知最薄弱的模块，迭代中通过学习时间集中补充知识</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/assets/images/21.png"></td>
+<td><img src="/assets/images/22.png"></td>
+<td><img src="/assets/images/23.png"></td>
+</tr>
+<tr>
+<td>用户故事地图</td>
+<td>领域模型图</td>
+<td>估点与速率偏差统计</td>
+</tr>
+</tbody></table>
+<p>而提升「相关认知负荷」就需要靠外界工具帮忙，BeeArt 团队采用的是白板 + Logseq 的双链方式。</p>
+<h1 id="4-如何管理知识的获取"><a href="#4-如何管理知识的获取" class="headerlink" title="4. 如何管理知识的获取"></a>4. 如何管理知识的获取</h1><p>根据消费决定需求的方式，软件研发的团队主要需要获取以下 5类知识：</p>
+<ol>
+<li>业务知识：对市场、对行业、对趋势、对竞品的理解</li>
+<li>用户知识：对目标用户、对使用场景的理解</li>
+<li>商业化知识：对产品自身竞争力、对企业平台战略的理解</li>
+<li>技术知识：对先进技术的尝试、对技术可反哺业务的创新</li>
+<li>团队能力：对团队认知现状的了解</li>
+</ol>
+<p>作为项目经理，不仅需要让团队有主动自发获取知识的 <strong>源动力</strong>，更需要有让团队有互相交流被动获取的 <strong>安全空间</strong></p>
+<p>但我们不得不承认，让团队在工作中主动承认自己需要学习，对每个人都是需要勇气的。</p>
+<p>但项目经理也必须承认，团队的学习时间是「必要的浪费」，因为如果不学习猜测无法变成事实，决策无法可靠，团队的错误也会反复发生</p>
+<h2 id="4-1-自发获取专业知识"><a href="#4-1-自发获取专业知识" class="headerlink" title="4.1 自发获取专业知识"></a>4.1 自发获取专业知识</h2><p>团队成员主动自发的获取知识一方面是方式方法，但更多的需要团队成员的心态调整。</p>
+<p>需要从「专家心态」，调整成为空杯的「初学者心态」。团队成员需要承认自己的猜测与假设，而不是一味的「藏马脚」</p>
+<p>在 BeeArt 181 团队组建第一天，团队原则中边有两条与主动学习有关：</p>
+<ol>
+<li>BA 是一定帽子，全员要当<br>BA。背后的原因是我们需要用于承认产品研发的高风险性与不确定性，我们不能指望产品经理或业务分析师一人就可以掌握全部的业务知识，就可以让产品走向成功。因此思考业务与用户知识，因为是全团队的行为，包括研发与测试，不分角色</li>
+<li>对团队来说足够好的东西，对你来说永远都不够好。要从错误中学习，要互相学习。背后的原因是无论业务与技术需要不断追求「卓越」与「不确定」，不能「受困于」足够好的现状</li>
+</ol>
+<p>因此我们的实践在基础的敏捷研发工程中，多加了</p>
+<ul>
+<li>OnBoarding 书单：团队具有固定书单，书单中有与业务密切相关的图书，读完后对全团队演讲，团队认可后才可开始工作</li>
+<li>产品路演 Roadshow：区别于迭代 Showcase，定期与目标用户沟通，讲述自己的猜测并获得用户的反馈与验证</li>
+<li>反串讲：业务进行模型实例化展开并向技术讲解，技术拆分故事卡的 AC 并向业务求证</li>
+</ul>
+<h2 id="4-2-被动获取关联知识"><a href="#4-2-被动获取关联知识" class="headerlink" title="4.2 被动获取关联知识"></a>4.2 被动获取关联知识</h2><p>被动获取知识需要团队有安全开放的学习环境</p>
+<p>首先需要团队领导者承认学习的必要性，而非只看时间进度的机械式管理</p>
+<p>因此，在BeeArt 181 中，我们有以下「时间的浪费」，来保证团队认知的整体提升</p>
+<ol>
+<li>每天站会后占用工作时间 30分钟，研发进行 Rotation 轮转卡，保证自己可以将手中故事卡的业务讲解清楚，并传递给下一个研发工程师</li>
+<li>每天中午占用工作时间 30分钟，每人都会轮流进行 Session 分享，但要求必须与团队知识相关，可以是先进技术，也可以是业务商业知识</li>
+<li>每周五下午占用工作时间 1小时，进行实践总结会，总结每周高效的工作方法与实践，并思考可以解决什么项目问题</li>
+<li>每个迭代 IPM 后，研发需要 0.5 - 1天的时间分析本迭代所有故事卡，并集中进行模型展开与工序拆分，不着急开卡进入写代码环节</li>
+<li>每个研发工程师在开始一个工序超过 40分钟后还未提交，需要在团队内部举手，提出自己是否遇到困难，而团队中的其他小伙伴是否可以<br>pair 帮忙</li>
+<li>每个新人需要完成人传人 OnBoarding，近 1个月，完全掌握业务上下文与技术模型后，才成为正式成员，编写生产代码</li>
+<li>每人轮流成为 IM（迭代经理），理解迭代交付风险与认知提升的管理办法</li>
+</ol>
+<p>以上就是 BeeArt 所提倡的根据提升团队认知，从而进行的项目管理</p>
+<p>因为知识领域下的项目管理需要更科学的管理手段与方法，如果只是盯流程、盯时间、盯责任人、开会催进度，将会严重的伤害团队工作意愿</p>
+<p>毕竟，虽然人人都可以成为项目经理，但也有好坏之分！</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>交付手册</category>
+        <category>PM项目经理</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>项目经理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人传人 OnBoarding</title>
+    <url>/2023/08/04/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/%E4%BA%BA%E4%BC%A0%E4%BA%BAonboarding/</url>
+    <content><![CDATA[<h1 id="人传人-OnBoarding"><a href="#人传人-OnBoarding" class="headerlink" title="人传人 OnBoarding"></a>人传人 OnBoarding</h1><h1 id="1-WHAT-实践简介"><a href="#1-WHAT-实践简介" class="headerlink" title="1. WHAT 实践简介"></a>1. WHAT 实践简介</h1><p>在 BeeArt，虽然我们有完整的 Onboarding 文档，以及每次讲解 Onboarding 文档时的录屏，但是我们并不认为 Onboarding 就是看文档和看录屏，我们坚持每次由「老人」对「新人」进行口口相传的方式进行 Onboarding，当然过程可能还是对着 Onboarding 文档进行讲解，但是实际的效果远比让「新人」自己闷头看视频要好的多，而且这么做同样会加强和巩固「老人」对于现有知识的理解。</p>
+<h1 id="2-WHY-实践背后的原因"><a href="#2-WHY-实践背后的原因" class="headerlink" title="2. WHY 实践背后的原因"></a>2. WHY 实践背后的原因</h1><p>大多数时候，项目上的 OnBoarding 会由 BA，或项目元老讲述一遍，录制好视频后。每次项目中上新人时，直接让新人看文档和录屏。</p>
+<p>但这种方式，由于学习金字塔的诅咒（被动听讲只能吸收信息 5%），会直接导致无法有效检验项目成员是否真的理解项目知识与上下文</p>
+<p><img src="/assets/images/1.png"><br><img src="/assets/images/2.png"></p>
+<h1 id="3-HOW-如何运用"><a href="#3-HOW-如何运用" class="headerlink" title="3. HOW 如何运用"></a>3. HOW 如何运用</h1><p>我们采用「<strong>输入帮助输出，输出倒逼输入</strong>」的 人传人OnBoarding 方法</p>
+<p>对于「新人」而言：</p>
+<ul>
+<li>通过老人面授，知识的初次吸收效率提升<strong>（被动学习 吸收 20%）</strong></li>
+<li>完成 OnBoarding 作业，如果业务人员无法对模型进行展开，那么业务人员就不能进行需求分析；开发人员无法有效使用工序，那么开发人员就不能去写生产代码<strong>（主动学习 吸收 70%）</strong></li>
+</ul>
+<p>对于「老人」而言：</p>
+<ul>
+<li>需要通过教会新人，以此检验自己对于项目的熟悉度<strong>（主动学习 最后吸收 90%）</strong></li>
+</ul>
+<p>因此，对于项目成员完整的 OnBoarding 环节，需要教会一个「新人」为止，才算结束</p>
+<h1 id="4-BeeArt-V4-0-真实场景"><a href="#4-BeeArt-V4-0-真实场景" class="headerlink" title="4. BeeArt V4.0 真实场景"></a>4. BeeArt V4.0 真实场景</h1><p><img src="/assets/images/3.png"></p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>交付手册</category>
+        <category>PM项目经理</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>项目经理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>累积流图</title>
+    <url>/2023/08/04/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/%E7%B4%AF%E7%A7%AF%E6%B5%81%E5%9B%BE/</url>
+    <content><![CDATA[<h1 id="累积流图"><a href="#累积流图" class="headerlink" title="累积流图"></a>累积流图</h1><h1 id="1-WHAT-实践简介"><a href="#1-WHAT-实践简介" class="headerlink" title="1. WHAT 实践简介"></a>1. WHAT 实践简介</h1><p>累积流图（Cumulative Flow Diagram）是敏捷项目管理中的一种面积图，可以用于表示任务在工作流程中不同阶段的变化，它也是敏捷迭代管理的重要工具之一。团队可以通过累积流图可视化当前任务进展情况，从而发现瓶颈，识别潜在问题。团队也可以通过累积流图跟踪工作流程中每个阶段中的任务数量以及每个阶段工作的持续时间。同时，累积流图可以帮助团队优化工作流程，确保任务以稳定的速度完成，并最终为客户交付卓越的产品。通过对任务进展情况的监测，团队可以分析当前工作流程的有效性并进行必要的调整。团队可以根据项目的需求，以每日、每周或每月的时间段在累积流图中调整对项目进度的观测。</p>
+<p>对于 BeeArt V4.0 来说，累积流图是一个非常有效且使用最频繁的项目管理工具之一。累积流图可以将项目中潜在的问题以图的形式直观地暴露出来。</p>
+<p>在 BeeArt V4.0 中，每个迭代周期为两周，项目成员会轮流作为 IM（迭代经理）这个角色，在当天结束时更新累积流图，并在每日站会时向团队呈现最新的累积流图，并通过识别团队当前遇到的障碍或困难来分析和推进问题被解决。此外，迭代经理角色的轮换是也是 BeeArt V4.0 上一个非常有效的实践，它可以让团队成员轮流地去更新累积流图，并持续关注项目进度。</p>
+<p>使用累积流图的首要前提就是得确定项目上任务的工作流程。BeeArt V4.0 里的工作流程包括「待开始」、「开发中」、「测试中」和「已完成」四个阶段。然后，团队可以更具实际情况，选择一个合适的观测周期，如每日、每周或每月去记录每个阶段完成的任务数量，可以使用电子表格或其他跟踪工具来计算指定时间间隔内每个阶段的工作项数量。此外，可以使用类似 Google Sheets 或 Excel 等图表应用程序创建累积流图。</p>
+<h1 id="2-HOW-如何运用"><a href="#2-HOW-如何运用" class="headerlink" title="2. HOW 如何运用"></a>2. HOW 如何运用</h1><h2 id="2-1-观测指标"><a href="#2-1-观测指标" class="headerlink" title="2.1 观测指标"></a>2.1 观测指标</h2><p>累积流图的一些指标可以用于观测任务在项目中随时间变化的情况:</p>
+<ul>
+<li>进行中的任务（WIP）：指当前正在进行的工作量，通常位于“开发中”和“已结束”之间。如果临近交付日期，累积流图显示 WIP 水平很高，很可能意味着项目存在交付瓶颈或延期的风险。</li>
+<li>交付时间（Lead Time）：从任务进入迭代到完成完成所需的时间。它包任务在工作流程中花费的时间以及工作流程之外的等待时间或延迟时间等。交付时间可用于确定工作流程的整体效率，并评估完成某一任务所需的时间。</li>
+<li>循环时间（Cycle Time）：在进入工作流程后，任务从开始到结束所需的时间，不包括工作流程之外的任何等待时间或延迟时间。循环时间可用于确定工作流的效率并评估完成任务所需的时间。</li>
+<li>吞吐量（Throughput）：任务在给定时间内完成的速率，通常以每天、每周或每个迭代来衡量。吞吐量可用于评估团队的生产力，并确定可能影响其有效完成工作项的潜在问题。</li>
+<li>计划任务数量（Scope）：当前工作流程中的的所有任务，通常在每个迭代开始时会进行调整。</li>
+<li>预计交付日期（Estimated Delivery Date）：任务完成并交付给客户所需的时间。通常基于多种因素，包括任务涉及的范围、团队的能力以及任何已知的限制或依赖等。<br><img src="/assets/images/4.png"></li>
+</ul>
+<p>尽管一些其他的指标在 BeeArt V4.0 的累积流图中没有被使用到，但它们仍然很重要。团队可以根据项目实际情况选择合适的观测指标，进行有针对性的迭代管理。总的来说，通过这些观测指标，项目可以了解团队成员和任务的情况，并确定是否需要进行有针对性的改进。通过将关键的数据指标与迭代管理技术相结合，团队可以不断改进其工作流向客户提供更好的价值。</p>
+<h2 id="2-2-迭代速率与累积流图"><a href="#2-2-迭代速率与累积流图" class="headerlink" title="2.2 迭代速率与累积流图"></a>2.2 迭代速率与累积流图</h2><p>迭代速率（Velocity）是根据迭代期间内完成的用户故事点数除以可用人天计算得出。在准备迭代任务时，我们可以根据历史迭代速率设置一个较为合适的目标速率，从而评估团队可完成的工作量以及预计交付时间。制定和跟踪团队迭代速率在每个迭代都非常重要，因为迭代速率本身就是一个很有效的迭代管理工具，在累积流图中的也有观察迭代速率的方式。</p>
+<p>累积流图和迭代速率是通常可以一起用来跟踪项目情况。迭代速率衡量团队在特定时间内可完成的任务数，而累积流图显示了在特定时间段内每个阶段所完成的任务数量。通过结合累积流图和迭代速率，团队可以有效地监控任务进度，并识别可能阻碍完成任务的问题。通过查看累积流图上的斜率，可以确定每个阶段在不同时间段的实际速率和目标速率，从而评估工作效率和生产力，团队能够进行必要的调整，以确保项目按时交付。通过迭代速率，团队还可以更有效地管理其工作量，分配资源，并预测项目完成的时间等。因此，在敏捷迭代管理中使用累积流图时，迭代速率也是一个关键指标。</p>
+<h2 id="2-3-常见模式"><a href="#2-3-常见模式" class="headerlink" title="2.3 常见模式"></a>2.3 常见模式</h2><p>累积流图中出现的四种常见模式是线性（Linear）、高原（Plateau）、曲棍球棒（Hockey Stick）和混乱（Chaotic）。理解这些模式并利用它们分析团队目前面临的问题是累积流图的最为关键的用途。一般来说，这些模式会在累积流图中一起出现，但是团队可以根据某一时间段出现的异常模式来分析问题和瓶颈，以下是每个模式的简要描述。<br><img src="/assets/images/5.png"></p>
+<ol>
+<li><strong>线性模式（Linear）</strong>是指随着时间的推移，在每个工作流程中，任务都处于稳定逐渐增加的模式，且不同阶段的增长速率几乎一致。这个模式可以表明计划任务在每个流程中都正常且有效运作，并以一致的速度完成。这通常是团队表现良好的标志，因为它表明任务按时完成，流程有效。但如果斜率在某段实践内处于下降状态的话，可能表明当前工作流程中的任务或整个团队遇到了与工作流程相关问题，如项目内的流水线或测试环境出现问题等，团队可以通过累积流图显示的瓶颈并根据项目实际情况定位和发现潜在问题，并进行有针对性的改进从而解决问题。</li>
+<li><strong>高原模式（Plateau）</strong>中，每个工作流程步骤中的任务数量在某一段内时间上没有变化。这不是一个乐观的模式，因为它表明任务在某一阶段的一段时间内的速率是零，项目上可能存在需要解决的障碍。出现这种模式一般来说会由两种情况导致：1.可能是由于一个很严重的问题，使得所有人都无法正常进行开发、测试等任务，所以任务会在工作流中一直停滞不前；2.也可能时由于一次漫长的假期，没有人在工作。总之，出现这个模式可能没有问题出现，也可能是由于重大问题导致的。</li>
+<li><strong>曲棍球棒模式（Hockey Stick）</strong>的特点是在初始阶段有相对稳定的增长，但在后期任务数量会急剧增加。这种模式可能意味着任务在工作流程的初始阶段被拖延或阻塞，但在后期阶段可能由于各种原因，使得任务涌入某一阶段。由于任务数量的快速增加，团队的工作量也会因此突然增加，这可能会对团队的工作质量产生影响。产生这个问题的原因可能是迫于交付压力，在临近交付日期前团队成员都有尽快完成交付任务的一致的想法，降低了开发任务或测试的质量。往往出现这种模式时，需要尽可能分析出产生问题的原因，从而避免再次发生。</li>
+<li><strong>混沌模式（Chaotic）</strong>下，随着时间的推移，每个工作流程阶段中任务的数量和速率的变化都没有明显的规律，表明项目没有按计划或规律以恒定增长的速度进行。造成这种模式的因素有很多，可能是由于需求不清晰、频繁的范围变更或无效的团队沟通等导致任务没有在与其时间内在工作流中变化，这可能会对整个团队的效率产生负面影响。</li>
+</ol>
+<h2 id="2-4-典型示例"><a href="#2-4-典型示例" class="headerlink" title="2.4 典型示例"></a>2.4 典型示例</h2><p>事实上，累积流图可以通过分析之前提到的观测指标和常见模式来跟踪和评估项目的健康状况。一般来说，如果对这些指标和模式有一定的熟悉程度，项目管理者可以快速有效地根据累积流图定位和发现项目潜在的问题和瓶颈，当然这也是需要经过反复多次的刻意练习才能达到的程度。此外，由于各种因素，一个实际项目上的累积流图不会特别「好看」，可能是各种模式混杂而成。以下是六个常见的累积图的简单示例：</p>
+<h3 id="示例-A"><a href="#示例-A" class="headerlink" title="示例 A"></a>示例 A</h3><p>示例 A 的问题主要在于越来越多的任务进入到「开发中」，且增长的速率远远高于「测试中」和「已完成」，而且可以明显地看出「开发中」和「已完成」之间的差距很大。在这个例子中，交付时间（Lead Time）会变得越来越长，提高了项目的交付风险。那么，造成这个问题的潜在原因是什么呢？在进行中的任务则没有稳定完成的情况下，越来越多的任务进入开发中，可能导致多人同时在多个任务上。如果当前团队处于扩大的状态且开发资源逐渐增加的时期，这可能不是一个主要问题。但如果开发数量保持不变，可能需要注意下是否每个开发都严格专注于一个任务上。</p>
+<p><img src="/assets/images/6.png"></p>
+<h3 id="示例-B"><a href="#示例-B" class="headerlink" title="示例 B"></a>示例 B</h3><p>与示例 A 相比，示例 B 中测试任务会完成地更好一点，因为「测试中」和「已完成」两条线线几乎重合，大部分任务处于开发阶段，而且开发任务不断增加积压，一直没有进入到「测试中」。示例 B 间接表明了开发团队的速率是稳定的，因为进入到「测试中」的任务数量以稳定的速率在增长。造成这个问题的原因可能是开发资源不足造成，如果开发人数不足，即使有更多的任务进入到开发中，开发团队也只能以相同的速率完成。在这种情况下，「测试中」和「已完成」阶段很可能会出现曲棍球棒模式（Hockey Stick），也就是在交付后期，测试的压力会急剧增加。如果是这个问题造成的，团队可以考虑增加开发资源，加快任务完成速度并减轻测试的负担。</p>
+<p><img src="/assets/images/7.png"></p>
+<h3 id="示例-C"><a href="#示例-C" class="headerlink" title="示例 C"></a>示例 C</h3><p>示例 C 的「已完成」这条线是最引人注目的，以阶梯式的形式增长。这张图一眼望去可能会觉得是测试人员的问题，因为很多任务都处于「测试中」的阶段，没有稳定地进入到「已完成」阶段。但如果进一步调查发现，更有可能是开发人员的问题。如果开发任务质量不高，在测试过程中会发现许多缺陷，这可能导致任务一直处于「测试中」或返工到「开发中」，所以可能会在某一阶段中停留很长时间。如果开发人员在「测试中」的工作还没有测试完成转移到下一个阶段的情况下，又继续开始了新的开发任务，那么会造成开发人员承受新任务和有缺陷的任务未完成的双重压力，这将会阻碍任务进入到「已完成」的阶段。如果新任务正在开发过程中，「测试中」的任务也返工，会造成一个开发人员工作到多个任务上的情况，那么某些任务在一定程度上会被忽视。这其实是一种很常见的情况，在 BeeArt V4.0 中的某些迭代内也发生过类似的场景。比较好的解决办法是严格根据工序将开发任务分解成多个合理大小的的可测试的任务，然后通过测试驱动开发确保每个任务的功能都正常工作且不会被破坏。这样可以很大程度上保证开发质量，减少返工率。</p>
+<p><img src="/assets/images/9.png"></p>
+<h3 id="示例-D"><a href="#示例-D" class="headerlink" title="示例 D"></a>示例 D</h3><p>示例 D 中展示的也是一种很常见的情况，它也对应于高原模式（Plateau）。在一段时间内，没有任务移动到下一个阶段。实际项目中应该都会出现这种情况，比如节假日，没有人工作在任何任务上，自然就会出现任务不增长的情况。然而，这种模式也可能表明项目出现了较为严重的问题，例如整个团队因测试环境失败或 CI &#x2F; CD 流水线问题而停滞不前，使得所有人无法正常工作。因此，如果出现这种情况，可能是没有问题出现，也可能是出现了重大的问题。</p>
+<p><img src="/assets/images/10.png"></p>
+<h3 id="示例-E"><a href="#示例-E" class="headerlink" title="示例 E"></a>示例 E</h3><p>在示例E中，也存在一部分的平坦线，特别是当「测试中」和「已完成」完全平坦且重叠时，而「开发中」的任务不断上升。这里存在的问题可能是由于测试环境或开发用 CI &#x2F; CD 流水线出现故障，导致没有任务能进入到「测试中」。或者是由于另一个更严重更隐蔽的问题导致：在「测试中」的任务数量没有任何增长的情况下，「开发中」的任务数量仍在继续增加。这其实潜在地表明了开发人员可能并不关心测试环境或 CI &#x2F; CD 流水线的问题，而是继续开始新的任务。这也间接地说明了开发人员没有工作在优先级最高的事情上，以及不太关心团队基础设施。</p>
+<p><img src="/assets/images/11.png"></p>
+<h3 id="示例-F"><a href="#示例-F" class="headerlink" title="示例 F"></a>示例 F</h3><p>示例 F 中包含典型的棍球棒模式（Hockey Stick）的部分，在时间的后期，「测试中」和「已完成」任务数量的急剧上升。这种现象很可能是由于项目处于强烈的交付压力下，例如接近交付日期或上线日期，但仍有许多任务尚未完成。在这样的压力下，团队成员会有意地妥协测试标准，并将基本能工作的任务到「已完成」，从而导致了这样的急剧上升。这时候团队应警惕起来，因为降低交付质量会增加生产事故的可能性，并降低客户信心。</p>
+<p><img src="/assets/images/12.png"></p>
+<h2 id="2-5-近乎完美的累积流图"><a href="#2-5-近乎完美的累积流图" class="headerlink" title="2.5 近乎完美的累积流图"></a>2.5 近乎完美的累积流图</h2><p>一个近乎完美的累积流图可能会是什么样子呢？首先，图中没有任何负面的模式，如高原（Plateau）、曲棍球棒（Hockey Stick）或混乱模式（Chaotic）。其次，任务的测试和完成的增长速率可以和开发中的任务进度保持一致，即使计划任务（Scope）不断增加。但是，这样的图只能存在于想象之中，因为在实际项目中，是无法让任务在同一时间内经历工作流程中的所有阶段的。</p>
+<p><img src="/assets/images/13.png"></p>
+<h1 id="3-BeeArt-V4-0-真实场景"><a href="#3-BeeArt-V4-0-真实场景" class="headerlink" title="3. BeeArt V4.0 真实场景"></a>3. BeeArt V4.0 真实场景</h1><p>尽管我们认为每个人都已尽其所能地在 BeeArt V4.0 做出了最大的努力，但我们的累积流图仍有很大的改进空间。完美无瑕的累积流图比比皆是，但如果我们分享我们实际遇到的困难，对您来说可能会更有益和可信。很明显的是，BeeArt V4.0 的累积流图是一个能发现很多潜在问题和瓶颈的图。</p>
+<p><img src="/assets/images/14.png"></p>
+<p>我们可以根据之前提到的四种常见模式和示例来分析 BeeArt V4.0 的累积流图。例如，A 和 C 在「开发中」堆积了大量的任务，并持续了较长的时间，这在迭代后期必然会增加测试任务的工作量，增加了交付风险。在 B 和 D 中，在很长时间一段时间内，基本上没有任务能进入到下一个工作流阶段，这意味着项目在此期间没有任何进展。这可能是由于一个重大问题，阻止了所有人的工作；或者从好的一面来说，这可能是一个假期，没有人需要去工作。在 E 中，许多任务处于「测试中」且尚未完成，但仍然有更多新的任务进入到「开发中」。这对开发人员来说是个坏消息，因为在「测试中」中的任务还没有被标记为「已完成」时，开发人员仍然在开展新的任务，而不是协助完成测试工作。此外，「开发中」多了更多新的任务意味着一个开发人员必须同时处理多个任务，这对交付来说是不可取的。最后，F 也揭示了多任务处理问题。</p>
+<h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><p>总而言之，累积流图是一种很有效的迭代管理工具，可以帮助团队跟踪进度、识别瓶颈，并做出基于数据的决策以改进其流程。通过可视化任务在工作流程中的流转，累积流图提供了一个更为全面的任务进展视图，使团队能够识别潜在问题并进行有针对性的改进，以优化其工作流程。</p>
+<h1 id="5-更多阅读"><a href="#5-更多阅读" class="headerlink" title="5. 更多阅读"></a>5. 更多阅读</h1><p><a href="http://brodzinski.com/2013/07/cumulative-flow-diagram.html">cumulative-flow-diagram.html</a></p>
+<p><a href="https://getnave.com/blog/how-to-read-the-cumulative-flow-diagram-infographic">how-to-read-the-cumulative-flow-diagram-infographic</a></p>
+<p>User Stories Applied - Mike Cohn</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>交付手册</category>
+        <category>PM项目经理</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>项目经理</tag>
+      </tags>
+  </entry>
+</search>
