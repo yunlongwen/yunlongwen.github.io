@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇 | Yunlong的博客</title>
+  <meta name="keywords" content=" 敏捷 , 测试 ">
+  <meta name="description" content="大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇 | Yunlong的博客">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="about">
+<meta property="og:url" content="http://github.100kwhy.cn/about/index.html">
+<meta property="og:site_name" content="Yunlong的博客">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-08-03T19:20:30.000Z">
+<meta property="article:modified_time" content="2023-12-17T14:18:27.899Z">
+<meta property="article:author" content="Yunlong Wen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Yunlong Wen</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="github"
+               href="https://github.com/yunlongwen"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="email"
+               href="mailto:350394277@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(16)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            <i class="fold iconfont icon-right"></i>
+            工具
+            <small>(2)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="工具&lt;---&gt;Hexo">
+            
+            Hexo
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="安卓">
+            <i class="fold iconfont icon-right"></i>
+            安卓
+            <small>(2)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="安卓&lt;---&gt;aosp">
+            
+            aosp
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="敏捷">
+            <i class="fold iconfont icon-right"></i>
+            敏捷
+            <small>(12)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;交付手册">
+            <i class="fold iconfont icon-right"></i>
+            交付手册
+            <small>(4)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;交付手册&lt;---&gt;PM项目经理">
+            
+            PM项目经理
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;ThoughtWorks">
+            
+            ThoughtWorks
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;TW">
+            <i class="fold iconfont icon-right"></i>
+            TW
+            <small>(7)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;TW&lt;---&gt;博客">
+            
+            博客
+            <small>(7)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  site_url"
+               
+               href="/about">About</a>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="16">
+<input type="hidden" id="yelog_site_word_count" value="50.7k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>测试</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>反敏捷</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>根因分析</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>敏捷</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>项目经理</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>android</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>aosp</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>BA</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Workshop</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <div id="local-search-result">
+
+    </div>
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All 安卓 aosp "
+           href="/2023/12/17/Android/aosp/2023-0719-aosp/"
+           data-tag="aosp,android"
+           data-author="" >
+            <span class="post-title" title="AOSP 源码文件结构">AOSP 源码文件结构</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 安卓 aosp "
+           href="/2023/12/17/Android/aosp/2023-0721-download-compiled/"
+           data-tag="aosp,android"
+           data-author="" >
+            <span class="post-title" title="下载编译源代码">下载编译源代码</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 工具 Hexo "
+           href="/2023/12/17/%E5%B7%A5%E5%85%B7/Hexo/cname/"
+           data-tag="Hexo"
+           data-author="" >
+            <span class="post-title" title="Hexo怎么避免README文件以及CNAME文件的覆盖">Hexo怎么避免README文件以及CNAME文件的覆盖</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 工具 Hexo "
+           href="/2023/12/17/%E5%B7%A5%E5%85%B7/Hexo/github_actions/"
+           data-tag="Hexo"
+           data-author="" >
+            <span class="post-title" title="使用GitHub Actions部署Hexo博客">使用GitHub Actions部署Hexo博客</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 ThoughtWorks "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/about/"
+           data-tag="敏捷"
+           data-author="" >
+            <span class="post-title" title="关于">关于</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/about/"
+           data-tag="敏捷"
+           data-author="" >
+            <span class="post-title" title="关于">关于</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/ThoughtWorks%E7%9A%84%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="ThoughtWorks的敏捷测试">ThoughtWorks的敏捷测试</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A1/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇">大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A2/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇">大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A3/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（三）用户验收篇">大规模敏捷测试怎么做？----“绿皮车”测试之旅（三）用户验收篇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A6%82%E4%BD%95%E4%B8%BA%E6%95%8F%E6%8D%B7%E8%BD%AC%E5%9E%8B%E5%AE%A2%E6%88%B7%E7%BB%84%E7%BB%87%E4%B8%80%E5%9C%BA%E6%A0%B9%E5%9B%A0%E5%88%86%E6%9E%90workshop/"
+           data-tag="敏捷,Workshop,根因分析"
+           data-author="" >
+            <span class="post-title" title="如何为敏捷转型客户组织一场根因分析workshop">如何为敏捷转型客户组织一场根因分析workshop</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E7%94%A8%E6%88%B7%E6%95%85%E4%BA%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A2%AB%E6%95%8F%E6%8D%B7%E6%8E%A8%E5%B4%87/"
+           data-tag="敏捷,BA"
+           data-author="" >
+            <span class="post-title" title="探寻本源，用户故事为什么被敏捷推崇">探寻本源，用户故事为什么被敏捷推崇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E8%AF%B7%E7%95%99%E6%84%8F%E8%BF%99%E4%BA%9B%E5%8F%8D%E6%95%8F%E6%8D%B7%E7%9A%84%E8%A1%8C%E4%B8%BA/"
+           data-tag="敏捷,反敏捷"
+           data-author="" >
+            <span class="post-title" title="请留意这些反敏捷的行为">请留意这些反敏捷的行为</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 PM项目经理 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/Q1:%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86%E5%BA%94%E4%B8%8D%E5%BA%94%E8%AF%A5%E5%8F%AA%E7%9B%AF%E4%BA%A4%E4%BB%98Deadline/"
+           data-tag="敏捷,项目经理"
+           data-author="" >
+            <span class="post-title" title="Q1：项目经理应不应该只盯交付 Deadline？">Q1：项目经理应不应该只盯交付 Deadline？</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 PM项目经理 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/%E4%BA%BA%E4%BC%A0%E4%BA%BAonboarding/"
+           data-tag="敏捷,项目经理"
+           data-author="" >
+            <span class="post-title" title="人传人 OnBoarding">人传人 OnBoarding</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 PM项目经理 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/%E7%B4%AF%E7%A7%AF%E6%B5%81%E5%9B%BE/"
+           data-tag="敏捷,项目经理"
+           data-author="" >
+            <span class="post-title" title="累积流图">累积流图</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-敏捷/thoughtworks的敏捷/blog/大规模敏捷测试怎么做1" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="敏捷">敏捷</a> > 
+            
+            <a  data-rel="敏捷&lt;---&gt;TW">TW</a> > 
+            
+            <a  data-rel="敏捷&lt;---&gt;TW&lt;---&gt;博客">博客</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color3">敏捷</a>
+            
+            <a class="color3">测试</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2023-12-17 14:18:27'>2023-12-17 14:18</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:5.2k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            post.views :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E7%9A%84%E5%9F%BA%E7%A1%80%EF%BC%9A%E8%89%AF%E5%A5%BD%E7%9A%84%E6%95%8F%E6%8D%B7%E5%AE%9E%E8%B7%B5"><span class="toc-text">一、大规模敏捷测试的基础：良好的敏捷实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8IKM%E8%BF%9B%E8%A1%8C%E9%9C%80%E6%B1%82%E6%BE%84%E6%B8%85%EF%BC%8C%E4%BF%9D%E9%9A%9C%E8%B4%A8%E9%87%8F%E9%9C%80%E6%B1%82%E8%A2%AB%E8%AF%86%E5%88%AB"><span class="toc-text">利用IKM进行需求澄清，保障质量需求被识别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%BC%80%E5%8D%A1%E8%BF%9B%E8%A1%8C%E9%AA%8C%E8%AF%81%E7%82%B9%E6%BE%84%E6%B8%85%EF%BC%8C%E4%BF%9D%E9%9A%9C%E9%9C%80%E6%B1%82%E4%B8%8E%E5%BC%80%E5%8F%91%E7%90%86%E8%A7%A3%E4%B8%80%E8%87%B4"><span class="toc-text">利用开卡进行验证点澄清，保障需求与开发理解一致</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E7%AB%99%E4%BC%9A%E5%AF%B9%E9%BD%90%E5%85%B3%E9%94%AE%E8%B4%A8%E9%87%8F%E4%BF%A1%E6%81%AF"><span class="toc-text">利用站会对齐关键质量信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E5%8A%A8%E5%BC%80%E5%8F%91%E8%B4%A8%E9%87%8F%E5%86%85%E5%BB%BA"><span class="toc-text">推动开发质量内建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Desk-Check%EF%BC%88DC%EF%BC%89%E8%BF%9B%E8%A1%8C%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0%E6%BE%84%E6%B8%85%EF%BC%8C%E8%AF%86%E5%88%AB%E9%A3%8E%E9%99%A9%E7%82%B9"><span class="toc-text">利用Desk Check（DC）进行需求实现澄清，识别风险点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%85%E4%BA%8B%E5%8D%A1%E6%B5%8B%E8%AF%95"><span class="toc-text">故事卡测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8Showcase%E4%B8%8E%E4%BA%A7%E5%93%81%E5%92%8C%E4%B8%9A%E5%8A%A1%E8%BF%9B%E8%A1%8C%E6%BE%84%E6%B8%85%EF%BC%8C%E5%B9%B6%E8%BF%9B%E8%A1%8C%E5%88%9D%E6%AD%A5%E9%9B%86%E6%88%90%EF%BC%8C%E6%A3%80%E9%AA%8C%E8%B4%A8%E9%87%8F%E5%86%85%E5%BB%BA%E6%88%90%E6%9E%9C"><span class="toc-text">利用Showcase与产品和业务进行澄清，并进行初步集成，检验质量内建成果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E9%99%B7%E7%AE%A1%E7%90%86"><span class="toc-text">缺陷管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E9%A1%BE%E4%BC%9A%E8%AE%AE"><span class="toc-text">回顾会议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E7%9A%84%E6%A0%B8%E5%BF%83%EF%BC%9A%E5%A4%9A%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C"><span class="toc-text">大规模敏捷测试的核心：多团队协作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E4%BA%8B%E4%BB%B6%E5%9B%BA%E5%AE%9A%E6%97%B6%E9%97%B4%EF%BC%8C%E9%81%BF%E5%85%8D%E6%B5%AA%E8%B4%B9%E6%97%B6%E9%97%B4"><span class="toc-text">关键事件固定时间，避免浪费时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A7%E5%A6%99%E5%88%A9%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8F%8A%E6%97%B6%E4%BC%A0%E9%80%92%E4%BF%A1%E6%81%AF%EF%BC%8C%E6%8E%A8%E5%8A%A8%E4%BA%8B%E4%BB%B6%E6%B5%81%E8%BD%AC"><span class="toc-text">巧妙利用工具及时传递信息，推动事件流转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E5%B7%A5%E5%85%B7%E4%BF%9D%E6%8C%81%E5%AE%9E%E6%97%B6%E4%BF%A1%E6%81%AF%E9%80%8F%E6%98%8E"><span class="toc-text">利用即时通讯工具保持实时信息透明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%86%E5%88%86%E4%BE%9D%E8%B5%96%EF%BC%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E4%BE%9D%E8%B5%96%EF%BC%8C%E5%AF%B9%E9%BD%90%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-text">拆分依赖，可视化依赖，对齐优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E8%AF%81%E6%8D%AE%E7%95%99%E5%AD%98%EF%BC%8C%E4%B8%BA%E6%8E%A5%E5%8F%A3%E5%8F%98%E5%8A%A8%E5%81%9A%E5%87%86%E5%A4%87"><span class="toc-text">接口证据留存，为接口变动做准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QA%E9%A9%B1%E5%8A%A8%E8%B4%A8%E9%87%8F%E7%BB%B4%E5%BA%A6%E7%9A%84%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C"><span class="toc-text">QA驱动质量维度的团队协作</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">写在前面：该项目是某手机大厂CRM+ERP系统 0 - 1 的数字化转型中最重要的一个产品之一，需要拉通上下游30+系统，有上百名的同事与我们共同在一线战斗。我们将项目上的实践，遇到的问题，以及我们的辛酸苦辣落笔为大家眼前这些朴实的文字，希望这趟“绿皮车”之旅能够给大家带来在大规模项目中做敏捷测试的不一样体验，感受大规模0到1数字化转型中的QA的机遇与挑战。</span><br><span class="line">由于篇幅很长，将分成几个部分陆续介绍给大家。这一篇先介绍项目中敏捷测试的基础实践。</span><br></pre></td></tr></table></figure>
+
+<p>敏捷方法已经在我司实践落地多年，大多数的敏捷团队是由10位以内不同角色的人员组建。其中包括但不仅限于BA、QA、UX、PM、DEV等关键角色。我们通过成熟的方法论以及stand<br>up meeting、ipm、 ikm、kick off、desk<br>check、retro等各种逐渐“标准化“的敏捷活动，能够顺利地运行一个小规模的项目，但是当项目规模逐渐增大，项目成员人数逐渐增加，将整个大规模的团队拆分为多个小规模的敏捷小组后，由于组与组之间的业务交互频繁，组内以及组间的各种沟通交流就会让原本快捷有效的敏捷活动变得臃肿。尤其对于测试来说，小规模的项目中一般配有一到两名QA，负责所有功能模块的测试工作。但大规模的项目中，QA不仅要关注本组内的功能，同时要考虑组与组间的存在关联功能的测试。那么如何在高节奏的迭代中，进行大规模敏捷测试呢？那就通过在某手机大厂的数字化转型产品的测试经历来和大家一起分享一下我的看法和感悟吧。</p>
+<h2 id="一、大规模敏捷测试的基础：良好的敏捷实践"><a href="#一、大规模敏捷测试的基础：良好的敏捷实践" class="headerlink" title="一、大规模敏捷测试的基础：良好的敏捷实践"></a>一、大规模敏捷测试的基础：良好的敏捷实践</h2><p>大规模敏捷测试的基础是每个小组能够贯彻执行良好的敏捷实践，保障每个模块的高质量交付，才能获得最终的高质量产品。而在这基础敏捷实践中，QA始终扮演着质量推动者的角色，在每个环节中不断补充团队的质量视角，保障每个小环节的交付质量，形成层层质量防护网。</p>
+<p>大规模项目中，需要统一实施原则和节奏，定义主要的活动和规范。该项目采用的两周一个迭代的方式，主要的活动包括：IKM，站会，开卡，DC，Showcase，回顾会等。每个活动中QA究竟如何补充质量视角呢？<br><img src="/assets/images/32.png"></p>
+<h3 id="利用IKM进行需求澄清，保障质量需求被识别"><a href="#利用IKM进行需求澄清，保障质量需求被识别" class="headerlink" title="利用IKM进行需求澄清，保障质量需求被识别"></a>利用IKM进行需求澄清，保障质量需求被识别</h3><p>每个迭代刚刚开始的时候会进行IKM，IKM阶段BA澄清需求，团队成员对齐理解，各自根据自己的视角提问，BA会对本迭代目标进行的澄清。<br>这里QA一定要参与到IKM中来，如果精力足够最好是能够在IKM之前就预先熟悉需求，检查验收标准，并从全局质量的视角提出问题。常见的问题包括是否考虑到Edge<br>case，异常场景，和其他模块的一致性，性能，安全，第三方接口确认等。如果QA准备充足，甚至可以对解决方案，架构等都提出质量相关质疑。</p>
+<h3 id="利用开卡进行验证点澄清，保障需求与开发理解一致"><a href="#利用开卡进行验证点澄清，保障需求与开发理解一致" class="headerlink" title="利用开卡进行验证点澄清，保障需求与开发理解一致"></a>利用开卡进行验证点澄清，保障需求与开发理解一致</h3><p>开卡阶段由开卡的dev来drive，BA、QA参与。Dev说明自己对AC的理解和提问，澄清一些细节以及边界。保证大家理解的一致性。QA除了可以一起完善、澄清AC外，也可以根据DC场景给出输入，列一下比较重要的场景和check<br>point，这样开发可以在做完卡自测的更加充分，也可以DC前提前准备好测试场景和数据。Dev在做卡的时候，会根据要实现的功能列tasking，这样梳理清晰开发思路的同时也能让其他角色更了解故事卡的实现细节。</p>
+<h3 id="利用站会对齐关键质量信息"><a href="#利用站会对齐关键质量信息" class="headerlink" title="利用站会对齐关键质量信息"></a>利用站会对齐关键质量信息</h3><p>站会是敏捷实践中的典型活动，每天固定时间15分钟，大家进行一个站会沟通。但是在实施中，不同的团队却有不同的方式。有的团队是以人为视角，每个人去更新自己昨天做了什么，今天要做什么，有什么困难和阻碍。可是这样的方式聚焦在个人身上，无法形成全景图。更新完之后大家对于整体的进度和问题对全局的影响并没有一个清晰的认识。后来团队尝试了以板子内容为中心，对不同状态的卡片从右往左更新。之后再更新板子之外的事情，以及一些共性需要全体注意的问题。这种方式不仅效率提高，大家对于整个迭代都有了全局视角，如果在第二周有很多将要积压的ready<br>for QA的卡片，大家会迅速达成共识，帮助尽快完成。<br>QA要利用站会的机会引导大家的质量意识，比如一些普遍的质量问题，一些严重的质量问题以及质量风险都可以通过站会传递这些关键信息，强化团队的质量意识。</p>
+<h3 id="推动开发质量内建"><a href="#推动开发质量内建" class="headerlink" title="推动开发质量内建"></a>推动开发质量内建</h3><p>质量内建是我司的特色，也是质量保障的重要手段。在巨大的客户进度压力下，我们开发小伙伴还是保持了单元测试甚至一部分接口测试的实践，覆盖率达到60%-80%，为代码的质量增加了一层结实的防护网。同时每天固定时间的Code<br>Review也是非常好的一个实践，不仅可以对代码进行一个团队评审，同时也是一个培训新人，不断强化代码规范的环节。<br>QA如果有时间有精力参与代码评审，是个很好理解和学习代码的机会，这将有助于QA更精准地评估质量风险。但是大多时候QA角色任务繁重，很难有带宽参与到这个活动中。</p>
+<h3 id="利用Desk-Check（DC）进行需求实现澄清，识别风险点"><a href="#利用Desk-Check（DC）进行需求实现澄清，识别风险点" class="headerlink" title="利用Desk Check（DC）进行需求实现澄清，识别风险点"></a>利用Desk Check（DC）进行需求实现澄清，识别风险点</h3><p>Desk<br>Check也是开发发起，BA和QA参与。DC的时候会重新过AC，如果有额外场景需要演示也可以直接进行演示。这个过程中QA会对实现方案以及风险点有一个更深入的了解。在DC时，QA也要引导性的问一些问题，挖掘实现方案和代码变动对其他功能的影响、一些交叉功能点的风险情况、以及对其他模块和产品的依赖和影响，从而为后续测试找寻到合适的方向。</p>
+<h3 id="故事卡测试"><a href="#故事卡测试" class="headerlink" title="故事卡测试"></a>故事卡测试</h3><p>DC结束后，QA会进行故事卡的测试，故事卡测试一般采用根据AC验证加探索性测试的形式。QA需要在开卡结束到DC的过程中根据故事卡的AC、边缘场景以及自己对业务上下文的理解进行用例的编写。DC结束后QA要根据优先级以及业务的关联性对故事卡进行功能测试，此外，还需进行必要的探索性测试，若在测试过程中，发现存在不能进行测试的集成测试场景，要记录下来，在后续集成测试阶段完成相关场景的测试。</p>
+<h3 id="利用Showcase与产品和业务进行澄清，并进行初步集成，检验质量内建成果"><a href="#利用Showcase与产品和业务进行澄清，并进行初步集成，检验质量内建成果" class="headerlink" title="利用Showcase与产品和业务进行澄清，并进行初步集成，检验质量内建成果"></a>利用Showcase与产品和业务进行澄清，并进行初步集成，检验质量内建成果</h3><p>在大规模的项目中，Showcase是个非常重要的环节。在关键结点上，对完成的关键功能进行Showcase，一方面可以极大地增加客户的信心，他们可以真切地感受到阶段性的成果，同时还可以收集到一线业务用户的反馈，便于我们进行及时的调整。我们的Showcase会分为迭代内的showcase和milestone的showcase两种，迭代内的showcase，更注重细节和业务逻辑，从用户侧获得反馈；Milestone阶段的showcase，主要是面向客户的领导层，更注重业务价值和系统逻辑和实际业务的贴合度。不管是哪种类型的showcase，都要注意收集反馈，对有价值的修改和理解不一致的业务进行研究讨论，改进系统功能，让其能更贴合业务，产生更大的价值。</p>
+<p>从质量的维度来说，Showcase可以更早的进行和其他模块的初集成，即使是为了跑通一个最基础的场景，也需要经历打包，初始化环境，部署，配置，初始化数据等环节。当初为了第一个showcase，部署SIT环境花了两周的时间，经历的各种问题还历历在目。但是它却为开发提供了宝贵的可视化反馈，让开发意识到配置管理（包括环境配置和参数配置）的重要性，接口设计的合理性等等，可以在后续开发中不断地改进，为后续的持续集成打下一个坚实的基础。</p>
+<h3 id="缺陷管理"><a href="#缺陷管理" class="headerlink" title="缺陷管理"></a>缺陷管理</h3><p>这里想提一下缺陷管理。缺陷管理针对测试过程中发现的问题，使用缺陷管理工具，进行统一规范管理。其实敏捷中，很多团队都放弃了缺陷的记录。因为团队小，直接给开发一说，就修复了，会觉得记录缺陷是个浪费。但是在大规模的敏捷测试中，我们还是建议团队对缺陷进行规范的管理，在后期集成测试时，牵扯到多个模块和产品，更需要通过对缺陷的洞察，不断地调整测试策略和方向。在缺陷报告中必填信息包括不仅限于：缺陷的严重程度，修复优先级，发现阶段，指派给相关开发，复现步骤，缺陷当前状态，缺陷类型以及发生的原因。同时这个项目中客户对于缺陷修复时长也做了一定的要求。比如阻塞缺陷要求当天修复，严重要求24小时修复等。但是也不太建议要求太死，毕竟这样的度量就是你要求什么就会得到什么。很多时候为了避免缺陷延期，就把严重的降级为普通的，反而使缺陷记录失真，无法为后续测试提高真实的数据参考。<br>规范化的缺陷管理，能促进团队各角色成员的参与和关注度，能有效地推进缺陷的修复，能明晰的反馈出各迭代缺陷的实时动态，能为后续缺陷分析和开发质量的提升提供佐证和指明方向。我们在后期集成阶段，每日站会上通过缺陷来进行集成中发现问题的各种信息交流，有效地促进了问题的解决。同时也通过对缺陷的分析加强了同类问题的预防。</p>
+<h3 id="回顾会议"><a href="#回顾会议" class="headerlink" title="回顾会议"></a>回顾会议</h3><p>回归会议是非常重要的一个环节，它不仅可以让大家对过去一个迭代进行回顾，及时调整策略，更重要的是它提供了一个机会或者说平台，让大家可以参与如何改进的意见，是赋予团队每个成员主人翁意识的绝佳时机，尤其对于平时话语权不多的QA同学，更是一个不可多得的窗口来引导大家的质量意识。可惜很多团队并没有抓住这样的一个机会。要么因为时间紧，任务重就跳过了这个环节，要么是走形式，并没有做到真正的思考。即使是有回顾会议，测试人员如果没有做准备，将质量通过数据，事件等回归的方式慢慢渗透，也很难利用这个机会。<br>可惜的是这个项目中回顾会议并没有执行的很到位。</p>
+<p>一点感悟：除了我们TW的团队，客户自己也有团队在同步开发其他的模块。虽然他们和我们一样采用两周一个迭代的节奏，但是他们还是比较原始的瀑布模式，迭代所有功能开发完成再交给测试去测，缺乏需求澄清，开卡结卡这些不断对齐需求的过程，我们经常听到客户的QA抱怨开发根本没有理解需求就进行开发，导致很多返工。同时开发因为能力和带宽问题，不愿意做单元测试，没有质量内建意识，结果也是可想而知，他们开发的模块发现的问题是我们的2-3倍之多，更是经常改一个问题引入两个问题。虽然开发不断地加班，修bug速度惊人（曾经从中午到第二天早晨关掉39个bug），但却只能让系统越来越脆弱，甚至在后期集成中爆发更多的问题。</p>
+<h2 id="大规模敏捷测试的核心：多团队协作"><a href="#大规模敏捷测试的核心：多团队协作" class="headerlink" title="大规模敏捷测试的核心：多团队协作"></a>大规模敏捷测试的核心：多团队协作</h2><p>一个小的团队进行敏捷测试实践是比较可控的，QA很容易获得全局观，把控质量全景。然而当产品规模和团队规模大到一定程度，即使没有那么复杂的架构，单是团队之间的协作都要面临诸多的挑战。大规模敏捷最大的问题就是不同团队之间的协作。疫情影响以及成本的压力，导致团队成员分布在多地，远程的合作变成常态。如何避免远程合作带来的不便，仍旧进行充分，高效地沟通呢？</p>
+<h3 id="关键事件固定时间，避免浪费时间"><a href="#关键事件固定时间，避免浪费时间" class="headerlink" title="关键事件固定时间，避免浪费时间"></a>关键事件固定时间，避免浪费时间</h3><p>固定时间进行开结卡，对应的角色BA、QA会预留开结卡时间，避免时间冲突约不到人导致的团队空转情况。</p>
+<h3 id="巧妙利用工具及时传递信息，推动事件流转"><a href="#巧妙利用工具及时传递信息，推动事件流转" class="headerlink" title="巧妙利用工具及时传递信息，推动事件流转"></a>巧妙利用工具及时传递信息，推动事件流转</h3><p>很多时候由于远程，我们很难面对面或者电话实时沟通，即时信息工具又会导致信息刷屏，各种信息交织。那怎么能及时地传递关于某一个方面的信息和意见呢？我们可以巧妙地利用工具。<br>每次沟通的结果只要影响到其他成员或者角色，都会在对应的故事卡上comment进行记录。QA分诊，做到信息充分，避免多次沟通。对于QA来讲，远程带来的沟通成本要求对发现的问题做出更明确的分诊，描述缺陷的时候要带有场景，在什么前提下，进行什么操作，发生了什么现象，接口有没有对应的正确的或者错误的返回值，有日志的话给出日志截图，分派给对应故事卡的前端或后端。</p>
+<h3 id="利用即时通讯工具保持实时信息透明"><a href="#利用即时通讯工具保持实时信息透明" class="headerlink" title="利用即时通讯工具保持实时信息透明"></a>利用即时通讯工具保持实时信息透明</h3><p>多个QA协作，共用服务部署可能造成环境不稳定，这时就需要实时的信息沟通。<br>项目采用微服务架构，不同的组负责维护不同的服务。当改动涉及到公共服务的时候，会有比较大范围的影响。所以不能各自为营，需要各个组的QA进行透明的信息管理，当部署公共服务的时候需要提前在信息群中进行通知。对公共服务提供的接口要有清晰的了解，这样在测试过程能够快速定位问题，同时也能及时通过CI的状态排除一些由于环境问题引起的缺陷。</p>
+<h3 id="拆分依赖，可视化依赖，对齐优先级"><a href="#拆分依赖，可视化依赖，对齐优先级" class="headerlink" title="拆分依赖，可视化依赖，对齐优先级"></a>拆分依赖，可视化依赖，对齐优先级</h3><p>项目规模大，会有很多业务与其他模块的业务存在交集，功能存在交互。每个团队都有自己负责的模块，不同小组的开发进度和优先级不同，这会导致小组之间存在功能或数据层面的相互依赖，进而引发对开发、测试活动造成一定程度的block，这时候要BA&#x2F;PM&#x2F;TL与相关团队协调进度或者考虑使用mock的方式跳过，并建立联调卡显示化依赖，并和各个模块对齐优先级，待对应的模块ready后进行联调。联调之前需要尽量列举联调测试需要的场景，等双方都开发完成后，及时进行系统内部的联调，测试通过后，后续再有调整且会影响到其他模块的要及时同步，保证业务流的连贯性</p>
+<h3 id="接口证据留存，为接口变动做准备"><a href="#接口证据留存，为接口变动做准备" class="headerlink" title="接口证据留存，为接口变动做准备"></a>接口证据留存，为接口变动做准备</h3><p>因为所在的项目是0-1的整体数字化转型，牵扯到多达十几个产品一起上线，和第三方系统联系极为紧密，很多集成的接口需要和其他系统的人对接，经过反复讨论才定义下来。这种情况下一定要将对齐的结果以文字或者邮件形式保留，即使是平台上有信息，也要额外备份，保证在后续有接口变动的时候有迹可循。否则在后续集成拉通过程中，接口的变化将带来巨大的成本和质量的风险。</p>
+<h3 id="QA驱动质量维度的团队协作"><a href="#QA驱动质量维度的团队协作" class="headerlink" title="QA驱动质量维度的团队协作"></a>QA驱动质量维度的团队协作</h3><p>作为团队中的质量守护者，QA需要及时把控迭代进度，以免测试时间被挤压。而当测试完成度存在风险的时候要及时跟团队寻求帮助，协调资源。平时在各个环境中IKM，开卡结卡，Showcase时，将质量理念通过问题的形式不断地给团队小伙伴宣讲，提高团队的质量意识。当团队中其他小伙伴有带宽支持测试的时候，可以更容易地上手。QA可以将测试用例作为输入，测试点作为参考给到团队成员。同时根据不同人对不同业务的理解合理的安排工作，最大化的利用资源完成测试。</p>
+<p>一点感悟：在大规模项目中团队内部以及团队间的协作是非常有挑战的，既要有统一的目标，规范，原则，又要满足不同团队的不同情况，风格和文化。以上只是我在执行过程中的一些小的实践，可以针对不同的团队风格进行不同的调整。最关键的是团队协作一定要先统一目标，再符合规范，最后才是个性化的实践。目标如果不能统一，规范不能符合，即使小团队效率很高，也会为后期的集成埋下隐患。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">写在后面：这个分享取名叫绿皮车之旅，一方面这是一趟有趣的旅程，这么大规模0-1数字化转型也不太常见，参与其中有欢乐也有汗水，借此分享给大家，希望你能读到一些不一样的感悟。另一方面绿皮车也是比较原始的列车，这个项目中客户还处在比较原始的阶段，即使我们有很多很好的很优秀的实践，但是不见得就适合这个阶段的旅程，所以如果你读到了比较基础且常见的部分，也希望能够理解在当下所采用的策略。当然，这趟旅程一定有很多很多可以改进和提高的地方，如果大家有兴趣也希望来一起讨论优化。比如自动化，比如测试策略，比如...</span><br><span class="line">欢迎大家加入。</span><br></pre></td></tr></table></figure>
+
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 350394277@qq.com </span>
+    </div>
+</article>
+
+<!--  -->
+<!-- <p> -->
+<!--     <a  class="dashang" onclick="dashangToggle()">donation.button</a> -->
+<!-- </p> -->
+<!--  -->
+
+<div class="article_copyright">
+    <p><span class="copy-title">Title:</span>大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇</p>
+    <p><span class="copy-title">Count:</span><span class="post-count">5.2k</span></p>
+    <p><span class="copy-title">Author:</span><a  title="Yunlong Wen">Yunlong Wen</a></p>
+    <p><span class="copy-title">Created At:</span>2023-12-17, 14:18:27</p>
+    <p><span class="copy-title">Updated At:</span>2023-12-17, 14:18:27</p>
+<!--     <span class="copy-title">post.url:</span><a class="post-url" href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A1/" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇">http://github.100kwhy.cn/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A1/</a> -->
+<!--     <p> -->
+<!--         <span class="copy-title">post.copyright:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">post.copyright1</a> post.copyright2 -->
+<!--     </p> -->
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><span class="miit">
+                <img src="/img/gov.png" title="中华人民共和国工业和信息化部">
+                <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/">陕ICP备2023006299号</a>
+        </span>
+    
+    ©2016-2023 Yunlong
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>donation.headline</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">donation.alipay</label></span><span><label><input type="radio" name="pay" value="weixin">donation.weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

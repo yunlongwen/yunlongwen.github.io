@@ -1,0 +1,1435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>AOSP 源码文件结构</title>
+    <url>/2023/12/17/Android/aosp/2023-0719-aosp/</url>
+    <content><![CDATA[<h2 id="源码结构"><a href="#源码结构" class="headerlink" title="源码结构"></a>源码结构</h2><p>以源码 <a href="https://android.googlesource.com/platform/packages/services/Car/+/refs/heads/android13-release">android13-release</a> 分支为例:</p>
+<ul>
+<li>Android.bp -&gt; build&#x2F;soong&#x2F;root.bp</li>
+<li>art&#x2F; Android ART虚拟机相关实现(替代dalvik虚拟机):虚拟机、运行库、dex2oat等工具、模拟器等。这个会提前把字节码编译成二进制机器码保存起来,执行的时候加载速度比较快。Dalvik虚拟机则是在加载以后再去编译的,所以速度上ART会比Dalvik快一点。牺牲空间来赢取时间。</li>
+<li>bionic&#x2F; 谷歌为android重新实现的C语言函数库,Android系统与Linux内核的桥梁。</li>
+<li>bootable&#x2F; 系统启动引导相关程序。bootloader 的实现,各厂家会有自己的版本,例如 MTK&#x2F;MST 所用名为 Mboot bootloader。 </li>
+<li>bootstrap.bash -&gt; build&#x2F;soong&#x2F;bootstrap.bash*</li>
+<li>build&#x2F; AOSP源码编译相关:系统make编译规则、blueprint、kati、soong,以及envsetup.sh等配置及工具。用于构建 Android 系统的工具,也就是用于编译 Android 系统的。 </li>
+<li>BUILD -&gt; build&#x2F;bazel&#x2F;bazel.BUILD </li>
+<li>.ccls-cache&#x2F; </li>
+<li>cts&#x2F; Android 兼容性测试套件 </li>
+<li>dalvik&#x2F; dalvik虚拟机,用于解析执行dex文件的虚拟机 </li>
+<li>developers&#x2F; 提供给Android开发者的一些样例,可以导入到AS中编译 </li>
+<li>development&#x2F; 同developers类似,提供一些样例、工具 </li>
+<li>device&#x2F; 和具体设备相关的配置、文件、及修改,各厂家会放入里面响应目录 </li>
+<li>device&#x2F;vendor_name&#x2F;product_name。 </li>
+<li>external&#x2F; Android使用的一些开源的功能模块 </li>
+<li>frameworks&#x2F; 系统架构,Android核心框架 </li>
+<li>hardware&#x2F; 部分厂家开源的硬解适配层 HAL 代码,硬件抽象层。添加自定义属性位置<ul>
+<li>interfaces&#x2F;automotive&#x2F;vehicle&#x2F;<ul>
+<li>2.0&#x2F; HIDL 实现 </li>
+<li>aidl&#x2F; AIDL 实现 <ul>
+<li>Android.bp </li>
+<li>impl&#x2F; </li>
+<li>Android.bp </li>
+<li>default_config&#x2F;include&#x2F; <ul>
+<li>DefaultConfig.h</li>
+</ul>
+</li>
+<li>VehicleProperty.aidl</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>kernel&#x2F; Linux kernel 源码 </li>
+<li>libcore&#x2F; java核心库 包括java api的源码 </li>
+<li>libnativehelper&#x2F; native帮助库,实现JNI的相关文件。支持Android类库,但与android.*无关,与VM无关的本机函数,用于实现系统的方法类库,以C实现。 </li>
+<li>Makefile 这个不是目录,include build&#x2F;make&#x2F;core&#x2F;main.mk,核心编译规则 </li>
+<li>out&#x2F; 输出目录,编译AOSP时候产生的临时目录。临时文件和 最后生成的ROM镜像 都存放在里面 <ul>
+<li>target&#x2F;product&#x2F; <ul>
+<li>emulator64_arm64 <ul>
+<li>sdk-repo-linux-system-images-eng.tw-iot.zip 生成的系统镜像压缩包</li>
+</ul>
+</li>
+<li>emulator_car_x86_64</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>output.log </li>
+<li>packages&#x2F; 应用程序包,一些系统的应用就在这里了,比如说蓝牙,Launcher,相机,拨号,settings之类的。供⻋机 app使用的 carlib,CarService 相关接口,调用 HAL 自定义属性,自定义权限修改位置。 <ul>
+<li>services&#x2F;Car&#x2F; <ul>
+<li>apex_car_framework&#x2F; <ul>
+<li>Android.bp</li>
+</ul>
+</li>
+<li>car-lib&#x2F;src&#x2F;android&#x2F;car&#x2F; <ul>
+<li>Car.java</li>
+<li>VehiclePropertyIds.java </li>
+<li>internal&#x2F; </li>
+<li>PropertyPermissionMapping.java</li>
+</ul>
+</li>
+<li>cpp&#x2F;vhal&#x2F;client&#x2F;<br>  Android.bp</li>
+<li>service&#x2F; <ul>
+<li>Android.bp </li>
+<li>AndroidManifest.xml </li>
+<li>src&#x2F;com&#x2F;android&#x2F;car&#x2F;hal&#x2F; <ul>
+<li>PropertyHalServiceIds.java</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>pdk&#x2F; PDK工具和测试代码的存放处,PDK套件用于帮助厂家适配新版本,完成HAL的开发</li>
+<li>platform_testing&#x2F; 平台测试,为andorid 平台开发人员提供的测试及指导</li>
+<li>prebuilts&#x2F; Android预编译的一些工具,如build-tools、qemu模拟器、gdb、gcc、sdk&#x2F;ndk库等</li>
+<li>.repo&#x2F; 代码仓库配置</li>
+<li>sdk&#x2F; Android SDK</li>
+<li>system&#x2F; Android底层文件系统库、应用和组件</li>
+<li>test&#x2F; VTS 测试套件 </li>
+<li>toolchain&#x2F; 存放编译工具链 </li>
+<li>tools&#x2F; Android工具文件 </li>
+<li>vendor&#x2F; 存放各厂家自己定制的文件、实现,如app、配置、新增api、库等 </li>
+<li>WORKSPACE -&gt; build&#x2F;bazel&#x2F;bazel.WORKSPACE</li>
+</ul>
+<h2 id="源码查询工具"><a href="#源码查询工具" class="headerlink" title="源码查询工具"></a>源码查询工具</h2><p><a href="https://cs.android.com/android/platform/superproject/+/android13-release:packages/">官方在线查询工具</a></p>
+]]></content>
+      <categories>
+        <category>安卓</category>
+        <category>aosp</category>
+      </categories>
+      <tags>
+        <tag>aosp</tag>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>下载编译源代码</title>
+    <url>/2023/12/17/Android/aosp/2023-0721-download-compiled/</url>
+    <content><![CDATA[<h2 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h2><h3 id="初始化Manifest"><a href="#初始化Manifest" class="headerlink" title="初始化Manifest"></a>初始化Manifest</h3><p>repo init –depth&#x3D;1 -u <a href="https://android.googlesource.com/platform/manifest">https://android.googlesource.com/platform/manifest</a> -b android13-release<br>镜像使用：将 <a href="https://android.googlesource.com/">https://android.googlesource.com/</a> 全部使用 <a href="https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/">https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/</a> 代替即可。</p>
+<p>repo init –depth&#x3D;1 -u <a href="https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest">https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest</a> -b android13-release</p>
+<table>
+<thead>
+<tr>
+<th>-b</th>
+<th>指定下载分支为android13-release</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–depth&#x3D;1</td>
+<td>只下载最新的提交，不下载历史记录，会加速很多</td>
+</tr>
+</tbody></table>
+<p>此Manifest非彼Manifest,他是用来描述Repo的目录结构的,它显式的描述每一个工程是从哪个代<br>码仓库来的,是哪个分支,哪个Tag。它在$DIR&#x2F;.repo目录下存在一个default.xml,里面就是这个manifest文件。我们在$DIR&#x2F;.repo&#x2F;local_manifests&#x2F;*<br>.xml创建本地文件,里面配置修改的工程。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;manifest&gt;</span><br><span class="line">    &lt;project path=&quot;manifest&quot; name=&quot;tools/manifest&quot; /&gt;</span><br><span class="line">    &lt;project path=&quot;platform-manifest&quot; name=&quot;platform/manifest&quot; /&gt;</span><br><span class="line">&lt;/manifest&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="同步源代码"><a href="#同步源代码" class="headerlink" title="同步源代码"></a>同步源代码</h3><p>使用命令行将仓库的代码下载到本地：<br>repo sync -c –no-clone-bundle –no-tags -j8<br>参数说明</p>
+<table>
+<thead>
+<tr>
+<th>-c</th>
+<th>使用当前分支，不下载其他分支源代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–no-clone-bundle</td>
+<td>不下载bundle的文件</td>
+</tr>
+<tr>
+<td>–no-tags</td>
+<td>不下载tags</td>
+</tr>
+<tr>
+<td>-j8</td>
+<td>使用8个线程进行下载</td>
+</tr>
+</tbody></table>
+<h2 id="编译源代码"><a href="#编译源代码" class="headerlink" title="编译源代码"></a>编译源代码</h2><p>在完成源代码下载之后，需要进行源代码的编译工作，产生重要的镜像文件(Image)</p>
+<h3 id="设置编译环境"><a href="#设置编译环境" class="headerlink" title="设置编译环境"></a>设置编译环境</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">source build/envsetup.sh</span><br></pre></td></tr></table></figure>
+
+<p>每次启动 terminal 的时候都需要重新设置编译环境,否则会出现找不到文件路径和命令的情况。</p>
+<h3 id="选择编译目标"><a href="#选择编译目标" class="headerlink" title="选择编译目标"></a>选择编译目标</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lunch</span><br></pre></td></tr></table></figure>
+
+<p>选择适配的目标构建版本（开发板或者模拟器），所有构建目标都采用 BUILD-BUILDTYPE 形式，其中 BUILD 是表示特定功能组合的代号。BUILDTYPE<br>是以下类型之一：</p>
+<table>
+<thead>
+<tr>
+<th>构建类型</th>
+<th>使用情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user</td>
+<td>权限受限；适用于生产环境</td>
+</tr>
+<tr>
+<td>userdebug</td>
+<td>与“user”类似，但具有 root 权限和调试功能；是进行调试时的首选编译类型</td>
+</tr>
+<tr>
+<td>eng</td>
+<td>具有额外调试工具的开发配置</td>
+</tr>
+</tbody></table>
+<p>根据我们的模拟器环境,选择x86(Intel芯片的mac)或者 arm(m系列的mac)的系统镜像。<br>备注：⻋机模拟器运行类型以“sdk_car_”开头</p>
+<h3 id="编译代码"><a href="#编译代码" class="headerlink" title="编译代码"></a>编译代码</h3><p>使用envsetup脚本中提供的编译命令，来进行系统镜像的编译</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">m -j8</span><br></pre></td></tr></table></figure>
+
+<p>参数说明</p>
+<table>
+<thead>
+<tr>
+<th>-j8</th>
+<th>使用8个线程进行下载</th>
+</tr>
+</thead>
+</table>
+<p>可以通过在 m 命令行中列出相应名称来构建特定模块，而不是构建完整的设备映像。此外，m 还针对各种特殊目的提供了一些伪目标。以下是一些示例：</p>
+<ul>
+<li>droid - m droid 是正常 build。此目标在此处，因为默认目标需要名称。</li>
+<li>all - m all 会构建 m droid 构建的所有内容，加上不包含 droid 标记的所有内容。构建服务器会运行此命令，以确保包含在树中且包含</li>
+<li>Android.mk 文件的所有元素都会构建。</li>
+<li>m - 从树的顶部运行构建系统。这很有用，因为您可以在子目录中运行 make。如果您设置了 TOP<br>环境变量，它便会使用此变量。如果您未设置此变量，它便会从当前目录中查找相应的树，以尝试找到树的顶层。您可以通过运行不包含参数的<br>m 来构建整个源代码树，也可以通过指定相应名称来构建特定目标。</li>
+<li>mma - 构建当前目录中的所有模块及其依赖项。</li>
+<li>mmma - 构建提供的目录中的所有模块及其依赖项。</li>
+<li>croot - cd 到树顶部。</li>
+<li>clean - m clean 会删除此配置的所有输出和中间文件。此内容与 rm -rf out&#x2F; 相同。<br>说明：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">make/m</span><br></pre></td></tr></table></figure>
+
+<p>该命令会编译所有的代码。我们可以通过添加参数-jN来并发加速执行,这将极大加速我们编译系统速度。<br>第一次编译如果是-j12的话,时间大概是6小时,如果默认的话,时间会变成12小时。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mm/mmm</span><br></pre></td></tr></table></figure>
+
+<p>如果每次的编译都要等待6个小时,那么我们的工作就很难开展。Android系统支持增量编译，还支持独立编译Module。mm命令就提供我们一种可能性,它编译当前目录下的所有模块。以services.jar为例，mm编译的时间在10分钟，可以极大的提高我们的开发效率。</p>
+<h3 id="修改源代码"><a href="#修改源代码" class="headerlink" title="修改源代码"></a>修改源代码</h3><p>官方给我们提供了很多快捷指令来帮助我们修改更新源代码，关于修改验证会在后续的章节详细介绍，这里不做过多的讲解。以下罗列一些常见的指令：</p>
+<ul>
+<li>croot 快速切换回源代码根目录</li>
+<li>cgrep 在本地所有的C&#x2F;C++文件中寻找内容</li>
+<li>jgrep 在本地所有的Java文件中寻找内容</li>
+</ul>
+<h3 id="编译产生物"><a href="#编译产生物" class="headerlink" title="编译产生物"></a>编译产生物</h3><h4 id="编译镜像"><a href="#编译镜像" class="headerlink" title="编译镜像"></a>编译镜像</h4><p>编译完成后,会产生编译好的镜像。位于以下目录中：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$DIR/out/target/product/$Lunch_Target/</span><br></pre></td></tr></table></figure>
+
+<p>这里面有两个镜像非常重要，一个是Boot.img，另一个是System.img</p>
+<table>
+<thead>
+<tr>
+<th>- Boot.img</th>
+<th>主要包含Linux kernel以及Ramdisk根文件系统</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>- System.img</td>
+<td>包含整个Android系统,&#x2F;system目录的内容,包含系统应用,Android框架等等</td>
+</tr>
+<tr>
+<td>- Userdata.img</td>
+<td>包含了用户安装的应用信息跟数据,在&#x2F;data目录</td>
+</tr>
+</tbody></table>
+<h4 id="系统常用jar包路径"><a href="#系统常用jar包路径" class="headerlink" title="系统常用jar包路径"></a>系统常用jar包路径</h4><p>当需要进行系统应用或者服务开发时，有一些API是内部internel级别或者hide级别，需要我们引入AOSP的原生jar包来解决。</p>
+<p>如何找到对应目录的jar包？</p>
+<ul>
+<li>在AOSP根目录下通过<code>find -name “*xxx*</code>查找到所有路径</li>
+<li>在Android13后，应该在这个路径下进行挑选：<code>./out/soong/.intermediates/packages/…/android_common/**</code><br>或者<code>out/target/common/obj/JAVA_LIBRARIES/</code>目录下寻找。</li>
+</ul>
+<p>出现多个不同地址jar包如何选择？<br>这些jar包会出现在多个路径中，例如：’withres-withoutdex&#x2F;’, ‘aligned&#x2F;’, ‘dex&#x2F;’,’turbine-combined&#x2F;’, ‘turbine&#x2F;’, ‘javac&#x2F;‘等等：</p>
+<ul>
+<li>withres-withoutdex: 这个目录下的JAR文件包含了所有的.class文件和资源文件，但没有被打包成dex格式。</li>
+<li>aligned: 这个目录下的JAR文件包含了所有的.class文件和资源文件，并且已经被对齐和压缩过。</li>
+<li>dex: 这个目录下的JAR文件是一个标准的dex文件，里面包含了所有的.class文件。</li>
+<li>turbine-combined: 这个目录下的JAR文件包含了用于编译Java代码的Turbine编译器生成的代码。</li>
+<li>turbine: 这个目录下的JAR文件包含了Turbine编译器生成的代码，但是这些代码没有被合并成单个文件。</li>
+<li>javac: 这个目录下的JAR文件包含了用于编译Java代码的Javac编译器生成的代码。<br>注意：如果需要引入jar包参与编译，不能选择turbine或者turbine-combined的jar包，否则会遇到desugar异常。</li>
+</ul>
+<p>下面罗列一些常见的<a href="https://drive.google.com/drive/folders/13U4WTmeYd48nqe0aC_LGuOagPwcggdpZ?usp=sharing">jar包地址</a>：<br>Framework.jar<br><del>AOSP&#x2F;out&#x2F;soong&#x2F;.intermediates&#x2F;frameworks&#x2F;base&#x2F;framework-minus-apex&#x2F;android_common&#x2F;combined&#x2F;framework-minus-apex.jar<br>注意：这个framework.jar不能从</del>AOSP&#x2F;out&#x2F;target&#x2F;product&#x2F;emulator_car_x86_64&#x2F;system&#x2F;framework&#x2F;framework.jar，这里面的jar包不全，缺少东西</p>
+<p>Framework-bluetooth.jar<br>~AOSP&#x2F;out&#x2F;target&#x2F;common&#x2F;obj&#x2F;JAVA_LIBRARIES&#x2F;framework-bluetooth.com.android.btservices_intermediates&#x2F;classes.jar</p>
+<p>Framework-wifi.jar<br>~AOSP&#x2F;out&#x2F;target&#x2F;common&#x2F;obj&#x2F;JAVA_LIBRARIES&#x2F;framework-wifi.com.android.wifi_intermediates&#x2F;classes.jar</p>
+<p>Car-lib.jar<br>~<br>AOSP&#x2F;out&#x2F;soong&#x2F;.intermediates&#x2F;packages&#x2F;services&#x2F;Car&#x2F;car-lib&#x2F;android.car&#x2F;android_common&#x2F;withres-withoutdex&#x2F;android.car.jar</p>
+<p>Core-libart.jar<br>~AOSP&#x2F;out&#x2F;soong&#x2F;.intermediates&#x2F;libcore&#x2F;core-libart&#x2F;android_common_apex31&#x2F;withres-withoutdex&#x2F;core-libart.jar</p>
+]]></content>
+      <categories>
+        <category>安卓</category>
+        <category>aosp</category>
+      </categories>
+      <tags>
+        <tag>aosp</tag>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo怎么避免README文件以及CNAME文件的覆盖</title>
+    <url>/2023/12/17/%E5%B7%A5%E5%85%B7/Hexo/cname/</url>
+    <content><![CDATA[<h1 id="避免README-md文件的覆盖"><a href="#避免README-md文件的覆盖" class="headerlink" title="避免README.md文件的覆盖"></a>避免README.md文件的覆盖</h1><p>因为Github的版本库一般都会附上README.md的说明，但是Hexo默认会把所有的md文件解析成html文件，所以即使编写了README.md文件，也会在下一次部署博客时被删去。</p>
+<p>解决方法：</p>
+<p>在博客文件夹的根目录下的配置文件_config.yml中配置一下<code>skip_render</code>选项，如下所以：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">skip_render: README.md</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以确保README.md文件不被渲染了。</p>
+<h1 id="避免CNAME文件被删除的四种方法"><a href="#避免CNAME文件被删除的四种方法" class="headerlink" title="避免CNAME文件被删除的四种方法"></a>避免CNAME文件被删除的四种方法</h1><ul>
+<li><p>每次<code>hexo d</code>之后，都重新去Github仓库目录下新建CNAME文件</p>
+</li>
+<li><p>在 <code>hexo g</code> 之后， <code>hexo d</code> 之前，把CNAME文件复制到 “\public\” 目录下面，里面写入你要绑定的域名。</p>
+</li>
+<li><p>将需要上传至github的内容放在source文件夹，例如CNAME、favicon.ico、images等，这样在<code>hexo d</code>之后就不会被删除了。</p>
+</li>
+<li><p>通过安装插件实现永久保留</p>
+<p>  <code>npm install hexo-generator-cname --save</code></p>
+<p>  之后在_config.yml中添加</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Plugins:</span><br><span class="line">- hexo-generator-cname</span><br></pre></td></tr></table></figure>
+
+<p>  需要注意的是：如果是在github上建立的CNAME文件，需要先clone到本地，然后安装插件，在deploy上去即可。CNAME只允许一个域名地址。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>工具</category>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用GitHub Actions部署Hexo博客</title>
+    <url>/2023/12/17/%E5%B7%A5%E5%85%B7/Hexo/github_actions/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一直都在用Hexo写博客，但是每次都需要将博客源码拉到本地，然后安装Node.js、Git等环境，之后再写博客就忘了要写什么内容了；</p>
+<p>所以这次折腾一下使用GitHub Actions来自动构建和部署Hexo内容。</p>
+<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><p>需要准备两个Git仓库，一个是博客源码仓库，一个是静态页面仓库；参考：使用GitHub Pages托管博客；</p>
+<p>博客源码仓库为：blog，可以为私有的，保护一下私有文件；<br>静态页面仓库为：xxx.github.io，必须为公开的，存放Hexo生成的静态页面；</p>
+<h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>生成密钥<br>bash命令创建一个新的SSH密钥：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -f hexo-deploy-key</span><br></pre></td></tr></table></figure>
+
+<p>会在当前文件夹下生成两个文件：<code>hexo-deploy-key</code> <code>hexo-deploy-key.pub</code></p>
+<p>登录GitHub网站，找到博客源码仓库；添加新的Secrets，在：Settings -&gt; Secrets -&gt; Add a new secret：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Name填写：HEXO_DEPLOY_SECRET，下边会用到；</span><br><span class="line">Value填写：hexo-deploy-key文件中的全部内容；</span><br></pre></td></tr></table></figure>
+
+<p>找到静态页面仓库；添加新的Deploy key，在：Settings -&gt; Deploy keys -&gt; Add new：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Title随便填写；</span><br><span class="line">Value填写：hexo-deploy-key.pub文件中的全部内容；</span><br><span class="line">勾选“Allow Write Access”；</span><br><span class="line">创建GitHub Actions</span><br><span class="line">在博客源码仓库根目录下，创建.github/workflows/hexo_deploy.yml文件；此文件为GitHub Actions所使用的文件；</span><br></pre></td></tr></table></figure>
+
+<p>hexo_deploy.yml文件内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">name: HEXO_DEPLOY</span><br><span class="line">on:</span><br><span class="line">push:</span><br><span class="line">branches:</span><br><span class="line"></span><br><span class="line">- master</span><br><span class="line">  jobs:</span><br><span class="line">  build:</span><br><span class="line">  runs-on: ubuntu-latest</span><br><span class="line"></span><br><span class="line">steps:</span><br><span class="line"></span><br><span class="line">- name: Checkout source</span><br><span class="line">  uses: actions/checkout@v1</span><br><span class="line">  with:</span><br><span class="line">  ref: master</span><br><span class="line">- name: Use Node.js $&#123;&#123; matrix.node_version &#125;&#125;</span><br><span class="line">  uses: actions/setup-node@v1</span><br><span class="line">  with:</span><br><span class="line">  version: $&#123;&#123; matrix.node_version &#125;&#125;</span><br><span class="line">- name: Setup hexo</span><br><span class="line">  env:</span><br><span class="line">  ACTION_DEPLOY_KEY: $&#123;&#123; secrets.HEXO_DEPLOY_SECRET &#125;&#125;</span><br><span class="line">  run: |</span><br><span class="line">  mkdir -p ~/.ssh/</span><br><span class="line">  echo &quot;$ACTION_DEPLOY_KEY&quot; &gt; ~/.ssh/id_rsa</span><br><span class="line">  chmod 600 ~/.ssh/id_rsa</span><br><span class="line">  ssh-keyscan github.com &gt;&gt; ~/.ssh/known_hosts</span><br><span class="line">  git config --global user.email &quot;george674834080@gmail.com&quot;</span><br><span class="line">  git config --global user.name &quot;im_wower&quot;</span><br><span class="line">  npm install hexo-cli -g</span><br><span class="line">  npm install</span><br><span class="line">- name: Hexo deploy</span><br><span class="line">  run: |</span><br><span class="line">  hexo clean</span><br><span class="line">  hexo d</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>name随便写；</li>
+<li>branches为博客源码仓库的分支，即：提交代码到此分支后，会自动触发部署；这里使用的是master分支；</li>
+</ul>
+<p>修改博客源码仓库根目录的_config.yml文件，修改deploy节点为使用SSH的方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">type: git</span><br><span class="line">repo: git@github.com:yunlongwen/yunlongwen.github.io.git</span><br><span class="line">branch: master</span><br></pre></td></tr></table></figure>
+
+<p>提交代码<br>本地或使用GitHub网页版，修改博客源码仓库的文件，并提交到master分支；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd imwower-blog/source/_posts</span><br><span class="line">touch xxx.md</span><br><span class="line">git add .</span><br><span class="line">git commit -m &quot;add new post&quot;</span><br><span class="line">git push origin</span><br></pre></td></tr></table></figure>
+
+<p>提交代码后，会自动触发部署；登录GitHub查看部署状态：</p>
+<p>查看博客：<br>github.100kwhy.cn</p>
+<p>参考链接<br><a href="https://sanonz.github.io/2020/deploy-a-hexo-blog-from-github-actions/">利用 Github Actions 自动部署 Hexo 博客</a><br><a href="https://zhuanlan.zhihu.com/p/133764310">GitHub Actions 自动部署 Hexo</a></p>
+]]></content>
+      <categories>
+        <category>工具</category>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/about/</url>
+    <content><![CDATA[<h2 id="这是一个拷贝"><a href="#这是一个拷贝" class="headerlink" title="这是一个拷贝"></a>这是一个拷贝</h2><p>收集的 Thoughtworks 的一些敏捷博客</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>ThoughtWorks</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/about/</url>
+    <content><![CDATA[<h2 id="这是一个拷贝"><a href="#这是一个拷贝" class="headerlink" title="这是一个拷贝"></a>这是一个拷贝</h2><p><a href="https://www.notion.so/ef92213b9d5a4c6ea1b35f7446033615?pvs=21">全文 · 基于认知提升的价值交付手册</a> 由Thoughtworks CTO 徐昊监制， BeeArt 181 全体团队小伙伴共同编写，真实记录团队中所采用的实践方法与思考观点</p>
+<p>我是按照劫色划分去拷贝文章，将持续更新。</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>交付手册</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ThoughtWorks的敏捷测试</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/ThoughtWorks%E7%9A%84%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h1 id="ThoughtWorks的敏捷测试"><a href="#ThoughtWorks的敏捷测试" class="headerlink" title="ThoughtWorks的敏捷测试"></a>ThoughtWorks的敏捷测试</h1><h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>我的同事肖然在 《ThoughtWorks的敏捷开发》一文中介绍了ThoughtWorks敏捷开发的全貌，并在其中简单介绍了ThoughtWorks是怎么做质量内建和敏捷测试的。我作为一名加入ThoughtWorks已经7年的QA，想更为详细的介绍一下这些内容，希望能帮助业界中仍对于敏捷测试有疑虑和困惑的团队建立起自己的敏捷测试体系和实践，从而帮助团队更好的实施敏捷软件开发。<br>在目前的软件开发领域，敏捷依然没有被广为采用，很多人诟病其：</p>
+<ul>
+<li>开发速度其实并不比传统的开发方式快</li>
+<li>软件质量得不到保证</li>
+<li>无法应用于大规模软件开发</li>
+<li>文档少导致开发出来的软件难以维护</li>
+<li>……<br>其实大多都是在不了解敏捷开发中质量内建与敏捷测试的情况下得出来的。如果只是阅读《敏捷宣言》，是很难以理解其中关于质量内建和敏捷测试的相关内容。所以通过长期的项目实践，我们对质量内建以及敏捷测试总结出了一套自己的理论和实践体系。</li>
+</ul>
+<h2 id="测试在流行敏捷开发方法中的缺位"><a href="#测试在流行敏捷开发方法中的缺位" class="headerlink" title="测试在流行敏捷开发方法中的缺位"></a>测试在流行敏捷开发方法中的缺位</h2><p>业界有很多所谓敏捷开发流程，比如Scrum，Kanban等，但是其中测试相关的内容相对较少，并且不够系统化和细节化，所以业界就出现了很多测试人员，他们总结了测试人员应该在敏捷开发中如何进行测试工作。由于很多测试人员也是公司或者团队在Scrum和Kanban的转型中接触和学习到敏捷，然后通过有限的资料以及自悟在团队中进行敏捷测试，又在一知半解下又去宣传敏捷测试或者去抵制敏捷测试，导致敏捷测试甚至敏捷本身在国内乱象丛生。<br>首先敏捷测试一定是敏捷开发方法的一部分，所以敏捷开发方法论里面应该需要包括敏捷测试的相关内容，但是现在业界中所谓的一些标准的敏捷开发流程里面却很少包含系统化的测试实践。由于敏捷测试实践或者说敏捷实践的核心就是缩短反馈周期，逐步优化整个系统。并且因为每个团队的情况都是有差距的，所以通过同一种标准的方式去要求所有不同的团队，则会产生很多负面的效果。<br>现在业界已经有不少通用的敏捷测试实践，以及一些在特定条件下面的经典流程(后面会介绍一个经典的敏捷测试管理流程)。其次对于大规模敏捷开发中的敏捷测试来讲，其核心还是在开发团队里面合理使用各种敏捷测试实践，缩短测试反馈周期。<br>因此不管敏捷开发还是敏捷测试里面的敏捷都没有一个所谓统一的最终敏捷，应该是需要越来越敏捷的状态才是最好，然后最终达到自己项目的一个稳定敏捷状态就可以。</p>
+<h2 id="敏捷测试的原则"><a href="#敏捷测试的原则" class="headerlink" title="敏捷测试的原则"></a>敏捷测试的原则</h2><p>ThoughtWorks没有Tester这个职位，而是叫做QA。这里的QA不是”Quality Assurance”，而是”Quality Analyst”——质量分析师。其主要工作是在承担项目部分权责的情况下，负责各种质量相关的工作，通过各种实践让团队中所有人都会对质量负责，并做一部分质量相关的工作。<br>QA每天都可能需要根据不同的情况而相应改变自己的工作内容，虽然每天主要的工作内容仍然是测试相关的各种工作，但是并不一定需要自己独立完成它们，其中还包括把所有团队成员组织起来，一起协作完成这些工作。并通过各种实践，让每个成员都能承担最适合自己的质量相关的工作。QA需要了解并熟悉所有质量相关的活动和工作，并根据项目的情况将它们合理的组合起来使用。我们还总结出了一些敏捷测试的原则：</p>
+<ul>
+<li>我们的目标在于和团队一起尽快地交付高质量软件。</li>
+<li>测试人员尽早参与软件早期阶段，与所有团队角色合作，通过实例化需求，确保对业务价值理解的一致性。</li>
+<li>测试人员关注生产环境状态，收集数据，指导和优化前期的分析、开发和测试。</li>
+<li>测试人员和开发人员同处一个产品项目团队，而不是独立的测试团队或部门。</li>
+<li>测试人员负责探索性测试，和开发人员结对，设计、实现和维护自动化测试。</li>
+<li>自动化测试在流水线中持续精准执行，快速发现每次代码提交对于已有功能的影响</li>
+<li>测试数据对于自动化测试是充分的，并能按需获得。</li>
+<li>测试活文档化，和代码一起，作为知识资产进行版本化管理。</li>
+<li>自动化测试需要有效的分层。</li>
+<li>预防缺陷，而不是关注缺陷的数量。<br>这些原则展示出了敏捷测试的特点，指导我们更好的实施了敏捷测试，使得我们不仅仅关注测试本身，完成相关的测试工作，而且还要真正的在测试工作中关注并实施敏捷，并且通过各种敏捷实践来促使全员负责质量的目标，最终在有限的时间内尽最大可能正确的交付客户价值。</li>
+</ul>
+<h2 id="敏捷测试实践与管理体系"><a href="#敏捷测试实践与管理体系" class="headerlink" title="敏捷测试实践与管理体系"></a>敏捷测试实践与管理体系</h2><p>在过去的20多年中，我们的QA通过大量的项目经验，总结出了许多敏捷测试实践，比如测试前移、每日结对检查以及线上测试等等。我将它们分为三个部分，分别是迭代开发中、故事卡开发过程中和产品环境中的敏捷测试实践，分别从三个不同的维度总结了我们的各种敏捷实践，从而帮助大家更为系统化的了解它们。</p>
+<h2 id="迭代开发中的敏捷测试实践"><a href="#迭代开发中的敏捷测试实践" class="headerlink" title="迭代开发中的敏捷测试实践"></a>迭代开发中的敏捷测试实践</h2><p>在真实的项目中，如何有效的将各种敏捷实践组织起来，并在不同的团队中使用，是敏捷测试管理最大的一个挑战。由于每个团队的情况都不一样，比如产品规模，业务目标，人员能力等，导致敏捷测试流程和管理体系都会有所区别。虽然有所区别，但是敏捷测试管理还是围绕着敏捷的核心价值进行管理，并且有自己特有的流程体系和度量体系。<br>通过多年的交付和咨询经验，我们的QA们总结了不少敏捷管理的实践和经验，并形成了一套经典的测试流程，适用于业务复杂的企业级软件系统的开发。其完全是符合经典敏捷开发流程的，但是在真正项目实践时，需要根据项目自身的特点和资源优先级来选择其中适合自己的实践，从而尽可能的满足当前项目对于软件质量和测试的需求。<br>首先在整个开发流程中，将不同的测试方法和测试实践按照测试策略和测试计划加入到整个迭代开发中，从而在每个迭代中实施它们。下图为一个经典敏捷测试生命周期图。<br><img src="/assets/images/24.png"><br>（敏捷测试之迭代生命周期（经典模型））</p>
+<p>在整个生命周期中一定要使用持续集成以及持续交付中的各种实践，并且周期性的快速交付一些功能已经逐步被大家所认可。其中能帮助快速交付的一个最重要的步骤就是回归测试，所以应该尽可能自动化回归测试用例，加速交付过程。QA需要思维敏捷并且富有创造力，而大量周而复始的手动回归测试会阻止QA锻炼思维和创造力，其次长时间大规模的手动也是很容易出错的。<br>图中有性能测试等非功能测试。对于一些质量要求很高的项目，特别是对于性能，安全以及稳定性很高的项目，除了功能测试以外，还需要做大量的非功能测试，比如压力测试，耐久性测试，负载测试，灾备测试，安全测试以及各种异常测试等。这个时候就需要QA拥有相关的知识来负责这些测试，可以是自己做，也可以是教其他人做，比如团队的开发人员等，或者由自己把关并外包给其它公司做。<br>在项目开始阶段，开发人员开始开发工作前，QA还需要完成以下实践：</p>
+<h3 id="测试分析"><a href="#测试分析" class="headerlink" title="测试分析"></a>测试分析</h3><p>由于测试前移，测试分析所关注的实践要关注更多的东西，它包括风险分析、测试设计等。风险分析需要尽可能的指出业务或者技术层面上问题，它们会在什么时候、在什么地方、对产品的利益相关者产生多大的影响等。测试设计则需要指出如何在有限的时间和资源的情况下如何高效的覆盖高风险的功能等。QA必须在每个项目中都做测试分析，并且在项目的不同的阶段都需要做。比如和业务分析一起结对写验收测试条件的时候、设计回归测试套件的时候、做探索性测试的时候、开发和维护自动化测试的时候，以及当要忽略回归测试套件中某些测试用例的时候。</p>
+<h3 id="测试策略"><a href="#测试策略" class="headerlink" title="测试策略"></a>测试策略</h3><p>QA需要经常和团队的其他成员合作来完成测试策略，比如开发人员、项目经理等。由于一个大型软件项目需要开发大量的自动化测试，并且不少自动化测试都需要开发人员来完成，所以需要有一个测试策略来指导整个团队成员来完成各种类型的测试，比如单元测试、功能测试、服务契约测试、界面测试等等。<br>故事卡开发过程中的敏捷测试实践<br>其次在每个不同的迭代周期中，敏捷测试实践的主要工作就是围绕故事卡来进行。对于每个单独的故事卡，我们也有一套自己的敏捷测试故事环。需要注意的是，这个敏捷测试故事环和这些敏捷测试实践只是一个经典模型，在真实的不同项目的实践中会有所改变。<br><img src="/assets/images/25.png"><br>（故事卡生命周期（经典模型））<br>上面是敏捷开发故事环，在环中不同的阶段需要加入我们定义的经典敏捷测试实践，就形成了敏捷测试故事环。其中实践包括：</p>
+<h3 id="故事启动"><a href="#故事启动" class="headerlink" title="故事启动"></a>故事启动</h3><p>在传统瀑布开发模式中，测试人员一般是不参与故事启动相关工作，但是在敏捷开发流程中，QA需要从这里就开始介入，其经典实践包括：</p>
+<h3 id="需求澄清"><a href="#需求澄清" class="headerlink" title="需求澄清"></a>需求澄清</h3><p>业务场景和验收测试（AC）的确认<br>这个实践也属于测试前移。这两个实践的核心是需要QA和业务分析人员以及开发配合，一起来澄清所有不清楚和有疑问的需求，并确认所有的验收条件即验收测试用例。如果QA发现业务需求分析本身有问题，或者验收条件不合理、不可测等，那么QA就需要挑战这些问题和不合理，尽量保证开发拿到的故事卡是业务清晰，验收条件合理并可测。通过这些实践可以实现测试前移和ATDD，尽量在开发之前发现缺陷，从而预防缺陷，并保证三方人员对于需求的理解都是一致的。这个活动也称为Kick Off。</p>
+<h3 id="故事计划"><a href="#故事计划" class="headerlink" title="故事计划"></a>故事计划</h3><p>故事启动并澄清需求后，就是故事计划了。其实很多团队是没有故事计划的，或者故事计划是在迭代开始前一次性做一次。不过我们还是建议在每个故事开发前做一个简短的计划工作，用于计划这个故事卡。在其中QA需要计划测试工作，其经典实践包括：</p>
+<ul>
+<li>测试工作估算</li>
+<li>制定测试计划<br>这个测试计划和工作估算是针对这个故事卡的，其中包括我需要对这张卡做哪些测试，测试数据和测试环境的计划与准备，测试工作大概需要多少个点等。但是估算并不是承诺，只是让大家了解测试工作内容的复杂度以及困难度。对于困难的测试点，则可以计划让开发人员帮助一起做。</li>
+</ul>
+<h3 id="故事开发"><a href="#故事开发" class="headerlink" title="故事开发"></a>故事开发</h3><p>如果有故事计划，那么完成计划之后开始开发工作，如果没有就在故事启动后直接开始。在开发过程中，QA需要尽可能的在开发完毕之前发现产生的缺陷，从而实现缺陷的快速反馈，其经典实践包括：</p>
+<ul>
+<li>QA和开发结对实现自动化测试</li>
+<li>QA和开发或者业务分析结对做每日内部演示和反馈（Desk Check 或者 Shoulder Check）</li>
+<li>及时和团队沟通发现的问题和缺陷<br>这三个经典的实践可以防止缺陷流动到测试阶段，减少缺陷的反馈周期，减少返工的成本，从而降低软件开发周期，提高单位时间内的软件质量。<br>一个团队中不同角色的人会关注不同的风险和问题。比如QA需要详细的，精准的将缺陷告知开发人员；但是对于PM，QA需要帮助其了解项目整体上的风险，帮助其管理项目进度和发布计划。所以记录缺陷，并且对于严重缺陷或者风险需要告知整个团队或者管理层是QA的一项重要工作。<br>对于那些自动化测试成本很高的项目，应该首先至少做一遍手动测试后，然后做完之后再来评估哪些需要做自动化，哪些不需要。</li>
+</ul>
+<h3 id="故事验收"><a href="#故事验收" class="headerlink" title="故事验收"></a>故事验收</h3><p>通过前面加入了敏捷实践而开发出来的功能，其验收测试的用例应该大部分甚至全部通过。但是为了防止漏网之鱼以及开发人员最后提交的代码修改出现side effect，我们仍然在开发完成之后定义了一个“故事验收”阶段，用于整体验证功能的所有验收条件等，其经典实践包括：<br>QA和业务分析结对进行快速验收测试，提供快速反馈<br>通过这个环节，可以尽可能的保障验收条件不会存在缺陷，从而减少缺陷发现和修复的周期。但是如果业务没有时间，也可以由QA一人或者QA和开发人员结对完成。<br>验收测试可以是手动测试，也可以是自动化测试。但是大部分实际情况中，都是先做手动测试，再通过手动测试的用例再来编写自动化测试。对于实现了ATDD的团队，那么也建议在功能开发完毕后做一遍手动测试，因为自动化测试很多时候可能会遗漏一些验证条件，忽略一些细节。而通过至少做一遍手动测试，可以发现一些通过自动化测试发现不了的东西。比如发现了一个bug，需要添加自动化测试来覆盖它；或者某些自动化测试断言过少；或者某些测试没有实践的意义，或者是重复的，需要删除等。</p>
+<h3 id="故事测试"><a href="#故事测试" class="headerlink" title="故事测试"></a>故事测试</h3><p>通过故事验收以后，理论上验收条件应该大部分或者全部满足了，所以不应该存在明显的缺陷了。这个时候应该做更多的测试，比如探索性测试，安全测试等，从而发现验收条件以外的缺陷。其经典实践包括：</p>
+<ul>
+<li>执行探索性测试，安全测试等</li>
+<li>强调会阻碍故事发布的风险因素</li>
+<li>为测试发现的严重缺陷添加自动化测试</li>
+<li>执行自动化验收测试，可以是回归测试<br>通过这个环节可以尽最大可能发现所有问题，并在最后给客户演示之前评估完所有的风险，并尽最大可能防止风险会影响到客户。</li>
+</ul>
+<h3 id="系统测试和客户演示"><a href="#系统测试和客户演示" class="headerlink" title="系统测试和客户演示"></a>系统测试和客户演示</h3><p>如果故事功能属于一个完整业务流程中的一个节点功能，那么这种情况下就需要进行业务层面上的端到端测试。当端到端测试成功之后，就可以进行功能的最终客户验收演示，从而最终完成功能故事卡的开发。其经典实践包括：</p>
+<ul>
+<li>执行业务层面上端到端的系统测试</li>
+<li>和团队及客户就功能特性的质量和稳定性进行沟通</li>
+<li>给客户验收功能和特性<br>如果客户验收成功，那么这个功能就可以准备上线了。但是如果验收失败，就需要进行分析，为什么失败？确认是第一步“故事启动”里面的验收条件有错误或者遗漏，还是功能本身就分析和设计错误，满足不了客户的需求。然后通过“5 Whys”或者“Retro”等会议找到为什么验收失败的原因，并且制定下一步改进的方案。理论上，通过前面这些步骤之后再验收失败的可能性很小，除非业务分析人员本身由于能力等原因就从最开始就分析错了，并且通过和开发人员、QA等的结对也没有发现。虽然仍然没有办法避免验收演示失败这种小概念事件，但是一旦发生，由于敏捷中的持续改进，我们可以通过持续改进并进一步减小其发生的概率。<br>除了敏捷测试故事环中的常规工作和实践，还需要经常对测试进行维护与重构。一般一个成功的大型软件项目都有大规模的测试用例或者自动化测试，并且项目的成功与否和这些测试用例或者自动化测试的有效性以及健壮性直接相关。但是现实中大规模自动化测试有一个大问题，那就是“易碎性”。而这种“易碎性”最主要是由于环境的改变或者自动化测试代码的改动。对于环境的改变，测试人员应该参与到DevOps建设中，从而建立起一套稳定的测试环境，包括测试数据系统等。而对于自动化测试脚本的改变，很多时候是由于新加功能而需要修改测试系统通用代码，从而导致的副作用。所以对于自动化测试代码也需要像对待产品代码一样，进行重构和维护。</li>
+</ul>
+<h2 id="产品环境中的敏捷测试实践"><a href="#产品环境中的敏捷测试实践" class="headerlink" title="产品环境中的敏捷测试实践"></a>产品环境中的敏捷测试实践</h2><p>当一个发布版本开发(包括测试)完成以后，就需要进行部署和发布。而我们的QA也需要参与发布管理。由于QA参与并且负责了大量质量相关活动，所以对于软件系统的整体质量有较高的认识。所以QA有责任参加发布会议，并且参与决定是否发布的决定。<br>当产品真正交付到用户手中或者发布上线以后，我们的QA仍然需要在产品环境中做质量相关的工作，称之为产品环境中的QA，或者叫测试后移。这将工作范围扩大到产品环境，增加了更多的反馈来源，跟持续交付结合，可以帮助持续提高产品质量、持续优化业务价值。</p>
+<h3 id="产品统计数据分析"><a href="#产品统计数据分析" class="headerlink" title="产品统计数据分析"></a>产品统计数据分析</h3><p>产品环境中软件系统在运行过程中会产生大量的数据，如果通过A&#x2F;B测试还可以获得大量不同特征的数据。而通过分析这些数据，往往可以找到优化和提高软件质量的方案。比如统计一个Web系统在产品环境下所有页面的下载和加载的平均时间、最长时间以及趋势，可以有效的发现一些性能问题；又比如客户端浏览器类型统计，可以帮助优化测试策略，加强对于用户量最多的浏览器的兼容性测试等等。从而通过这种方式有效的持续提高产品的质量。</p>
+<h3 id="可调式性日志分析和优化"><a href="#可调式性日志分析和优化" class="headerlink" title="可调式性日志分析和优化"></a>可调式性日志分析和优化</h3><p>现代的服务系统越来越复杂，导致调试也越来越困难，特别是线上调试就更为困难。很多线上系统主要是通过日志来进行调试，所以日志的可调式性就非常重要。因为日志的可调式性直接影响到了当产品出现问题之后调试并发现问题原因的速度和时效，如果可调式性好，那么产品环境遇到问题后修复的时间也会相对缩短。因此QA可以通过各种机会，比如定期，或者某次产品遇到产品环境问题后，对于产品环境的日志进行可调式性分析，并协助团队一起对其进行优化。</p>
+<h3 id="持续业务功能监控"><a href="#持续业务功能监控" class="headerlink" title="持续业务功能监控"></a>持续业务功能监控</h3><p>当前业界对于产品环境的监控主要以服务监控为主，比如服务是不是在线或者下线等，而很少做业务功能级别的监控，比如监控某一个核心业务功能是不是工作正常。而产品环境下的QA需要帮助团队搭建核心业务功能的监控方案，比如提供测试场景和步骤，提供业务成功的验证方案等等。然后当某个业务功能工作不正常的时候，但是系统服务仍在线的情况下，依然可以在最短的时间内获得业务功能的反馈。<br>除了上面三个主要的实践以外，QA还可以在产品环境下做更多的一些实践来获得质量的快速反馈，从而提高产品系统的质量。所以产品环境下的QA是未来特别值得深入研究的一个话题。<br>除了以上介绍到的敏捷测试中的实践，其实还有其他一些适合不同团队的敏捷实践，这里就不再赘述了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过我们长期的项目实践，思考与洞见，不仅总结出了10条敏捷测试的原则，还有了我们的敏捷测试宣言：<br>“全程的测试介入 over 孤立的测试阶段<br>团队整体对质量负责 over 测试人员独力把关质量<br>持续性的精准自动化测试 over 回归式的全量自动化测试<br>质量内建 over 质量检测”<br>这个敏捷测试宣言基本上体现了我们敏捷测试的核心实践，并且和敏捷宣言一样，尽管右项有其价值，但是我们更重视左项的价值。<br>在这种敏捷测试的实践体系中，我们的开发测试比通常可以做到2～4 : 1。但是这个不是绝对的，我们有少部分项目可以做到5:1或者更高，因此不同的项目都需要根据自己的实际情况来制定这个比例，比如项目时间、质量需求、人员能力等等。通过我多年的工作中的观察以及总结，我发现开发人员技能越高，愿意并能做越多的测试工作，那么测试开发比就越大。而在开发人员技能等同的情况下，软件系统的业务复杂度越高，开发测试比就越小。<br>最后，你们做了敏捷测试吗？和我们做的差距大吗？</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>TW</category>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A1/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">写在前面：该项目是某手机大厂CRM+ERP系统 0 - 1 的数字化转型中最重要的一个产品之一，需要拉通上下游30+系统，有上百名的同事与我们共同在一线战斗。我们将项目上的实践，遇到的问题，以及我们的辛酸苦辣落笔为大家眼前这些朴实的文字，希望这趟“绿皮车”之旅能够给大家带来在大规模项目中做敏捷测试的不一样体验，感受大规模0到1数字化转型中的QA的机遇与挑战。</span><br><span class="line">由于篇幅很长，将分成几个部分陆续介绍给大家。这一篇先介绍项目中敏捷测试的基础实践。</span><br></pre></td></tr></table></figure>
+
+<p>敏捷方法已经在我司实践落地多年，大多数的敏捷团队是由10位以内不同角色的人员组建。其中包括但不仅限于BA、QA、UX、PM、DEV等关键角色。我们通过成熟的方法论以及stand<br>up meeting、ipm、 ikm、kick off、desk<br>check、retro等各种逐渐“标准化“的敏捷活动，能够顺利地运行一个小规模的项目，但是当项目规模逐渐增大，项目成员人数逐渐增加，将整个大规模的团队拆分为多个小规模的敏捷小组后，由于组与组之间的业务交互频繁，组内以及组间的各种沟通交流就会让原本快捷有效的敏捷活动变得臃肿。尤其对于测试来说，小规模的项目中一般配有一到两名QA，负责所有功能模块的测试工作。但大规模的项目中，QA不仅要关注本组内的功能，同时要考虑组与组间的存在关联功能的测试。那么如何在高节奏的迭代中，进行大规模敏捷测试呢？那就通过在某手机大厂的数字化转型产品的测试经历来和大家一起分享一下我的看法和感悟吧。</p>
+<h2 id="一、大规模敏捷测试的基础：良好的敏捷实践"><a href="#一、大规模敏捷测试的基础：良好的敏捷实践" class="headerlink" title="一、大规模敏捷测试的基础：良好的敏捷实践"></a>一、大规模敏捷测试的基础：良好的敏捷实践</h2><p>大规模敏捷测试的基础是每个小组能够贯彻执行良好的敏捷实践，保障每个模块的高质量交付，才能获得最终的高质量产品。而在这基础敏捷实践中，QA始终扮演着质量推动者的角色，在每个环节中不断补充团队的质量视角，保障每个小环节的交付质量，形成层层质量防护网。</p>
+<p>大规模项目中，需要统一实施原则和节奏，定义主要的活动和规范。该项目采用的两周一个迭代的方式，主要的活动包括：IKM，站会，开卡，DC，Showcase，回顾会等。每个活动中QA究竟如何补充质量视角呢？<br><img src="/assets/images/32.png"></p>
+<h3 id="利用IKM进行需求澄清，保障质量需求被识别"><a href="#利用IKM进行需求澄清，保障质量需求被识别" class="headerlink" title="利用IKM进行需求澄清，保障质量需求被识别"></a>利用IKM进行需求澄清，保障质量需求被识别</h3><p>每个迭代刚刚开始的时候会进行IKM，IKM阶段BA澄清需求，团队成员对齐理解，各自根据自己的视角提问，BA会对本迭代目标进行的澄清。<br>这里QA一定要参与到IKM中来，如果精力足够最好是能够在IKM之前就预先熟悉需求，检查验收标准，并从全局质量的视角提出问题。常见的问题包括是否考虑到Edge<br>case，异常场景，和其他模块的一致性，性能，安全，第三方接口确认等。如果QA准备充足，甚至可以对解决方案，架构等都提出质量相关质疑。</p>
+<h3 id="利用开卡进行验证点澄清，保障需求与开发理解一致"><a href="#利用开卡进行验证点澄清，保障需求与开发理解一致" class="headerlink" title="利用开卡进行验证点澄清，保障需求与开发理解一致"></a>利用开卡进行验证点澄清，保障需求与开发理解一致</h3><p>开卡阶段由开卡的dev来drive，BA、QA参与。Dev说明自己对AC的理解和提问，澄清一些细节以及边界。保证大家理解的一致性。QA除了可以一起完善、澄清AC外，也可以根据DC场景给出输入，列一下比较重要的场景和check<br>point，这样开发可以在做完卡自测的更加充分，也可以DC前提前准备好测试场景和数据。Dev在做卡的时候，会根据要实现的功能列tasking，这样梳理清晰开发思路的同时也能让其他角色更了解故事卡的实现细节。</p>
+<h3 id="利用站会对齐关键质量信息"><a href="#利用站会对齐关键质量信息" class="headerlink" title="利用站会对齐关键质量信息"></a>利用站会对齐关键质量信息</h3><p>站会是敏捷实践中的典型活动，每天固定时间15分钟，大家进行一个站会沟通。但是在实施中，不同的团队却有不同的方式。有的团队是以人为视角，每个人去更新自己昨天做了什么，今天要做什么，有什么困难和阻碍。可是这样的方式聚焦在个人身上，无法形成全景图。更新完之后大家对于整体的进度和问题对全局的影响并没有一个清晰的认识。后来团队尝试了以板子内容为中心，对不同状态的卡片从右往左更新。之后再更新板子之外的事情，以及一些共性需要全体注意的问题。这种方式不仅效率提高，大家对于整个迭代都有了全局视角，如果在第二周有很多将要积压的ready<br>for QA的卡片，大家会迅速达成共识，帮助尽快完成。<br>QA要利用站会的机会引导大家的质量意识，比如一些普遍的质量问题，一些严重的质量问题以及质量风险都可以通过站会传递这些关键信息，强化团队的质量意识。</p>
+<h3 id="推动开发质量内建"><a href="#推动开发质量内建" class="headerlink" title="推动开发质量内建"></a>推动开发质量内建</h3><p>质量内建是我司的特色，也是质量保障的重要手段。在巨大的客户进度压力下，我们开发小伙伴还是保持了单元测试甚至一部分接口测试的实践，覆盖率达到60%-80%，为代码的质量增加了一层结实的防护网。同时每天固定时间的Code<br>Review也是非常好的一个实践，不仅可以对代码进行一个团队评审，同时也是一个培训新人，不断强化代码规范的环节。<br>QA如果有时间有精力参与代码评审，是个很好理解和学习代码的机会，这将有助于QA更精准地评估质量风险。但是大多时候QA角色任务繁重，很难有带宽参与到这个活动中。</p>
+<h3 id="利用Desk-Check（DC）进行需求实现澄清，识别风险点"><a href="#利用Desk-Check（DC）进行需求实现澄清，识别风险点" class="headerlink" title="利用Desk Check（DC）进行需求实现澄清，识别风险点"></a>利用Desk Check（DC）进行需求实现澄清，识别风险点</h3><p>Desk<br>Check也是开发发起，BA和QA参与。DC的时候会重新过AC，如果有额外场景需要演示也可以直接进行演示。这个过程中QA会对实现方案以及风险点有一个更深入的了解。在DC时，QA也要引导性的问一些问题，挖掘实现方案和代码变动对其他功能的影响、一些交叉功能点的风险情况、以及对其他模块和产品的依赖和影响，从而为后续测试找寻到合适的方向。</p>
+<h3 id="故事卡测试"><a href="#故事卡测试" class="headerlink" title="故事卡测试"></a>故事卡测试</h3><p>DC结束后，QA会进行故事卡的测试，故事卡测试一般采用根据AC验证加探索性测试的形式。QA需要在开卡结束到DC的过程中根据故事卡的AC、边缘场景以及自己对业务上下文的理解进行用例的编写。DC结束后QA要根据优先级以及业务的关联性对故事卡进行功能测试，此外，还需进行必要的探索性测试，若在测试过程中，发现存在不能进行测试的集成测试场景，要记录下来，在后续集成测试阶段完成相关场景的测试。</p>
+<h3 id="利用Showcase与产品和业务进行澄清，并进行初步集成，检验质量内建成果"><a href="#利用Showcase与产品和业务进行澄清，并进行初步集成，检验质量内建成果" class="headerlink" title="利用Showcase与产品和业务进行澄清，并进行初步集成，检验质量内建成果"></a>利用Showcase与产品和业务进行澄清，并进行初步集成，检验质量内建成果</h3><p>在大规模的项目中，Showcase是个非常重要的环节。在关键结点上，对完成的关键功能进行Showcase，一方面可以极大地增加客户的信心，他们可以真切地感受到阶段性的成果，同时还可以收集到一线业务用户的反馈，便于我们进行及时的调整。我们的Showcase会分为迭代内的showcase和milestone的showcase两种，迭代内的showcase，更注重细节和业务逻辑，从用户侧获得反馈；Milestone阶段的showcase，主要是面向客户的领导层，更注重业务价值和系统逻辑和实际业务的贴合度。不管是哪种类型的showcase，都要注意收集反馈，对有价值的修改和理解不一致的业务进行研究讨论，改进系统功能，让其能更贴合业务，产生更大的价值。</p>
+<p>从质量的维度来说，Showcase可以更早的进行和其他模块的初集成，即使是为了跑通一个最基础的场景，也需要经历打包，初始化环境，部署，配置，初始化数据等环节。当初为了第一个showcase，部署SIT环境花了两周的时间，经历的各种问题还历历在目。但是它却为开发提供了宝贵的可视化反馈，让开发意识到配置管理（包括环境配置和参数配置）的重要性，接口设计的合理性等等，可以在后续开发中不断地改进，为后续的持续集成打下一个坚实的基础。</p>
+<h3 id="缺陷管理"><a href="#缺陷管理" class="headerlink" title="缺陷管理"></a>缺陷管理</h3><p>这里想提一下缺陷管理。缺陷管理针对测试过程中发现的问题，使用缺陷管理工具，进行统一规范管理。其实敏捷中，很多团队都放弃了缺陷的记录。因为团队小，直接给开发一说，就修复了，会觉得记录缺陷是个浪费。但是在大规模的敏捷测试中，我们还是建议团队对缺陷进行规范的管理，在后期集成测试时，牵扯到多个模块和产品，更需要通过对缺陷的洞察，不断地调整测试策略和方向。在缺陷报告中必填信息包括不仅限于：缺陷的严重程度，修复优先级，发现阶段，指派给相关开发，复现步骤，缺陷当前状态，缺陷类型以及发生的原因。同时这个项目中客户对于缺陷修复时长也做了一定的要求。比如阻塞缺陷要求当天修复，严重要求24小时修复等。但是也不太建议要求太死，毕竟这样的度量就是你要求什么就会得到什么。很多时候为了避免缺陷延期，就把严重的降级为普通的，反而使缺陷记录失真，无法为后续测试提高真实的数据参考。<br>规范化的缺陷管理，能促进团队各角色成员的参与和关注度，能有效地推进缺陷的修复，能明晰的反馈出各迭代缺陷的实时动态，能为后续缺陷分析和开发质量的提升提供佐证和指明方向。我们在后期集成阶段，每日站会上通过缺陷来进行集成中发现问题的各种信息交流，有效地促进了问题的解决。同时也通过对缺陷的分析加强了同类问题的预防。</p>
+<h3 id="回顾会议"><a href="#回顾会议" class="headerlink" title="回顾会议"></a>回顾会议</h3><p>回归会议是非常重要的一个环节，它不仅可以让大家对过去一个迭代进行回顾，及时调整策略，更重要的是它提供了一个机会或者说平台，让大家可以参与如何改进的意见，是赋予团队每个成员主人翁意识的绝佳时机，尤其对于平时话语权不多的QA同学，更是一个不可多得的窗口来引导大家的质量意识。可惜很多团队并没有抓住这样的一个机会。要么因为时间紧，任务重就跳过了这个环节，要么是走形式，并没有做到真正的思考。即使是有回顾会议，测试人员如果没有做准备，将质量通过数据，事件等回归的方式慢慢渗透，也很难利用这个机会。<br>可惜的是这个项目中回顾会议并没有执行的很到位。</p>
+<p>一点感悟：除了我们TW的团队，客户自己也有团队在同步开发其他的模块。虽然他们和我们一样采用两周一个迭代的节奏，但是他们还是比较原始的瀑布模式，迭代所有功能开发完成再交给测试去测，缺乏需求澄清，开卡结卡这些不断对齐需求的过程，我们经常听到客户的QA抱怨开发根本没有理解需求就进行开发，导致很多返工。同时开发因为能力和带宽问题，不愿意做单元测试，没有质量内建意识，结果也是可想而知，他们开发的模块发现的问题是我们的2-3倍之多，更是经常改一个问题引入两个问题。虽然开发不断地加班，修bug速度惊人（曾经从中午到第二天早晨关掉39个bug），但却只能让系统越来越脆弱，甚至在后期集成中爆发更多的问题。</p>
+<h2 id="大规模敏捷测试的核心：多团队协作"><a href="#大规模敏捷测试的核心：多团队协作" class="headerlink" title="大规模敏捷测试的核心：多团队协作"></a>大规模敏捷测试的核心：多团队协作</h2><p>一个小的团队进行敏捷测试实践是比较可控的，QA很容易获得全局观，把控质量全景。然而当产品规模和团队规模大到一定程度，即使没有那么复杂的架构，单是团队之间的协作都要面临诸多的挑战。大规模敏捷最大的问题就是不同团队之间的协作。疫情影响以及成本的压力，导致团队成员分布在多地，远程的合作变成常态。如何避免远程合作带来的不便，仍旧进行充分，高效地沟通呢？</p>
+<h3 id="关键事件固定时间，避免浪费时间"><a href="#关键事件固定时间，避免浪费时间" class="headerlink" title="关键事件固定时间，避免浪费时间"></a>关键事件固定时间，避免浪费时间</h3><p>固定时间进行开结卡，对应的角色BA、QA会预留开结卡时间，避免时间冲突约不到人导致的团队空转情况。</p>
+<h3 id="巧妙利用工具及时传递信息，推动事件流转"><a href="#巧妙利用工具及时传递信息，推动事件流转" class="headerlink" title="巧妙利用工具及时传递信息，推动事件流转"></a>巧妙利用工具及时传递信息，推动事件流转</h3><p>很多时候由于远程，我们很难面对面或者电话实时沟通，即时信息工具又会导致信息刷屏，各种信息交织。那怎么能及时地传递关于某一个方面的信息和意见呢？我们可以巧妙地利用工具。<br>每次沟通的结果只要影响到其他成员或者角色，都会在对应的故事卡上comment进行记录。QA分诊，做到信息充分，避免多次沟通。对于QA来讲，远程带来的沟通成本要求对发现的问题做出更明确的分诊，描述缺陷的时候要带有场景，在什么前提下，进行什么操作，发生了什么现象，接口有没有对应的正确的或者错误的返回值，有日志的话给出日志截图，分派给对应故事卡的前端或后端。</p>
+<h3 id="利用即时通讯工具保持实时信息透明"><a href="#利用即时通讯工具保持实时信息透明" class="headerlink" title="利用即时通讯工具保持实时信息透明"></a>利用即时通讯工具保持实时信息透明</h3><p>多个QA协作，共用服务部署可能造成环境不稳定，这时就需要实时的信息沟通。<br>项目采用微服务架构，不同的组负责维护不同的服务。当改动涉及到公共服务的时候，会有比较大范围的影响。所以不能各自为营，需要各个组的QA进行透明的信息管理，当部署公共服务的时候需要提前在信息群中进行通知。对公共服务提供的接口要有清晰的了解，这样在测试过程能够快速定位问题，同时也能及时通过CI的状态排除一些由于环境问题引起的缺陷。</p>
+<h3 id="拆分依赖，可视化依赖，对齐优先级"><a href="#拆分依赖，可视化依赖，对齐优先级" class="headerlink" title="拆分依赖，可视化依赖，对齐优先级"></a>拆分依赖，可视化依赖，对齐优先级</h3><p>项目规模大，会有很多业务与其他模块的业务存在交集，功能存在交互。每个团队都有自己负责的模块，不同小组的开发进度和优先级不同，这会导致小组之间存在功能或数据层面的相互依赖，进而引发对开发、测试活动造成一定程度的block，这时候要BA&#x2F;PM&#x2F;TL与相关团队协调进度或者考虑使用mock的方式跳过，并建立联调卡显示化依赖，并和各个模块对齐优先级，待对应的模块ready后进行联调。联调之前需要尽量列举联调测试需要的场景，等双方都开发完成后，及时进行系统内部的联调，测试通过后，后续再有调整且会影响到其他模块的要及时同步，保证业务流的连贯性</p>
+<h3 id="接口证据留存，为接口变动做准备"><a href="#接口证据留存，为接口变动做准备" class="headerlink" title="接口证据留存，为接口变动做准备"></a>接口证据留存，为接口变动做准备</h3><p>因为所在的项目是0-1的整体数字化转型，牵扯到多达十几个产品一起上线，和第三方系统联系极为紧密，很多集成的接口需要和其他系统的人对接，经过反复讨论才定义下来。这种情况下一定要将对齐的结果以文字或者邮件形式保留，即使是平台上有信息，也要额外备份，保证在后续有接口变动的时候有迹可循。否则在后续集成拉通过程中，接口的变化将带来巨大的成本和质量的风险。</p>
+<h3 id="QA驱动质量维度的团队协作"><a href="#QA驱动质量维度的团队协作" class="headerlink" title="QA驱动质量维度的团队协作"></a>QA驱动质量维度的团队协作</h3><p>作为团队中的质量守护者，QA需要及时把控迭代进度，以免测试时间被挤压。而当测试完成度存在风险的时候要及时跟团队寻求帮助，协调资源。平时在各个环境中IKM，开卡结卡，Showcase时，将质量理念通过问题的形式不断地给团队小伙伴宣讲，提高团队的质量意识。当团队中其他小伙伴有带宽支持测试的时候，可以更容易地上手。QA可以将测试用例作为输入，测试点作为参考给到团队成员。同时根据不同人对不同业务的理解合理的安排工作，最大化的利用资源完成测试。</p>
+<p>一点感悟：在大规模项目中团队内部以及团队间的协作是非常有挑战的，既要有统一的目标，规范，原则，又要满足不同团队的不同情况，风格和文化。以上只是我在执行过程中的一些小的实践，可以针对不同的团队风格进行不同的调整。最关键的是团队协作一定要先统一目标，再符合规范，最后才是个性化的实践。目标如果不能统一，规范不能符合，即使小团队效率很高，也会为后期的集成埋下隐患。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">写在后面：这个分享取名叫绿皮车之旅，一方面这是一趟有趣的旅程，这么大规模0-1数字化转型也不太常见，参与其中有欢乐也有汗水，借此分享给大家，希望你能读到一些不一样的感悟。另一方面绿皮车也是比较原始的列车，这个项目中客户还处在比较原始的阶段，即使我们有很多很好的很优秀的实践，但是不见得就适合这个阶段的旅程，所以如果你读到了比较基础且常见的部分，也希望能够理解在当下所采用的策略。当然，这趟旅程一定有很多很多可以改进和提高的地方，如果大家有兴趣也希望来一起讨论优化。比如自动化，比如测试策略，比如...</span><br><span class="line">欢迎大家加入。</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>TW</category>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A2/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">写在前面：之前和大家一起回顾了大规模敏捷测试的基础，良好的迭代内敏捷实践以及团队协作的一些小tips。既然说到大规模，一定要说到集成测试。对于0-1实现的系统，如何组织多个团队，多个服务甚至多个产品之间的进行有效的大规模集成测试，是我们这趟测试之旅中要经历的重点。</span><br></pre></td></tr></table></figure>
+
+<h2 id="大规模敏捷测试的必经之路：SIT集成测试"><a href="#大规模敏捷测试的必经之路：SIT集成测试" class="headerlink" title="大规模敏捷测试的必经之路：SIT集成测试"></a>大规模敏捷测试的必经之路：SIT集成测试</h2><h3 id="大规模敏捷测试的分层策略"><a href="#大规模敏捷测试的分层策略" class="headerlink" title="大规模敏捷测试的分层策略"></a>大规模敏捷测试的分层策略</h3><p>随着分布式架构的流行，使得大规模的产品开发更加灵活和便捷，但这同时也为质量保障活动带来了挑战。为了更高效地进行测试，往往采用测试分层的策略。从关注每个服务的测试，到关注某个模块的多个服务集成，再包括一个产品内不同模块间的基础测试，最后再到整个端到端多个产品间的集成测试。</p>
+<h4 id="迭代内测试"><a href="#迭代内测试" class="headerlink" title="迭代内测试"></a>迭代内测试</h4><p>迭代内测试主要关注两个方面的测试：</p>
+<ul>
+<li><p>每个服务的功能测试</p>
+</li>
+<li><p>每个模块内的服务集成，比如订单模块的测试。</p>
+</li>
+</ul>
+<p>上一个基础篇中，我们已经针对迭代内测试进行了详细阐述，这里不再赘述。</p>
+<h4 id="SIT集成测试"><a href="#SIT集成测试" class="headerlink" title="SIT集成测试"></a>SIT集成测试</h4><p>系统集成测试我又称为SIT集成测试，分成了两个阶段：</p>
+<ul>
+<li><p>第一个阶段是SIT产品内的集成测试，又叫SIT产品自测，主要关注产品内不同服务间的集成测试，和第三方产品的接口暂时使用mock。</p>
+</li>
+<li><p>第二个阶段是SIT产品间的集成测试，又叫SIT拉通测试，主要关注不同产品间的接口集成。由于产品众多，又分为几条主线。将十几个甚至几十个产品一起拉通，那场面有点壮观。</p>
+</li>
+</ul>
+<p>该项目中的SIT集成测试有两个重要的特征：</p>
+<ul>
+<li><p>产品是0到1的数字化转型，所有的集成基础都从0开始。</p>
+</li>
+<li><p>端到端的场景涉及多个产品集成，涉及组织复杂，参与人员众多。</p>
+</li>
+</ul>
+<h3 id="两种集成测试的组织方式"><a href="#两种集成测试的组织方式" class="headerlink" title="两种集成测试的组织方式"></a>两种集成测试的组织方式</h3><p>大规模产品的集成测试一般有两种组织方式。</p>
+<h4 id="虚拟的SIT测试团队"><a href="#虚拟的SIT测试团队" class="headerlink" title="虚拟的SIT测试团队"></a>虚拟的SIT测试团队</h4><ul>
+<li><p>组织方式：<br>每个Scrum团队出一个SIT接口人，作为整体SIT测试和各个团队之间的桥梁。SIT Lead负责SIT整体的组织，协调，策略，规范，机制等。各个Scrum团队负责SIT的测试执行。</p>
+</li>
+<li><p>优势：<br>这种组织方式相对灵活，SIT接口人可以统筹小组内SIT的任务与团队内的迭代任务。一般来说SIT任务优先级更高。如果SIT任务集中时，可以牺牲迭代内的任务来支持SIT。如果SIT相对任务较少时，可以支持更多迭代内的任务。<br>同时这种组织方式信息更加透明，知识能够及时共享。接口人可以将SIT发现的问题更快地分享给团队内，团队内可以针对问题及时调整。同时接口人也可以及时获得迭代内开发新功能的信息，支持后续SIT测试。</p>
+</li>
+<li><p>缺点：<br>SIT任务和迭代内容易发生资源冲突，迭代内需要留一定buffer给SIT。人员切换频繁会导致SIT测试效率低。</p>
+</li>
+</ul>
+<h4 id="独立的SIT测试团队"><a href="#独立的SIT测试团队" class="headerlink" title="独立的SIT测试团队"></a>独立的SIT测试团队</h4><ul>
+<li><p>组织方式：<br>独立的SIT集成测试团队，团队成员专门负责系统集成测试执行，与Scrum团队是弱连接。SIT<br>Lead负责SIT整体的组织，协调，策略，规范，机制等，并负责SIT团队成员的培养以及与各个Scrum团队之间的协作和知识传递。</p>
+</li>
+<li><p>优势：<br>这种组织方式执行力强，SIT团队专门负责集成测试，可以快速沉淀集成测试经验，资源专项专用，执行力更强。<br>同时还可以隔离对迭代内的影响，迭代内的测试比较容易计划和控制，不受SIT太多影响。</p>
+</li>
+<li><p>缺点：<br>但是这种组织方式协作成本很高。SIT团队和迭代内团队是两个独立的组织，容易形成谷仓效应。SIT团队成员需要和每个团队对接学习业务及架构的知识，并高效及时地与Scrum团队沟通发现的问题，沟通成本高。<br>而且资源独占，不够灵活，对于人员的要求也很高。SIT团队的成员需要在短时间内对整体的业务理解透彻，不断地学习新功能，才能更有效的发现集成问题。</p>
+</li>
+</ul>
+<p>在这个项目中，我们采用了第一种虚拟SIT测试团队的方式。但是对于不同的子团队，还采用了不同的协作方式。有的团队更独立，能过很好的协调团队内部SIT测试和迭代内测试，那么SIT接口人只需了解总体的策略，原则，机制和规范，做到定时沟通即可。而有些团队希望有专门的人来负责SIT测试，甚至SIT问题的修复，从而屏蔽对迭代内的过多影响。但是即使是相对固定的人参与SIT，他仍旧参与迭代内站会，及时同步SIT信息。如果SIT需要团队更多的支持，则阶段性地协商支持方式。如果SIT工作量较小时，则成员还可以及时支持迭代内工作。</p>
+<p>无论哪种方式，都要有统一的原则，测试策略，问题响应机制和测试管理规范，才能有效地协调一致，共同完成集成测试。</p>
+<h3 id="SIT集成测试节奏"><a href="#SIT集成测试节奏" class="headerlink" title="SIT集成测试节奏"></a>SIT集成测试节奏</h3><p>在大规模项目中，集成测试的节奏取决于项目的迭代节奏和产品的复杂度。一般来说较为成熟的产品建议每个迭代都进行集成测试，或者每个功能发布前进行快速集成。然而对于0-1的大规模数字化转型项目来说，初期很难做到频繁集成。那么多长时间进行一次集成测试是一个比较好的节奏呢？<br>在该项目上，由于业务和产品的复杂性，我们采用了滚动式逐步加速的方式来进行集成。逐步加速是采用前松后紧的方式来进行的。我们知道越是频繁的集成对于质量保障是越有利的，但是我们也要考虑到产品的复杂性，0-1的初始阶段等多种因素。集成的频率分为了四个阶段：</p>
+<ul>
+<li><p>阶段一：MVP集成。第一次基础是基于0-1MVP来集成的。<br>经过初期调研，产品设计，架构设计，多个迭代的开发（当前项目是6个迭代），产品核心雏形基本完成。除了前期Showcase时进行的轻量级集成，P0级别需求（MVP）完成的节点是第一次系统的正式的集成测试。</p>
+</li>
+<li><p>阶段二：大需求集成。 第二次集成是P1级别需求完成后进行。由于P1中仍有些大的需求，难以拆分，所以中间可以采用稍微长一点的时间（e.g.2个迭代）之后再集成。</p>
+</li>
+<li><p>阶段三：按迭代集成。 后续需求相对较小，可以更容易拆分，就可以按照每个迭代的频率来进行。</p>
+</li>
+<li><p>阶段四：按需集成。 而在做集成测试的过程中，还会陆续的识别到一些新的小需求，为了赶上集成以及拉通的窗口，我们会安排一些按需集成。可以每周，或者每个需求完成就部署到集成环境。</p>
+</li>
+</ul>
+<p>由于业务的复杂性，一个端到端的场景往往涉及到多个模块，甚至多个产品线，SIT的自测和拉通测试，以及UAT验收都需要并行滚动进行，每次迭代内工作完成后都要经历SIT自测，SIT拉通，UAT产品验收，UAT拉通验收四个步骤。有可能第一阶段的拉通还没有完成，就要进行第二阶段的SIT自测，需要规划不同环境的升级计划，拉出不同的分支，平衡资源等，为整个质量保障工作带来了非常大的挑战。<br>逐步加速的集成测试节奏能够帮助我们在前期做好准备，带领团队熟悉集成的工作流程，培养团队对集成测试的认知，形成良好的工作习惯，这样才能在后续多个并行工作的复杂环境中保持快速集成的节奏。</p>
+<h3 id="SIT集成测试启动会"><a href="#SIT集成测试启动会" class="headerlink" title="SIT集成测试启动会"></a>SIT集成测试启动会</h3><p>集成测试一般可以分为三步走，测试计划与准备，测试执行与监控，测试收尾与总结。每个步骤都有相应的实施活动。</p>
+<p>所有的集成中，第一次的集成测试最为重要，有三个主要目标：</p>
+<ul>
+<li><p>PO完成对于迭代内工作的验收：他们会参与集成测试，并集中在场景的测试上。</p>
+</li>
+<li><p>完成各模块间的集成测试：验证各模块之间的接口是否工作正常，满足需求。这个主要由QA来承担，除了PO场景的测试外，要更关注在边界，异常情况上。</p>
+</li>
+<li><p>培养团队习惯：还有一个更为重要的目标是培养团队习惯，让所有相关的团队成员能够熟悉集成测试概念，目标，原则，策略，流程规范等，并不断地持续改进，为后续的快节奏集成打下坚实的基础。</p>
+</li>
+</ul>
+<p>第一次集成一切都是从0开始，无论是从具体的流程，规范，环境，工具，还是人员意识，职责划分上大家都带有着自己以前的认知。为了统一认识，对齐目标，在集成测试之前举行SIT测试启动会是一个非常必要的环节。</p>
+<h4 id="启动会的目的"><a href="#启动会的目的" class="headerlink" title="启动会的目的"></a>启动会的目的</h4><ul>
+<li><p>普及集成测试的概念</p>
+</li>
+<li><p>各角色对齐集成测试的目标</p>
+</li>
+<li><p>宣贯集成测试的策略，原则，流程规范，管理机制，度量指标等</p>
+</li>
+<li><p>澄清各角色在集成测试中的职责</p>
+</li>
+</ul>
+<h4 id="启动会的参会范围"><a href="#启动会的参会范围" class="headerlink" title="启动会的参会范围"></a>启动会的参会范围</h4><ul>
+<li><p>集成测试涉及到的关键角色，包括：Scrum团队的PO， BA，PM，TL，QA。集成测试不仅仅是QA的事情，即使你采用独立的SIT团队，也需要和其他角色紧密合作才能完成集成测试。</p>
+</li>
+<li><p>Tips-1：在实际项目中，依据人员认知能力，可能在启动会前后需要多次和不同角色进行单独的沟通。有的项目成员可能没有经历过大规模复杂项目，往往会用小的scrum团队认知来衡量大规模集成的工作，造成认知偏差。</p>
+</li>
+<li><p>Tips-2:  需要注意要用各个角色能够理解的语言解释集成测试中的各种原则和策略，尤其是分支策略，升级计划等。人们容易掉进知识诅咒的陷阱，互相假设对方理解，结果造成实施中的偏差。</p>
+</li>
+</ul>
+<h4 id="启动会的内容"><a href="#启动会的内容" class="headerlink" title="启动会的内容"></a>启动会的内容</h4><p>启动会上要把各个角色为更好完成SIT集成测试所需要的信息都对齐，一般来说包含以下的内容：</p>
+<ul>
+<li><p>集成测试目标和策略</p>
+</li>
+<li><p>集成测试的整体计划（时间，人员，范围）</p>
+</li>
+<li><p>集成测试的准入准出标准及度量指标</p>
+</li>
+<li><p>集成测试的问题响应机制</p>
+</li>
+<li><p>分支策略和问题修复流程</p>
+</li>
+<li><p>缺陷管理流程及规范</p>
+</li>
+<li><p>环境升级策略及规范</p>
+</li>
+<li><p>工具平台使用规范</p>
+</li>
+<li><p>对迭代内开发的影响</p>
+</li>
+<li><p>可能存在的风险及举措</p>
+</li>
+<li><p>各个相关负责人</p>
+</li>
+<li><p>沟通计划及问题升级流程</p>
+</li>
+<li><p>各角色职责及分工</p>
+</li>
+<li><p>其他问题</p>
+</li>
+</ul>
+<p>如果你是SIT<br>Lead，你需要在启动会之前做好线下调研，和各个关键角色对齐相关内容。启动会只是一个宣贯和所有角色对齐的动作，真正的对齐要发生在线下。否则启动会将变成一个争吵大会。如果不幸第一次变成这样的一个大会，你还需要准备第二次启动会直到对齐。尤其对于各个角色的职责与分工，一定要在会议上进行澄清，以免发生不同理解导致后续协作困难。<br>比如：PM要规划SIT测试支持与迭代内工作量的平衡；开发人员要完善服务配置工作，环境配置工作，理解缺陷修复规范，理解分支策略和问题修复策略，理解响应优先级等；BA要留出时间支持SIT过程中遇到的业务方案争议，做出决策；QA要做好测试用例设计，环境验证，数据初始化，问题响应，对PO进行支持等工作；而公共模块负责人和运维人员也要相应的提前准备，测试环境基础设施，部署流水线，做好部署升级准备，做好问题响应，修复准备等。</p>
+<h3 id="集成测试用例的设计与规划"><a href="#集成测试用例的设计与规划" class="headerlink" title="集成测试用例的设计与规划"></a>集成测试用例的设计与规划</h3><p>测试用例的设计与编写是集成测试成功的关键，它决定了测试的方向和深入程度。而对于SIT自测和SIT拉通测试，显然测试用例的设计是不同的。SIT自测更注重本产品内的功能，而SIT拉通测试更注重端到端的场景衔接。</p>
+<h4 id="SIT自测的用例编写"><a href="#SIT自测的用例编写" class="headerlink" title="SIT自测的用例编写"></a>SIT自测的用例编写</h4><p>前面我们讲到，SIT自测有两个主要目标，一个是为PO验收迭代内实现的功能，一个是验证模块和模块间的接口集成。所以SIT自测阶段的测试用例也分为两个部分：</p>
+<ul>
+<li><p>一是由系统的用户（业务）联合PO从用户视角进行编写。由QA和IT PO审核修改完成的，进行测试的时候会根据业务场景和用例执行。</p>
+<ul>
+<li><p>优点是用例的场景更能贴近实际的业务，同时在编写用例的过程中可以让用户更加了解系统逻辑，是一个交流对齐的过程。</p>
+</li>
+<li><p>缺点一是存在重复测试，描述不足以及期望结果和系统内的实现可能不一致（业务期望全集而不只是一个一期的MVP）。二是耗时耗力，用例编写涉及人员众多，工程庞大，花费比较多的精力去组织协调。但是为了0-1转型打好基础，并节省后面UAT验收的成本，采用了这种方式。</p>
+</li>
+</ul>
+</li>
+<li><p>二是QA基于接口进行一些边界及异常场景的测试。这部分并没有以正式的测试用例形式出现，而是采用脑图的方式节约设计成本。</p>
+</li>
+</ul>
+<h4 id="SIT拉通的用例编写"><a href="#SIT拉通的用例编写" class="headerlink" title="SIT拉通的用例编写"></a>SIT拉通的用例编写</h4><p>SIT拉通测试和SIT自测的侧重点不同，它更关注从上游到下游整个贯通的场景。测试用例如何设计也是非常有挑战的事情。每个产品都在SIT自测时设计了自己的测试用例，如果用笛卡尔集拼接，数量将指数级增长，估计得测上几个月也测不完。但是按照一个产品，又有缺失场景的风险。最后是将整个产品集分成若干个主线，以主线场景为主，从自测用例中挑选合适的用例，组成端到端的测试场景。<br>最后我们产品所在的主线，大约挑选出250多个场景。在做测试计划时，为这些场景进行编号xxx-001，xxx-002，并基于编号进行测试规划。测试计划中依据每个场景在不同产品中的流转，规划每一天开始场景号，结束场景号，从而把几十个系统的集成，几百号人的集成拉通测试组织起来。下图就是整个SIT拉通测试组织计划图。分为5个主线，N个产品。不过这样拉通的成本也是非常高的，如果不是0-1的数字化转型，一般也无法组织起这么大规模的拉通测试。</p>
+<p>img</p>
+<h3 id="分支策略及SIT问题修复机制"><a href="#分支策略及SIT问题修复机制" class="headerlink" title="分支策略及SIT问题修复机制"></a>分支策略及SIT问题修复机制</h3><p>Scrum中针对每个服务的开发，一般我们都推荐采用主干开发的策略来管理代码，这更符合我们敏捷中尽早持续集成的理念。然而对于大规模的复杂产品来讲，如果我们有较长的集成测试阶段，集成期间就需要保持一定的代码稳定性，那么集成中发现问题的修复和新功能的开发之间就会产生冲突，这时候就不得不考虑更好的分支策略。<br>这个项目中我们就遇到了这个问题，滚动式集成策略使得同时可能最多会有三条线并行。也就是我们除了主干之外，需要有两个分支。第一个分支可能还在做SIT拉通集成，另一个分支在做SIT自测，主干进行迭代内开发。那么当集成测试中发现了问题后，该在哪个上面进行修复，如何保障几条线同步呢？我们采用了哪里发现问题，哪里修复的原则，之后再Cherry<br>Pick到其他线。</p>
+<p>这里如果某个集成分支发现的问题，就在这个集成分支上进行修复，之后再Cherry Pick到主干。如果还有另外一个分支并行，也要再Cherry<br>Pick到另一个分支。 这里如果代码差异很大，Cherry Pick可能不行，就需要手动修改代码。</p>
+<ul>
+<li>分支策略的优势</li>
+</ul>
+<p>要说这种分支策略的优势，其实就是满足了大规模敏捷测试中滚动式并行集成的复杂需求。这样使得我们可以阶段性的尽早地进行集成活动，尽早发现问题，一定程度的测试左移。<br>否则是无法进行这种复杂场景下的集成测试的。然而这种方式也是有成本的。</p>
+<ul>
+<li>分支策略的成本和风险</li>
+</ul>
+<p>这种方式的成本是显而易见的，开发同学必须一个问题进行多个分支的代码修改或者merge动作，测试同学必须在多个环境上进行验证。这无疑是带来了很大的工作量。<br>风险也同样明显，如果开发同学忘记merge到主干或者其他分支，这个问题会被遗漏，在将来再次出现，带来质量风险。</p>
+<ul>
+<li><p>风险应对策略</p>
+</li>
+<li><p>从流程规范上定义清晰，规避风险。</p>
+</li>
+<li><p>包括问题筛选分级，在缺陷中写入明确Comments，甚至duplicate一个缺陷或者task来track其他分支上的merge动作，把这个流程写进代码规范,<br>最后消除分支时再次进行检查等等。 这里有一个问题修复机制的流程示例。</p>
+</li>
+</ul>
+<p>前期Monitor执行情况，及时纠正，养成习惯。<br>即使这样有规范流程，在前期还是会出现很多遗漏和错误，测试Lead和TL需要在前期进行更细致的Monitor，来帮助团队养成习惯。</p>
+<h3 id="SIT测试环境的准备与升级策略"><a href="#SIT测试环境的准备与升级策略" class="headerlink" title="SIT测试环境的准备与升级策略"></a>SIT测试环境的准备与升级策略</h3><p>测试环境是集成测试中非常重要的基础。在迭代内测试中，我们主要使用Dev环境和Test环境来进行开发自测和QA测试。在集成测试中，我们需要准备集成测试的环境。由于该项目把集成测试分成了两个阶段，还需要准备两个环境SIT自测环境，SIT拉通环境。而环境的升级也分为两种，一种是统一升级，迭代测试结束后，要进入到集成测试阶段，这时要做整个迭代开发代码的统一升级。另一种是测试过程中发现的bug修复后进行的升级，我们叫它日常发版。无论是那种升级都需要很多的准备工作，也有可能踩很多坑。</p>
+<h4 id="统一升级"><a href="#统一升级" class="headerlink" title="统一升级"></a>统一升级</h4><p>由于我们采用的滚动式逐步加速的集成节奏，从一开始0-1搭建环境，到后期频繁升级，都有着很多痛苦的经历。最开始从0到1的环境搭建花费了近一周的时间，从基础设施搭建，公共服务部署，各服务部署与配置，到环境验证和主场景冒烟测试，真的是问题百出，险象环生，负责部署的同学一直熬了几个晚上。</p>
+<p>最突出的问题有以下几个方面：</p>
+<ul>
+<li>计划不明晰，信息不透明；</li>
+</ul>
+<p>最开始的时候，虽然也有环境升级的计划环节，但是并没有通知到所有的角色和执行人，导致在搭建和部署过程中发现问题时，才现抓人解决。有的人找不到，有的人找到也不明白上下文，感觉上一片混乱。<br>显然环境搭建和部署并不是某一个人的事情，它涉及到各个角色的协作，包括运维、TL、各模块的开发、QA，甚至需要验证的PO。不同的角色要协同一致，各司其职，才能保障环境的顺利升级。</p>
+<p>改进方案：<br>经过一轮的问题分析和讨论，决定三个手段来保障信息透明。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 升级启动会：每次升级前一两天开一个环境升级启动会，邀请所有相关人员，对齐升级的时间，环境，版本等信息。10到20分钟快速信息对齐。</span><br><span class="line"></span><br><span class="line">- 环境升级群：建立环境升级群，相关信息一律同步到群中。升级过程中有问题随时发群里，升级进度等也在群里实时体现。</span><br><span class="line"></span><br><span class="line">- 升级Always-on-call：升级过程中，建立Always-on-call，随时交流信息。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置问题频繁出现；<br>虽然有配置中心，虽然也有环境配置管理，但是总还是有很多需要手工去记录，更改的地方。在前期升级过程中，频繁出现配置问题，无论是服务的配置参数丢失，配错，还是环境配置参数忘记修改，都导致非常多的问题。排查问题也造成了很多的资源浪费。<br>这里有流程问题，技术问题，也有意识问题。有很多团队成员觉得配置问题不算是问题，只有代码的问题才是真正的bug。然而配置问题带来的危害一点不比真正的代码问题小。</li>
+</ul>
+<p>改进方案：<br>为此我们对所有的环境和配置问题进行了根因分析归类，找出共性问题，通过下列手段解决：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 创建升级检查checklist ：要求每个团队为自己负责的模块和服务都创建服务配置及环境配置检查单，TL评审后，升级期间由负责人员对照检查。同时还记录每次部署完成，验证完成具体时长，以便后续提升。</span><br><span class="line"></span><br><span class="line">- 创建环境验证及冒烟Checklist：QA 创建环境验证和主场景冒烟场景检查单，其中包括环境配置验证，定时任务验证，数据验证以及主场景验证等。避免漏查，漏测。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>单独升级某个服务，却由于模块间的互相依赖导致回滚；<br>协调所有模块一起升级是最安全的一个做法，但是它也是有成本的。尤其到后期更频繁的集成时，升级频率也非常的高。一起升级有时显得很笨拙。也曾有过单个模块单独升级的时候，然而大规模产品的共性问题就是有互相的依赖摆脱不开。虽然采用了微服务方式，但是一方面对于公共模块有依赖，尤其是前端公共基座的修改。另一方面集成测试有些场景涉及几个模块，需要进度对齐，一起升级。</li>
+</ul>
+<p>改进方案：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">对一些关键需求依赖提前识别，协调不同团队的开发资源和进度，尽量能够节奏一致。但是也开放exception的流程，提出由关键角色评审后，可以不跟随大节奏，单独或者几个服务一起升级。</span><br></pre></td></tr></table></figure>
+
+<h4 id="日常发版"><a href="#日常发版" class="headerlink" title="日常发版"></a>日常发版</h4><p>日常发版主要是缺陷修复后的升级。这个升级要简单很多，但是也会存在一定的风险，尤其是拉通测试时，一个服务出现问题，可能会导致整体的场景被阻塞，那影响的范围将是上百人，所以不能随意进行升级。要从几个方面去限制：</p>
+<ul>
+<li><p>规定可升级的时间段: 比如上午9:00之前，中午12:00-2:00，下午6:00-7:00，晚上9:30之后。如果存在一些紧急升级，需要PMO和测试Lead同意才能破例升级。</p>
+</li>
+<li><p>控制可升级的人群: 基本上每个模块分配一个QA能够升级，而限制其他人的权限，避免一些因信息缺失导致的错误升级。</p>
+</li>
+<li><p>每次升级留痕：每次升级都要留下记录，以备后续发现问题回溯查找。</p>
+</li>
+</ul>
+<h3 id="SIT集成测试准入准出标准"><a href="#SIT集成测试准入准出标准" class="headerlink" title="SIT集成测试准入准出标准"></a>SIT集成测试准入准出标准</h3><p>前面我们提到过，每个需求都要经历迭代内测试，SIT自测，SIT拉通，UAT产品验收，UAT拉通验收几个阶段之后才符合上线标准。那么每个测试阶段都有准入准出的标准。每个公司或者项目都可以依据自己不同的实际情况制定准入准出标准，主要包括几个方面：需求代码完成情况，上一阶段测试完成情况，以及缺陷修复完成情况。基本比较雷同，这里仅给出一个样例。</p>
+<p><strong>SIT准入标准：</strong></p>
+<ul>
+<li><p>开发编码完成，单元测试通过</p>
+</li>
+<li><p>迭代内测试100%完成并通过</p>
+</li>
+<li><p>缺陷修复率</p>
+</li>
+<li><p>阻塞&#x2F;严重缺陷 100%修复</p>
+</li>
+<li><p>普通&#x2F;优化缺陷&gt;95%修复</p>
+</li>
+<li><p>遗留问题都已评审并在系统中标注解决方案</p>
+</li>
+</ul>
+<p><strong>SIT准出标准：</strong></p>
+<ul>
+<li><p>计划的测试100%完成并通过</p>
+</li>
+<li><p>缺陷修复率</p>
+</li>
+<li><p>阻塞&#x2F;严重缺陷 100%修复</p>
+</li>
+<li><p>普通&#x2F;优化缺陷&gt;95%修复</p>
+</li>
+<li><p>遗留问题都已评审并在系统中标注解决方案</p>
+</li>
+</ul>
+<h3 id="集成测试中接口变更之殇"><a href="#集成测试中接口变更之殇" class="headerlink" title="集成测试中接口变更之殇"></a>集成测试中接口变更之殇</h3><p>SIT自测时关注的是产品内不同模块间的接口，一个产品内的团队至少联调机会多，有很多时候在test环境就已经放开mock，大胆集成了。所以接口问题没有那么突出，顶多是长链条涉及模块多的一些场景会有一些偏差，导致少量接口变更。</p>
+<p>然而在SIT拉通测试中，接口变更确成为最痛的痛点。<br>我们的产品处在上游，接口一般由下游消费方来提出需求。虽然前期也有约定，甚至接口集成平台上写得明明白白，但是由于这种0-1大规模的赶工产品交付，在前期必然思考的不那么周密，联调时的约定，也按不住后期方案的变更，需求的增多，理解的偏差，代码的混乱。于是乎，拉通测试中接口问题频频暴露，而接口的定义在这个项目环境下非常灵活。上游和下游总是会争得面红耳赤，都想在这场变与不变中处于有利位置。整个拉通现场堪比热闹的菜市场，争执声此起彼伏，一天下来不仅嗓子哑了，耳朵也接近聋了。参数不对，类型不对，必填非必填等等各种接口变更的问题，更离谱的甚至还有一个因为下游系统都对某个字段理解错误，按照错误的来实现，为了整体节约成本，也要上游来改接口。别人犯错，你来买单。</p>
+<p>这大大超出了我们对于接口变更带来的工作量的预期。<br>如果没有合适的接口变更处理机制，这些对第三方来说几乎无成本的变更会无穷无尽地扑面而来。于是为了控制变更膨胀，制定接口变更机制成为当务之急。作为供应商，更得把新需求和缺陷定义清晰。所以接口变更的流程和机制就呼之欲出。</p>
+<ul>
+<li>接口变更机制<br>出现问题后首先由QA，BA和PO共同协商判断，如果确定之前定义接口清晰明了，现在需要变更，就由PO起草新需求，按照新需求进入迭代内处理。如果之前有清晰定义，实现有误，就按缺陷处理。如果无法达成一致，就上报决策小组，最终决策小组形成决定。<br>但是集成测试中如果出现阻塞问题，需要立刻处理，否则会影响整个集成的进度。所以又把问题分为两种类型：</li>
+</ul>
+<p>阻塞场景：先响应，再记录。</p>
+<p>由于拉通测试的特殊性，当存在阻塞场景拉通的问题出现时，不管该问题最终被定义为缺陷还是需求变更，都需要第一优先级进行修复。为了处理这样的情况，即使是新需求，或者无法达成一致，团队也会立刻响应处理，随后再记录。</p>
+<p>普通场景：按照一般流程处理。</p>
+<p>这么大规模的E2E拉通测试真的很像一场战争，对于整个团队都是一个巨大的考验，QA更是这里的漩涡，如果不能提前做好规划和快速推动决策调整，任何一环节出现问题都会导致整个测试阻塞，耽误的就是几百号人的时间和精力。</p>
+<h3 id="QA在集成测试中职责的转变"><a href="#QA在集成测试中职责的转变" class="headerlink" title="QA在集成测试中职责的转变"></a>QA在集成测试中职责的转变</h3><p>QA在迭代内主要是进行故事卡的测试，最多是负责一些Showcase的准备和演示工作。但是在SIT测试中，QA的作用和职责发生了很大的变化。由于参与SIT测试的人员众多，尤其在后期拉通测试中，还要和其他产品团队一起测试。QA的职责从单一的测试执行转变为一专多能。首先转变为一个测试Coach，赋能IT<br>PO来进行测试；其次转变为一个Agent，问题解决的引擎。对每个问题进行分析，澄清，分发，驱动PO，开发，BA，甚至运维共同协作，快速解决问题；最后还是一个价值守护者，不仅守护着产品的质量，更要守护业务的价值，对拉通中产生的不断变化业务方案，接口定义，从用户角度，从ROI角度，据理力争，并基于问题不断调整测试策略。</p>
+<h4 id="作为测试Coach对ITPO赋能"><a href="#作为测试Coach对ITPO赋能" class="headerlink" title="作为测试Coach对ITPO赋能"></a>作为测试Coach对ITPO赋能</h4><p>IT PO第一次参与到测试中来，他们摩拳擦掌想要看到自己产品的样子是否满足自己的方案，同时还要对这些功能进行验收，为未来业务的验收做准备。为了帮助IT<br>PO尽快掌握的测试能力，QA变身为一个测试Coach，一对一的为IT<br>PO进行赋能。首先用业务的语言讲解系统实现的功能，方便其理解系统的交互逻辑以及一些简单的后端处理逻辑。其次用技术的手段帮助他们能够快速上手，将系统需要的配置以及跳过第三方依赖所需要的mock使用方法文档化，可以及时查阅。最后变为支持者，帮助他们定位问题，确定缺陷严重级别，建立与团队的沟通，将问题尽量描述清晰等等。在后续的各种集成测试，<br>UAT测试中，经过赋能的ITPO都发挥了重要的作用。</p>
+<h4 id="作为团队引擎驱动问题解决"><a href="#作为团队引擎驱动问题解决" class="headerlink" title="作为团队引擎驱动问题解决"></a>作为团队引擎驱动问题解决</h4><p>当PO或者其他产品人员在集成测试中发现问题时，QA首先要进行一个基础判断，是否是配置问题，数据问题，环境问题，那么马上就可以解决。如果确实是缺陷，则在缺陷上补充自己的分析和判断，流转给开发同学及时修复。如果是新的需求或者业务方案问题，则引入BA一起讨论澄清。QA在集成测试中是最关键的角色，像一个引擎，驱动整个团队来快速解决问题，使得集成测试能够顺利进行。</p>
+<p>QA同学也作为Scrum团队的一个屏障，将非代码问题都屏蔽在团队之外，减轻团队的工作量，有效地保障迭代内的交付。</p>
+<h4 id="作为价值守护者"><a href="#作为价值守护者" class="headerlink" title="作为价值守护者"></a>作为价值守护者</h4><p>QA是质量的守护者，同时也是价值的守护者。在集成测试中，除了代码的问题，更多时候会有接口的问题，业务方案的问题。在与业务，PO，BA以及其他产品的人员讨论中，QA作为业务和技术的结合点，需要提出自己的认知，从用户的使用角度，从技术的成本角度，统一考虑，以最优的成本守护价值。<br>同时要根据迭代内的测试反馈，不断地调整测试策略，制定重点的测试场景，对迭代内测试不充分，SIT发现问题较多和风险较高的功能进行回归测试。</p>
+<p><strong>一点感悟：</strong><br>大规模的系统总是要经历这样的SIT集成测试阶段，当然这次这个规模大得有点离谱，但是也让我们从中深刻体会到前期质量内建工作的重要性以及集成准备工作的必要性。在这样大规模的集成中，如果没有每个小团队很好的敏捷实践作为基础，实现了良好的质量内建，预防了很多问题，单是在集成中爆发这些问题，那后果不敢想象。很多其他产品（非TW涉及的产品）都深陷于其中，当初接口设计随意，业务逻辑没有理顺，一集成发现接口完全不能满足业务需要。当初没有持续集成，当前一大堆功能集成，改一个问题引入一大堆问题，这样高强度，大规模的集成，任何闪失都会暴露在聚光灯下，导致几百人工作的延迟，可想而知后果是什么。这里我要感谢我们的那些可靠实践IKM，开卡结卡，流水线，单元测试，Showcase等等。也许你觉得司空见惯，也许我们还有很多可以提升的地方，但是它们确实帮助我们在人员交替，新人无数的困难情况下顺利渡过了这场没有硝烟的战争。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">写在后面:</span><br><span class="line">在做交付时往往有一种感受，我司咨询中有那么多完美的方案和实践，可是真到自己交付时却有千种难，美好的理想难以落地让人苦恼，可是这也正是现实的真相。有很多实践需要土壤，需要环境，需要很多基础，你能做的是要洞察当前的状况，选择最适合的做法。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>TW</category>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>大规模敏捷测试怎么做？----“绿皮车”测试之旅（三）用户验收篇</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A3/</url>
+    <content><![CDATA[<h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>在敏捷项目中，用户验收测试（UAT）作为最后一项测试，担负着两个使命。其一是确保软件符合用户需求，即满足实际业务需求，使终端用户认可系统逻辑。其二是保证软件可以在实际环境或接近实际环境中运行。然而，随着业务复杂度和系统规模的不断提升，UAT验收的风险也随之增加。因此，需要采取更完备的应对计划和风险控制措施，以确保项目的成功实施。</p>
+<h2 id="二、UAT验收测试的基础"><a href="#二、UAT验收测试的基础" class="headerlink" title="二、UAT验收测试的基础"></a>二、UAT验收测试的基础</h2><p>产品的成功与否取决于是否能够满足最终用户的需求。然而，产品设计视角和最终用户视角存在矛盾。产品设计是从全局角度考虑问题，而最终用户则是从自己的视角考虑问题，这就会产生很大的矛盾。对于大型的系统来说，最终用户的人员非常庞杂，如何管理业务用户的期望，引导他们理解整体产品的设计方案，从更高的维度来看待产品是UAT验收测试面临的主要挑战。</p>
+<p>在UAT验收测试中，我们经常会遇到各种问题。例如，用户第一次接触产品时感觉与自己的预期不符，导致他们对产品不满意，甚至不想继续进行验收；使用过程中发现产品与线下习惯不一致，要求改变，但可能会影响其他功能；或者验证过程中，用户提出了新的需求和改进意见。</p>
+<p>为了避免或减少这些问题的发生，我们可以从需求早期开始与关键客户进行沟通交流，通过关键场景、产品原型、Showcase、试用等方式加深他们对产品的理解，引导他们理解整体产品设计方案，为最终的UAT验收测试打好基础。这不仅可以帮助我们更好地满足最终用户的需求，还可以提高产品的成功率。</p>
+<h3 id="关键场景确认"><a href="#关键场景确认" class="headerlink" title="关键场景确认"></a>关键场景确认</h3><p>关键场景是指产品中最重要、最核心的功能场景。在产品设计和开发过程中，需要通过和关键用户的沟通和交流，确定产品的关键场景，并对这些场景进行深入了解和分析，以确保产品的设计和开发能够满足用户的需求。同时要和关键用户确定关键场景的验收标准，以便在后期验收中达成一致。</p>
+<h3 id="产品原型"><a href="#产品原型" class="headerlink" title="产品原型"></a>产品原型</h3><p>产品原型是在设计前期开发出来的，以草图或模型的形式呈现产品的大致轮廓和功能。产品原型更直观地展示出产品，给用户更多视觉上的感受。基于产品原型与关键用户沟通和交流，能够在早期形成对产品的直观印象，激发他们对产品需求的思考，避免后期的发散。</p>
+<h3 id="Showcase"><a href="#Showcase" class="headerlink" title="Showcase"></a>Showcase</h3><p>Showcase是和业务的最早连接真实连接。每个迭代阶段要求关键的用户来观看关键场景的Showcase，以确保每阶段的主干核心场景是符合业务诉求的。在此时获得关键用户的反馈和新诉求，还可以在下一阶段迭代中及时修正和调整，避免到UAT验收阶段才发现大量的不一致看法。</p>
+<h3 id="关键用户试用"><a href="#关键用户试用" class="headerlink" title="关键用户试用"></a>关键用户试用</h3><p>所有的观看都不如真正的上手试一试。 在真正的UAT测试之前，我们还安排了一个关键用户试用的环节。在SIT产品内集成测试完成之后，邀请关键用户来进行一个简单的试用。</p>
+<p>说是试用也并不是无目的上来乱用。最重要的原则依然是管理用户的期望，进行合理的引导。 首先要做一个简单的关键场景的培训，带着用户把关键场景过一遍，了解整个的过程。并在特定环境上试用特定数据允许他们上手试一试，收集他们对系统初体验的感受和想法，并对一些疑问进行解答。 </p>
+<p>最后，基于关键用户的反馈，形成一个常见Q&amp;A（避坑宝典），以避免后续大规模UAT验收时面对庞大的业务团队，无力应对众多的问题。关键用户也可以作为种子选手，在真正UAT验收测试中帮助为其他的业务人员介绍线下业务流程如何在系统中进行操作，避免由于对系统不熟悉产生的问题，提高UAT效率。</p>
+<p>总之，通过关键场景，产品原型、Showcase、关键用户试用等方式来与关键用户沟通和交流，可以让用户更好地了解产品功能和设计，更早的获得用户反馈，从而减少UAT测试中出现的问题，提高产品的质量和用户满意度。</p>
+<h2 id="正式的UAT验收测试"><a href="#正式的UAT验收测试" class="headerlink" title="正式的UAT验收测试"></a>正式的UAT验收测试</h2><p>在进行大规模的复杂产品的UAT验收测试时，由于涉及的三方系统比较繁多，统一UAT时间可能会导致时间的空白期，所以我们利用这段时间提前进行一轮UAT产品内验收测试。产品内验收测试主要聚焦在产品内的一些关键用户场景，对于外围产品的依赖用Mock来实现。UAT产品间验收测试是多个产品共同验收端到端的场景，涉及到的人员和场景更为复杂。</p>
+<h3 id="UAT验收测试的准备"><a href="#UAT验收测试的准备" class="headerlink" title="UAT验收测试的准备"></a>UAT验收测试的准备</h3><p>通常情况下，我们的产品终端用户都是“兼职”参加UAT测试，因此通常没有足够的时间参与UAT的全流程测试。为了能够合理安排业务验收测试，节约业务人员的时间和精力，在开始正式的UAT验收测试之前，我们需要做好充分的准备工作。特别是对于端到端拉通验收测试，涉及的人员众多，场景复杂，需要更为详细的计划准备工作。</p>
+<p>主要的准备工作包括正式的产品培训、业务验收人员的安排、测试用例准备、测试账号准备、测试数据准备、测试环境准备、技术支持准备、问题解决机制、缺陷验证、回归测试以及重新发布规则等。</p>
+<h4 id="产品培训"><a href="#产品培训" class="headerlink" title="产品培训"></a>产品培训</h4><p>在测试开始之前，需要对所有参与的业务人员进行产品培训。现场进行产品功能的讲解和演示，并进行答疑，让大家对系统的使用有基本的了解，避免由于不理解系统功能产生的不合理缺陷。</p>
+<h4 id="测试用例准备"><a href="#测试用例准备" class="headerlink" title="测试用例准备"></a>测试用例准备</h4><p>测试用例的准备是非常关键的一个环节。通常是在UAT之前，IT产品和测试人员共同协助关键用户基于关键场景生成验收测试用例。基于前期讨论的验收标准，结合关键场景，并利用一定的测试设计技巧，产出符合用户验收测试的测试用例。 </p>
+<p>在测试用例准备中，我们遇到很多困难。由于用户场景中的参数非常多，用例数量庞大，无法在规定时间内完成测试。因此，我们结合业务代码和测试设计的方法（例如Twopairs和正交法），剔除其中重复覆盖代码的用例，将用例数量控制在合理的范围。</p>
+<p>通过与用户和产品经理充分沟通，从用户场景重要性、产品重要性和复杂度风险等多个维度确定测试用例的优先级，并制定合理的测试计划。</p>
+<h4 id="测试的业务人员安排"><a href="#测试的业务人员安排" class="headerlink" title="测试的业务人员安排"></a>测试的业务人员安排</h4><p>由于业务人员众多，不同的业务人员分管不同的业务场景，有些由于业务繁忙也无法到达现场。我们根据业务人员的负责的功能模块和场景不同以及实际的条件，把人员分成三个大组，两个梯队。第一梯队的人必须到现场进行验收测试，第二梯队的人可以远程进行。 每个组指定1个负责人，负责测试人员的到场情况，测试进度，以及测试中遇到的关键问题等的处理和协调。</p>
+<h4 id="测试账号准备"><a href="#测试账号准备" class="headerlink" title="测试账号准备"></a>测试账号准备</h4><p>由于这是一个面向企业的产品，所有用户都需要提前设置账号和权限。在测试开始之前，我们会根据事先收集到的业务人员信息，为每个人员创建账号，并收集不同角色需要的权限，以便进行账号权限的配置，保证业务人员能够第一时间沉浸式地开展验收工作。 </p>
+<h4 id="测试数据准备"><a href="#测试数据准备" class="headerlink" title="测试数据准备"></a>测试数据准备</h4><p>制作UAT测试数据是非常费时、费力的过程。我们需要根据业务场景制定相应的测试数据，以确保测试的充分性和准确性。因此，在SIT阶段，我们会尽量使用贴近真实的业务数据进行测试。在UAT阶段，系统中的基础数据直接来源于脱敏处理后的生产数据。我们通过对终端用户进行访谈，尽量模拟真实数据和数据量的业务数据。为了验证基础数据的有效性，我们在SIT阶段进行了多轮数据集成测试，以确保基础数据能够在上下游系统中流通。</p>
+<p>为了方便业务用户的使用，每个模块还准备了自己的可使用数据集合，共享给各个用户在验收测试中使用。</p>
+<h4 id="测试环境准备"><a href="#测试环境准备" class="headerlink" title="测试环境准备"></a>测试环境准备</h4><p>UAT测试环境需要尽可能与生产环境保持一致，但实际情况很难达到与生产环境完全一致的资源。因此，我们需要尽量保留生产环境的一些特征，例如每个服务至少有两个instances，打开负载均衡等，各种规格和配置达到相当或者同比例减小，操作系统、网络配置、数据库等都尽量与生产环境保持一致。同时，还要确保服务版本匹配，端到端拉通时要保证整个环境的版本相匹配。</p>
+<p>在测试环境准备中，测试人员需要提前对关键场景、关键数据甚至一些破坏性场景进行验证，以确保测试环境的可用性。</p>
+<h4 id="问题响应机制"><a href="#问题响应机制" class="headerlink" title="问题响应机制"></a>问题响应机制</h4><p>为了在UAT中及时响应业务发现的各种问题，我们建立了多层次的问题响应机制：</p>
+<ul>
+<li><p>现场专人支持：由不同模块的QA和BA&#x2F;IT 产品构成现场支持团队，针对用户发现的问题，及时响应，提高用户的满意度。</p>
+</li>
+<li><p>建立分层筛查多角色配合的问题处理流程和标准： </p>
+<ul>
+<li><p>QA初步判断问题是否是环境，配置或者使用的问题，是则当场解答或者推荐参考Q&amp;A。</p>
+</li>
+<li><p>如果是针对方案设计的疑问，BA&#x2F;产品经理将进行进一步的解释和回答，消除用户的疑问。</p>
+</li>
+<li><p>如果是新的需求或者优化建议，将问题登记到相应系统，标记为新需求和优化建议。之后BA和产品经理一起进行专题讨论处理。</p>
+</li>
+<li><p>如果确定是Bug，QA初步分析定位，进行缺陷登记后，走正常的缺陷处理流程。</p>
+</li>
+<li><p>如果是针对需求理解有争议，或者产品之间的接口有争议，则登记到待讨论问题列表，在每日碰头会上进行拉通讨论。如果无法决策，则升级到更高一级进行讨论。</p>
+</li>
+</ul>
+</li>
+<li><p>每日问题拉通。每日结束前对今天的问题进行总结拉通，未解决的问题通过邮件、电话、即时通讯工具或者专题讨论等方式来收集问题反馈，并及时安排专人负责处理和响应。</p>
+</li>
+<li><p>根据问题的重要性和紧急程度，制定相应的问题处理计划。对于重要性高、紧急程度高的问题，限定24小时内处理和解决；对于重要性低、紧急程度低的问题，可以安排在后续的版本中进行修复。</p>
+</li>
+</ul>
+<p>建立问题库的各种记录标准，比如发现问题类型，阶段，问题流转状态，处理过程以及最终决策，以便后续的追溯和分析。</p>
+<p>通过以上的问题响应机制，可以及时响应和解决UAT中发现的问题，提高产品的质量和用户满意度。</p>
+<h4 id="缺陷验证以及重新发布规则"><a href="#缺陷验证以及重新发布规则" class="headerlink" title="缺陷验证以及重新发布规则"></a>缺陷验证以及重新发布规则</h4><p>正是的，您对UAT阶段发现的缺陷的处理方式的描述是正确的。当发现的缺陷影响到上下游其他系统的业务流程时，会被定义为紧急缺陷，这种缺陷会被优先处理和修复。修复后，需要在SIT环境进行验证，并提出发布申请，申请通过后才能发布到UAT环境。对于不影响业务流程的修复，也需要在验证后进行版本发布，通常在非工作时间进行统一的版本发布以避免对UAT测试进度产生影响。</p>
+<h3 id="UAT产品内测试"><a href="#UAT产品内测试" class="headerlink" title="UAT产品内测试"></a>UAT产品内测试</h3><p>UAT产品内验收测试是UAT的第一阶段，主要聚焦于产品内的一些关键用户场景。对于外围产品的依赖，我们使用Mock来实现。在UAT产品内测试中，我们尽可能地完成所有场景测试，并记录所有问题，包括缺陷、性能瓶颈、易用性问题等。这有助于为后续的端到端验收打下坚实的基础。</p>
+<p>同时，我们还需要保持测试的节奏。如果存在一些关键场景的阻塞问题或遗漏，我们将触发紧急处理机制，快速修复升级，以保证测试的顺畅进行。</p>
+<p>在测试结束后，我们及时地对测试结果进行总结和分析。针对一些发现的问题进行专题讨论，例如UI优化专题，邀请UX和产品专家及时修正设计原则和方向，进行统一修改，以为UAT测试的下一阶段验证做好准备。</p>
+<p>总之，在UAT产品内测试中，我们需要保证测试的质量和效率，尽可能地发现和解决问题，以保证UAT的顺利进行。</p>
+<h3 id="UAT拉通验收测试-E2E-UAT"><a href="#UAT拉通验收测试-E2E-UAT" class="headerlink" title="UAT拉通验收测试(E2E UAT)"></a>UAT拉通验收测试(E2E UAT)</h3><p>E2E UAT 拉通验收测试是UAT 的最终阶段。它涉及验证整个端到端业务流程。这是为了确保系统能够正确处理用户的所有业务需求，并满足所有验收标准。</p>
+<p>和SIT拉通测试一样，我们也准备了详细的场景计划，每天有哪些场景启动，哪些场景结束，以及中间的流转过程都详细规划，确保多个团队可以步调一致，通力合作。</p>
+<p>在 E2E UAT 期间，将测试整个业务流程，从开始到结束。系统能够处理的所有类型的数据和场景，包括错误处理和数据验证都将被验证。最重要的还是多个系统间的接口能够正常通信，协调一致保证整个业务流程的进行。 </p>
+<p>在 E2E UAT 期间发现的问题，大多数是多个系统接口的问题，这些问题将被记录在一个共享看板上，每天结束前将由各系统一起拉通问题的定位和解决方案，一旦确定了修改系统，将把问题复制到相应系统的看板上进行处理。相应的场景将会被标记重测，问题修复后进行重测验证。</p>
+<p>总之，E2E UAT是 UAT 过程中至关重要的一步，确保了所有系统已准备好进行生产使用，并满足所有用户的业务需求。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>随着用户验收篇的完成，大规模敏捷测试怎么做系列也接近尾声了。在这个系列中，我们介绍了大规模敏捷测试的三部曲：迭代内测试，SIT系统集成测试和UAT用户验收测试。每个阶段都有其独特的特点和目标，下面我们再来回顾一下：</p>
+<h3 id="迭代内测试"><a href="#迭代内测试" class="headerlink" title="迭代内测试"></a>迭代内测试</h3><p>迭代内测试是大规模敏捷开发过程中的第一阶段，也是开发流程中最重要的测试环节之一。它是整个质量保证的基础。 在迭代内测试期间，团队会执行各种类型的质量保证活动，包括开卡，验卡，单元测试，模块内集成测试，用户故事功能测试，性能测试等，以验证软件是否符合需求和验收标准。</p>
+<p>迭代内质量保证的特点包括：</p>
+<ul>
+<li><p>测试左移：迭代内BA，开发和测试要紧密协作，测试尽早的参与到需求澄清，验收标准制定，通过不断的提问确保需求的描述质量。 同时在开卡，验卡过程中，从测试角度不断拉通对齐和BA，开发对需求的认知，保障需求传递的质量。 从而尽早的发现问题和解决问题。</p>
+</li>
+<li><p>高度自动化快速反馈：迭代一般周期非常短，通常2周一个迭代。迭代内测试是一个持续测试的过程，为了确保测试过程的效率和准确性，迭代内测试通常要求更高的自动化测试。比如单元测试覆盖率一般达到60%-80%的范围，而单接口的测试尽量可以达到100%。对于验收标准也可以采用BDD等方式来进行自动化。</p>
+</li>
+<li><p>探索式测试与Bugbash：基于每个用户故事的验收标准以及整个用户故事地图进行探索式测试是对自动化测试的有效补充。同时探索式测试也帮助发现更深层次的问题。 每1-2迭代组织不同角色进行一个短时间的Bugbash，有助于激发团队质量意识，从不同视角发现更广泛的问题。</p>
+</li>
+</ul>
+<h3 id="SIT系统集成测试"><a href="#SIT系统集成测试" class="headerlink" title="SIT系统集成测试"></a>SIT系统集成测试</h3><p>SIT测试是大规模敏捷开发过程中的第二阶段，也称为系统集成测试。在SIT测试期间，会测试整个系统的集成和交互，确保系统不仅符合需求和规范，还可以与其他系统和组件互操作。</p>
+<p>SIT系统集成测试的特点包括：</p>
+<ul>
+<li><p>测试环境复杂：SIT测试通常需要在一个复杂的测试环境中进行，这包括多个硬件、软件和网络组件，和其他系统之间的连接等。为了更好地测试系统集成和交互，SIT测试需要在尽可能接近真实环境的测试环境中进行，并确保测试环境的稳定和可靠性。</p>
+</li>
+<li><p>需要跨团队合作：SIT测试需要跨团队合作，不仅测试人员，还有开发人员、运维人员等都要和不同部门，不同系统的团队合作。测试人员将作为主要的协调引擎，确保测试过程的顺利进行。</p>
+</li>
+<li><p>需要测试集成和交互：SIT测试的主要目标是测试系统的集成和交互，确保系统能够与其他系统和组件无缝协作。在SIT测试期间，测试计划需要更加详细和全面，包括测试场景、测试用例、测试数据等。测试计划应该考虑到各种可能的系统交互和集成情况，包括问题响应机制，多个团队之间接口处理规则等等都是需要提前考虑的问题。</p>
+</li>
+</ul>
+<h3 id="UAT用户验收测试"><a href="#UAT用户验收测试" class="headerlink" title="UAT用户验收测试"></a>UAT用户验收测试</h3><p>UAT测试是大规模敏捷开发过程中的最后一个测试阶段，也称为用户验收测试。在UAT测试期间，最终用户将测试系统的功能、性能和用户体验等方面，以确保系统符合业务需求和用户期望。</p>
+<p>UAT测试的特点包括：</p>
+<ul>
+<li><p>管理用户期望：UAT测试需要最终用户参与，他们将测试系统的各个方面，以确保系统满足他们的需求和期望。但是用户更习惯于线下的使用，需要管理他们对于产品系统的期望，引导他们逐步熟悉产品系统，理解设计理念，并及时反馈。</p>
+</li>
+<li><p>强调用户体验：UAT测试的重点是用户体验，需要重点关注用户的反馈和建议，以确保系统符合用户期望。</p>
+</li>
+<li><p>高效及时的支持：为了让最终用户更好地理解和使用系统，除了提供详细的文档和培训材料外，还需要高效及时的响应支持。及时解答用户的疑问，消除使用的误解，提高用户满意度。</p>
+</li>
+</ul>
+<p>总体而言，大规模敏捷测试的三部曲——迭代内测试、SIT测试和UAT测试，可以逐步解决大规模系统的质量保证问题。在每个阶段中，测试团队需要根据测试目标和特点，制定相应的测试计划和测试策略，引入适当的测试工具和方法，以提高测试效率和质量。同时，测试团队还需要与其他团队协作，以确保系统的稳定性、可靠性和用户体验。</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>TW</category>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何为敏捷转型客户组织一场根因分析workshop</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A6%82%E4%BD%95%E4%B8%BA%E6%95%8F%E6%8D%B7%E8%BD%AC%E5%9E%8B%E5%AE%A2%E6%88%B7%E7%BB%84%E7%BB%87%E4%B8%80%E5%9C%BA%E6%A0%B9%E5%9B%A0%E5%88%86%E6%9E%90workshop/</url>
+    <content><![CDATA[<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在帮助客户完成敏捷转型的过程中，作为顾问团队，我们需要协助客户建立贯穿产品交付生命周期的一整套敏捷研发流程。在这个过程中，由于需要改变客户现有的工作模式，转型面临诸多阻力与挑战。如果能为客户降低工作中的阻塞，一方面可以提高敏捷运作的流畅度，另一方面也可以赢得客户的信任，提高配合度。近期我们为客户组织了一次测试环境问题梳理活动，本文分享了活动的完整历程，对过程中遇到的问题及使用的方法、工具做了介绍，旨在为大家提供实践参考。</p>
+<p>关键词：Workshop | 根因分析 | 鱼骨图 | 5 why</p>
+<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>近期在团队教辅过程中，多个团队频繁出现测试环境阻塞问题。这些团队隶属于同一部门，负责不同的业务，具备以下几个共同特征：</p>
+<ul>
+<li>共同工作在“大泥球”架构上<br><img src="/assets/images/26.png"><br>按组织架构划分系统层次。每一层的所有模块归属于一个部门，每个模块对应一个代码仓库，模块内部包含多个子模块，每个团队分别负责其中一部分子模块。纵向虚拟团队之间配合，实现业务需求。横向团队间业务关联弱，但代码与架构不得不耦合在一起。</li>
+<li>业务流程链路长<br>业务实现被映射到每一层，散落在不同的子模块内，导致大部分需求均需要跨多个部门协作来完成开发。相应的，系统的可用性取决于各个模块的稳定性。 </li>
+<li>工程实践能力弱<br>主要体现在编码质量不高，如绝大部分代码面向基本数据类型编程。单元测试有效性差，如：只看覆盖率却没有使用断言。由专门的基础设施团队来负责统一的平台建设，团队对基础设施缺少管理经验。</li>
+</ul>
+<p>过多的内外部依赖与脆弱的代码质量，导致整个业务链路故障频率很高，测试流程非常容易发生阻塞。由此顾问团队组织协调多个团队，开展测试环境问题治理活动，并举办了环境问题梳理workshop。在workshop上，客户多个团队以共创的形式梳理当前的主要问题和根本原因，产出下一步改进计划，并确立了后续跟进机制，以持续优化测试环境稳定性。</p>
+<h2 id="阶段一：问题收集"><a href="#阶段一：问题收集" class="headerlink" title="阶段一：问题收集"></a>阶段一：问题收集</h2><p>作为梳理活动的起点，问题收集的方式考虑了以下几方面因素：</p>
+<ul>
+<li><p>问题随机发生，表现形式多样，理想状态下需要通过一段时间的积累和统计才能拿到全貌。但这种方式时间成本较高，且需要建立更长线的团队配合机制。</p>
+</li>
+<li><p>顾问对于团队的实际情况认知并不全面，因此需要依赖团队来提供输入。而团队往往疲于应付交付工作带宽有限，因此需要尽量高效的收集信息。</p>
+</li>
+<li><p>不同团队、个体的视角均不一致，信息来源需要尽量丰富，以降低样本间的偏差。</p>
+</li>
+</ul>
+<p>基于这些因素，我们收集问题的策略优先考虑效率与广度。因此设计了两个阶段的数据收集：问卷调研与共创补充。</p>
+<h3 id="问卷调研"><a href="#问卷调研" class="headerlink" title="问卷调研"></a>问卷调研</h3><ul>
+<li><p>问卷规划：首先需要对问卷内容进行规划。除了基本的信息量，问卷还需要包含一些维度信息，以便从多个角度分析数据。本次问卷包含的选项有问题描述、问题原因、模块名称、影响时长、发生频率以及角色。</p>
+</li>
+<li><p>问卷发放：问卷发放环节与各个团队的客户TL做好沟通工作，明确当前的目标，并请TL协助通知团队成员。TL作为团队中的技术管理者，一方面能帮助我们牵引团队，另一方面也是我们获取信息的重要途径。比如这次问卷的设计环节，便是我们和其中一位TL共同完成的。</p>
+</li>
+<li><p>数据分析：对收集到的数据进行初步的整理，在这一环节我们根据影响时长与发生频率两个维度归类问题，掌握问题的影响分布。</p>
+</li>
+</ul>
+<p>最终，总共收集到13份问卷，包含24条目。有效填写人数比例约60%。依据问卷中两个时间维度，最终整理出了初步的问题范围，如下图：<br><img src="/assets/images/27.png"></p>
+<p>但是收集上来的数据也存在细节不足，比如存在概括性的描述“服务不可用”、“XXX系统无法访问”等。另外不同的人对相同问题的感知频率与时长，可能出现不一样的感受。</p>
+<h3 id="共创补充"><a href="#共创补充" class="headerlink" title="共创补充"></a>共创补充</h3><p>问题收集第二个阶段发生在workshop上，形式与Retro基本一致，只是增加了问卷收集结果作为输入。</p>
+<h2 id="阶段二：解决方案共创Workshop"><a href="#阶段二：解决方案共创Workshop" class="headerlink" title="阶段二：解决方案共创Workshop"></a>阶段二：解决方案共创Workshop</h2><p>Workshop其实是本次环境问题梳理活动的重点环节，需要满足多方面要求：</p>
+<ul>
+<li><p>人员：受邀者范围应该尽量广泛，在输入上提供更广阔的视野，在输出上影响更多的团队。</p>
+</li>
+<li><p>角色：需要有多种类型的关键角色，包括但不限于以下：</p>
+<ul>
+<li><p>直接相关人-团队为主：需要有人来提供问题的准确输入，以及承担大部分后续的改进工作。</p>
+</li>
+<li><p>长期负责人-部门架构师：需要有人能持续牵头跟进，确保治理活动的延续性。</p>
+</li>
+<li><p>核心干系人-部门领导层：需要有人来决策拍板、提供资源支持。</p>
+</li>
+</ul>
+</li>
+<li><p>流程：流程需要顺畅，以确保在有限的时间内，尽可能的让大家充分投入、足够聚焦，来提高产出的质量。</p>
+</li>
+<li><p>产出物：如同Retro成功的标准一样，需要确保活动有可执行的产出，指定到人的action，明确的时间节点。</p>
+</li>
+</ul>
+<h3 id="确定参与者"><a href="#确定参与者" class="headerlink" title="确定参与者"></a>确定参与者</h3><p>在workshop之前，我们通过与部门负责人的沟通，圈定了核心干系人，包括部门架构师与测试经理。架构师承担了重要的决策作用，也会作为长期负责人推进后续的改进工作。与我司常见的全功能团队不同，客户的研发与测试属于两个部门，测试人员被派驻到团队，汇报给测试经理。因此测试相关的实践优化需要与测试经理达成一致，才便于在团队中推行。除此之外，测试经理还承担了管理测试环境、与基础设施团队对接的职能。</p>
+<p>团队方面我们邀请了4个研发团队的TL、骨干Dev和团队内QA作为直接相关人，共计15+成员参与workshop讨论。这里有一个隐性的重要因素：在邀请团队时，需要确保其中有“积极分子”。客户大部分同事还不习惯做一些“额外”的事，习惯于按部就班的完成给定的任务。但workshop的效果非常依赖与会者的主动参与度，如果大家都不敢或者不愿意表达见解，那么会面临冷场、产出不足的风险。其中的一位TL就是我们认定的“积极分子”，在预约时优先考虑他的档期。事实也证明这位TL除了提供多项建议外，还带动了大家讨论的气氛，起到了非常关键的作用。</p>
+<p>凑齐这些核心参与者也需要不少沟通协调工作，各种因素影响下，workshop的日程改期了两次才得以举行。</p>
+<h3 id="活动准备"><a href="#活动准备" class="headerlink" title="活动准备"></a>活动准备</h3><p>准备工作一方面需要围绕会议做基本事项准备，另一方面需要提前规划活动流程。</p>
+<p>基本事项包括了会议时间协调、会议室预定、会场布置、会议使用的片子准备等内容。</p>
+<p>流程规划类似于计划会，我们以2小时为目标，对各项活动进行了时间分配。在workshop开始前，团队内部进行了彩排。基于大家的经验与彩排的效果，最终workshop的环节安排如下：</p>
+<ul>
+<li><p>会议目标（5min）</p>
+</li>
+<li><p>问题梳理（20min）</p>
+</li>
+<li><p>根因分析（50min）</p>
+</li>
+<li><p>方案讨论（30min）</p>
+</li>
+<li><p>下一步行动（10min）</p>
+</li>
+</ul>
+<h3 id="问题梳理"><a href="#问题梳理" class="headerlink" title="问题梳理"></a>问题梳理</h3><p>问题梳理环节的目标是让大家对现状达成共识，包括对齐调研问卷结论以及遗漏问题的共创补充。</p>
+<p>我们将电子表单收集到的数据提前挪到物理看板，并现场与大家依次澄清细节，确保团队对内容、影响程度没有明显争议。在梳理完问卷涉及问题后，邀请大家基于经验，补充遗漏的问题。比较有意思的是，有一个重要的问题便是在workshop现场补充的，并没有出现在任何人的问卷中。</p>
+<p>在基本圈定整体范围后，与Retro类似，我们对话题进行了合并分组，投票确认优先级。选定高优先级的三个话题作为根因分析环节的输入。问题梳理结果如下图所示：</p>
+<p><img src="/assets/images/28.png"></p>
+<p>问题梳理环节需要带领所有人进行协作，因此需要主持人具备一定的引导技术。一方面需要引导大家产出高质量的内容，另一方面要关注现场的氛围。</p>
+<p>根因分析</p>
+<p>根因分析是不确定性最大的环节。一方面，待分析问题的深度与广度无法事先估计，需要现场根据时间来控制范围。另一方面，该环节的结论决定了后续的改进的目标，如果方向偏离则后续的改进都会失去意义。因此，根因分析环节的流程设计如下：</p>
+<ul>
+<li><p>首先将参会人分为三个小组，每个小组不超过6人。</p>
+</li>
+<li><p>每个小组选同样的问题，完成根因分析与方案内部讨论。</p>
+</li>
+<li><p>所有小组讨论完选定的问题后，依次showcase组内产出。其他小组负责提问与补充，确保跨小组达成一致。</p>
+</li>
+<li><p>Showcase均结束后，所有小组切换下一个问题。</p>
+</li>
+</ul>
+<p>在内部讨论环节我们使用了两个工具，一个是鱼骨图，一个是5 why。鱼骨图主要是为了让大家先梳理出分类，激发大家从更多的维度来思考根因。5 why是为了保证每个话题讨论的深度，避免无法深入到底层原因。这两个工具在使用前，需要向团队介绍使用方法。这里借鉴了我司内部培训使用的一个样例。</p>
+<p><img src="/assets/images/29.png"></p>
+<p>鱼骨图做根因分析时，首先将待讨论的问题写在鱼头处，聚焦事实本身，尽量精确描述问题，基本的句式结构为“What’s wrong with what”（描述不符合预期的行为，可通过加否定式检查是否是预期的行为，来判断问题描述是否正确）。</p>
+<p>然后需要确定骨架，也就是问题原因的主要分类。标准的推荐分类包含人员、机器、材料、方法和环境。结合测试环境问题上下文，我们给团队推荐的分类包括基础设施、方法与实践、代码与架构、数据、流程规范以及人员角色。推荐的做法是最后讨论人员角色维度，以求先从客观原因出发，避免一开始便陷入互相指责。</p>
+<p>骨架确定后，在每个分类中采用5 why寻找根因。首先从问题出发寻找直接原因，然后层层递进，每一次原因找到后转化为下一个问题，继续寻找下一层的原因，直到找到根因。根因有一个比较主观的判断标准，就是对当前团队有意义，做出改变就能影响到。找到根因后，可以从问题出发，用“因为”串联每一层根因来判断逻辑是否通顺（反向用“所以”来串联）。</p>
+<p>最终在根因确定后，基本就可以产出相应的解决方案。</p>
+<p>团队在梳理完三个问题的根因后，产出的分析结果如下图所示：</p>
+<p><img src="/assets/images/30.png"></p>
+<p>从根因分析的结果来看，大家对工具的熟悉程度不够，导致使用并不是很规范。</p>
+<p>部分团队在定义问题时，描述不够具体，如：“基础设施问题”。应该表达出不符合预期的特征，如“基础设施对交付活动产生了阻碍”。</p>
+<p>部分根因分析链路，并没有严格遵循5 why的逻辑递进结构。</p>
+<p>另外，根因分析环节耗时确实超出了不少预期，单个问题的分析耗时基本在30分钟，因此后两个问题便改为不同的小组分别讨论，集中showcase。</p>
+<p>不过从现场观察来看，鱼骨图对拓展大家思路还是有一定的帮助，能够提醒大家从多个方面思考问题的原因。尽管分析过程还有改进的空间，但在showcase环节大家还是互相提出了一些问题，并通过共同决策消除了争议，达成了共识。</p>
+<h3 id="下一步计划制定"><a href="#下一步计划制定" class="headerlink" title="下一步计划制定"></a>下一步计划制定</h3><p>随着根因与方案的明确，下一步计划基本快速的确定了下来。这里与我们常见的团队retro不同，“领导层”的支持与决策分量更重一些。一方面是因为团队还是习惯于被动接受任务这种工作方式，一方面是因为部分改进举措是需要团队外资源协助，还有一部分原因是测试环境治理是长期工作，需要建立起来管理机制来持续跟进，“领导层”的支持是保证这套机制运转的重要条件。</p>
+<p>具体的改进计划表参考：</p>
+<p><img src="/assets/images/31.png"></p>
+<p>至此，整个环境问题workshop环节全部结束。在历时3个小时的workshop后，产出了9项改进举措。其中4项为团队级改进，3项需要组织级支持，2项需要跨部门协作。</p>
+<h2 id="阶段三：计划跟进"><a href="#阶段三：计划跟进" class="headerlink" title="阶段三：计划跟进"></a>阶段三：计划跟进</h2><p>在完成了改进举措产出后，还需要确保举措按计划落地，也需要观察改进效果，确保举措的有效性。如果发现效果不理想，还需要进一步探查原因。</p>
+<p>跟进机制主要是利用定期例会来建立。一方面，客户技术负责人会在定期的技术例会上，收集各个团队的进度与反馈。另一方面，顾问也会在与部门负责人的周期例会上，汇报所列事项的进展情况，提升“曝光度”。</p>
+<p>成效主要通过数据对比来度量。一方面计划利用同样的问卷，来收集阶段性的反馈，观察大家主观感受的变化。另一方面，客户有定期的问题复盘会。通过对比改进前后的统计数据差异，来更加客观的观察问题发生的趋势。</p>
+<p>截至目前，产出Action已经陆续开展，后续将会以收集环境问题统计数据的形式，关注改进效果。</p>
+<h2 id="总结与反思"><a href="#总结与反思" class="headerlink" title="总结与反思"></a>总结与反思</h2><p>最终经过2个星期左右的历程，环境梳理活动第一阶段告一段落。对整个过程复盘，可以得到以下的一些体验。</p>
+<p>Well：</p>
+<ul>
+<li><p>虽然鱼骨图工具使用方面并不稔熟，但其结构化的能力还是能够帮助大家拓宽视角，帮助团队完成共创活动的核心目标：产出具体到人的可执行Action。这里其实也应证了我们一贯的团队引导价值观，“相信大众智慧会找到最佳解决方案，相信均等参与会得到最佳的执行力”。</p>
+</li>
+<li><p>得到了来自领导层的支持，引入了重要的干系人，扩大了影响力范围，并确保产出快速落地执行。</p>
+</li>
+<li><p>引入了团队中的“积极份子”，带动了其他人的投入度，让整个流程更加平顺。</p>
+</li>
+<li><p>通过梳理活动，顾问团队扩大了与客户的接触面，与团队外的重要干系人建立了联系，对后续教辅活动有一定的帮助。</p>
+</li>
+<li><p>顾问内部的协作配合也是非常关键的因素，在整个活动的每一个环节，都包含了多位同事的共同合作，确保了整个流程的顺利进行。</p>
+</li>
+</ul>
+<p>Suggestion：</p>
+<ul>
+<li><p>针对可能出现的卡点，可以提前做预案，在现场出现滞涩时可以适度引导。</p>
+</li>
+<li><p>引入工具时需要考虑与会者的学习成本与主动性，通过更贴合当前上下文的例子来解释用法。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>TW</category>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>Workshop</tag>
+        <tag>根因分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>探寻本源，用户故事为什么被敏捷推崇</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E7%94%A8%E6%88%B7%E6%95%85%E4%BA%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A2%AB%E6%95%8F%E6%8D%B7%E6%8E%A8%E5%B4%87/</url>
+    <content><![CDATA[<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>用户故事是敏捷开发中不可或缺的一环，也是BA工作中绕不过去的一环。</p>
+<p>在以往工作的经历中，对于如何评价一个BA的卡是否写得好，常常听到大家的标准是AC细节是否滴水不漏，大家更愿意将AC等同于「卡」来进行细节的争论，却鲜少争论「故事」本身。</p>
+<p>这让我在入职初期边吭吭哧哧花很多时间写细致到标点符号和点击按钮跳转的AC，又一直有一个迷思：这么写跟一张小型需求文档有啥区别呢？我都写成这样了，测试用例还要写啥啊？我都写成这样了，怎么还能在DC的时候才告诉我这个技术上无法实现啊？白纸黑字到底哪里出了错！</p>
+<p>在复杂业务下，它的格式能承载的信息又不够描述清楚上下文，我还得依托其他的流程图等等工具辅助在卡里说明，那描述和传递需求的方式有这么多种，用户故事为什么被敏捷推崇？</p>
+<p>我想纠结一个实践本身的标准实际并没有意义，所有的实践都是为了解决某个问题而存在，因此这篇文章想通过向上思考为什么敏捷要用用户故事来聊聊它的本质和价值，以便我们可以更好地应用用户故事。</p>
+<h2 id="Why-用户故事"><a href="#Why-用户故事" class="headerlink" title="Why 用户故事"></a>Why 用户故事</h2><h3 id="最初的问题"><a href="#最初的问题" class="headerlink" title="最初的问题"></a>最初的问题</h3><p>用户故事的起源可以追溯到20世纪90年代，当时软件开发界还在流行瀑布式开发，整个开发周期采用需求→开发→测试按部就班的线性模式进行协作，导致普遍存在以下几种问题：</p>
+<ul>
+<li>不同角色之间的交流和沟通相对较少，极易在不同阶段出现需求理解偏差，导致最后的产出不符合预期。</li>
+<li>线性协作的流转周期较长导致问题的发现有严重的滞后性，大大增加了修正错误的成本。</li>
+<li>由于团队以整个需求文档为指导来进行开发，因此很难及时响应需求变化。</li>
+</ul>
+<h3 id="极限编程-用户故事的诞生"><a href="#极限编程-用户故事的诞生" class="headerlink" title="极限编程 - 用户故事的诞生"></a>极限编程 - 用户故事的诞生</h3><p>Ron Jeffries、Kent Beck和Alistair Cockburn等人就是在这样的背景下提出了极限编程（XP）的软件开发实践，也在21世纪初和其他几个志同道合的人一起喊出了敏捷宣言。</p>
+<p>极限编程里所推崇的实践大部分和我们现在所熟知的敏捷实践一样，它的目的就是为了解决如上所述传统软件开发中的问题，从而让软件开发可以达到：</p>
+<ul>
+<li>能快速发现和响应业务变化；</li>
+<li>能持续优先交付高价值&#x2F;高质量的软件。</li>
+</ul>
+<p>在此目的下，XP推崇以团队紧密协作、尽可能短的反馈循环以及卓越技术的原则来指导采取的实践，譬如站会是为了团队可以及时暴露风险和寻求帮助，开&#x2F;结卡、按迭代进行开发和showcase等都是为了缩短功能的验证周期，code review 、重构等都是为了追求技术卓越。</p>
+<p>显然，敏捷开发如果继续使用冗长、复杂，难以理解和快速验证的传统需求文档来进行迭代开发已经无法满足这样的实践原则：</p>
+<ul>
+<li><p>需求文档写出来之后业务不会一成不变：如果在—开始的时候就花费大量的时间来完善整个方案的功能细节，然后以此来指导开发，不管是由于业务变更造成的文档修改还是代码修改都是对人力的极大浪费。</p>
+</li>
+<li><p>即使需求的细节写得再详细，文档也无法把所有隐含的业务知识百分之百传递出去 ：由于每个人的知识体系不一样，同样的表达不可避免地会在表达者和接收者之间造就不同的理解，既然不可能有完美的表达，那么相比详尽的文档，用促进沟通代替阅读更能不断交换彼此的隐性知识，达成对业务价值的共识；</p>
+</li>
+<li><p>继续使用整体功能文档的粒度来指导团队进行开发，无法实现迭代开发的需求管理和验证反馈：人力和时间都是有限的，并且并不完全可控，而一个解决方案里，不同的功能并不是都在同一个不可分割的优先级，我们需要一个办法始终让优先级最高的功能点先被交付，进行验证。</p>
+</li>
+</ul>
+<p>因此，为了实现开发「敏捷化」，需求也同样的需要「敏捷化」，在团队交付最终软件之前需求都应该可以被快速简单的迭代，由此用户故事在极限编程方法的实践中应运而生，并逐渐演练成敏捷开发方法的核心概念之一。</p>
+<h2 id="所以用户故事是？"><a href="#所以用户故事是？" class="headerlink" title="所以用户故事是？"></a>所以用户故事是？</h2><p>大道至简，回归本源，用户故事名如其意，最开始的初衷就是期望用故事的方式讲述需求，核心的思想就只有三句话：</p>
+<p>通过As a user role，I’d like to …, so that …的形式来强调什么用户、需要什么功能和为什么需要这个功能（能得到什么收益），其中用户想解决的问题是故事的核心，满足需求的功能方案可围绕目标进行协商。</p>
+<h3 id="所以，它首先是一个需求的沟通工具："><a href="#所以，它首先是一个需求的沟通工具：" class="headerlink" title="所以，它首先是一个需求的沟通工具："></a>所以，它首先是一个需求的沟通工具：</h3><p>在需求早期的时候可以和利益相关者们快速地通过先写出一个起始的目标层面及占位意义的故事列出业务想要解决的问题，让大家对要开发的系统有一个整体的概念，然后始终围绕业务目标来思考需求存在的必要性；</p>
+<p>进入迭代后，这种场景化描述易于理解和记忆，可以将业务价值清晰传递给团队，团队可以将注意力从纠结功能如何做转向从理解和讨论用户故事的sothat开始来对验收的标准达成共识，朝着清晰的目标前进。</p>
+<p>要知道当一个人对于正在做的事不知道有何意义时，是痛苦的。BA需要不断跟团队拉齐业务的目标感，这样团队才不会后劲不足。</p>
+<p>###其次是一个需求的管理工具：</p>
+<p>通过user以及so that不断追问业务价值，用户故事可以将大的业务目标逐步拆解成一个个小的目标，从而选择出ROI最高的解决方案，保证团队可以始终优先交付业务价值最高的功能最小集；</p>
+<p>同时用户故事的编写和管理更加灵活，可以快速进行拆解和优先级排序，适应需求的变化。</p>
+<h2 id="How-to-use-it-一些小tips"><a href="#How-to-use-it-一些小tips" class="headerlink" title="How to use it - 一些小tips"></a>How to use it - 一些小tips</h2><p>在理解了用户故事在敏捷中的本质之后，我结合过往的项目经历，重新思考总结了我认为非常有用的两个用户故事的使用方法，</p>
+<h3 id="怎么拆卡：时刻谨记so-that大法，切勿从功能出发"><a href="#怎么拆卡：时刻谨记so-that大法，切勿从功能出发" class="headerlink" title="怎么拆卡：时刻谨记so that大法，切勿从功能出发"></a>怎么拆卡：时刻谨记so that大法，切勿从功能出发</h3><p>我们可能常常会面临很多「伪」敏捷场景，比如需要在很早期的阶段就开始评审总体方案和高保真原型，或者在进入迭代前需要跟客户sign off故事卡，很多时候我们就会不自觉陷入如何让客户buy in解决方案的思维陷阱中去，也就是先把方案做出来了，再在方案的基础上开始写story。</p>
+<p>这个时候，因为下意识觉得方案已经定了，原型也出来了，BA往往就会不自觉倾向于拉着TL从「开发角度」下的工作量大小和开发依赖出发功能by功能地进行拆卡，而不是渐进增强地按照最小业务价值去拆卡。</p>
+<p>by功能拆卡和by价值拆卡两者的区别是什么呢？我举一个项目上非常简单的真实例子：</p>
+<p>产品背景：一个白板协作工具，核心产品场景是聚焦于团队的工作坊协作而非个人作图工具，核心用户是工作坊facilitator，白板是facilitator收集参与者想法的承载工具。facilitator可以引导参与者使用数据sticky来表达想法，数据sticky的文字内容及其对应的标签会被自动收集到数据表中供facilitator整理产出。<br>需求背景：facilitator在准备工作坊白板的时候有信息传递需要，但这部分信息并不是协作产出，被数据表收集反而会污染产出数据，因此，产品需要提供给用户纯视觉的图形文字功能进行信息区分。<br>这是一个任何可以绘图的工具里都非常常见的一个功能，并且设计大同小异。以下是设计图稿：<br>截屏2023-06-08 15.44.59.png<br>按功能拆卡：<br>story 1.在图形上添加文字<br>AC 1 白板协作者可以直接在图形上编辑文字，保存后的文字会显示在图形上（不溢出）<br>AC 2 白板协作者在图形上编辑文字时超出了图形范围，超出的部分会半透明显示<br>AC 3 白板协作者保存文字后，超出图形范围的文字部分会被图形遮挡，并且有「展开」按钮（溢出）<br>AC 4 存在文字溢出时，白板协作者可以展开图形让文字显示完整（溢出）</p>
+<p>但从问题出发去阐述这些功能提供给用户的益处，就会发现这里面实际上混杂了好几种不同的用户价值：<br>Story 1.用户可以在白板上使用非数据图形元素来传递信息 – 验收点：in scope ：可以编辑文字，溢出后被遮挡；out scope ：展开按钮；<br>story 2.用户可以一键让图形自适应文字篇幅无需手动拉伸 - 验收点：溢出时有展开按钮告知用户可以展开，能够将图形展开到可以显示所有文字；<br>story 3.用户在编辑的时候就可以明显区分哪些文字会被遮挡 - 验收点：溢出时有展开按钮告知用户可以展开，能够将图形展开到可以显示所有文字；</p>
+<p>可以很明显地看出来，卡1其实就实现了用户的核心诉求，并且已有的功能也可以曲线解决卡2和卡3想要解决的问题：1.被遮挡后用户可以自行去拉伸图形适应文字，只是卡2提供的是体验更好的快捷操作；2.即使不区分透明度，用户只要保存一次也能知道这部分已经溢出了；<br>产品的核心场景和persona，可以轻松判断业务优先级story 1&gt;&gt;story 2&gt;&gt;story 3；再加上story 3评估之后实际需要花费的effort远超出了它的收益，因此story 3一直放在产品backlog里没有被规划进迭代。</p>
+<p>上面的例子里，最开始我们就是按照功能拆的卡，开发估点的时候也没啥意见：从功能来说，就是这么设计的嘛。然后开发开始闷头干活，直到干到透明度的时候才发现发现卧槽，这个实现好像还有点复杂，活好像干不完了才想起来和BA讨论scope有点大啊；</p>
+<p>放在客户项目的场景里，就是一来时间就这样被浪费在了一个优先级非常低的功能点上。二来卡拆出来还又得和客户去说明为什么这个我们说好的功能点这个迭代做不了。</p>
+<p>这并不能怪开发在估点和开卡的时候没有认真思考提前告知，就像BA写需求文档一样，开发也无法在开始编码前就知道所有的实现细节。</p>
+<p>所以对于BA来说，在进入复杂度和依赖的讨论前，我们需要的就是将故事卡拆解为一个个业务最小价值，不用在乎卡会不会太小，会不会太多，在此刻，最重要的是把问题讲清楚，边界讲清楚，优先级讲清楚。</p>
+<p>要知道，需求并不存在膨胀一说，只存在价值不明晰而导致的边界不清晰。故事的边界清晰了，我们跟客户对迭代scope进行圈定的时候，对业务优先级的共识也会更明确，少一些showcase时和客户掰扯「这个功能点怎么没做」的场景。</p>
+<p>不过需要注意的是，最小代价实现功能也不代表着要放弃所有的用户体验和产品设计一致性，一个业务价值应该被拆至何种粒度，满足这个价值的功能范围可以被舍弃到哪种程度，就需要BA结合当前的产品阶段定位和资源情况，不断去进行刻意练习了。</p>
+<h3 id="怎么写-：-鼓励沟通，别把AC写成测试用例"><a href="#怎么写-：-鼓励沟通，别把AC写成测试用例" class="headerlink" title="怎么写 ： 鼓励沟通，别把AC写成测试用例"></a>怎么写 ： 鼓励沟通，别把AC写成测试用例</h3><p>同样的，一个故事卡进入迭代之后，也会常有一个思维误区：既然方案都已经和客户确认了，那BA应该致力于把方案细节尽可能写清楚以便减少澄清AC的浪费。</p>
+<p>所以BA经常会花费大量时间在写卡（尤其是写AC上），但大家回忆一下，是否不管你花多少时间去写卡，不管这个BA有多么公认的好能力，也不可能做到ta所有的卡开卡无补充和错误，开发过程中无开发再来澄清，DC的时候实现还和业务脑袋里的要求一模一样无争论。</p>
+<p>这并不能归结到是谁的能力有问题，只是这种期待把故事卡写成小型需求文档的方式完全背离了用户故事的初衷，这种情况下，开发拿到卡之后依然会先去专注于如何实现AC中的具体步骤和结果，忽略了本应最重要的用户需求和期望。</p>
+<p>再重复一遍，用户故事被推崇的假设之一就是文档无法百分百传递所有的隐含知识，而BA也无法同时没必要花太多时间写出跟测试用例一样详尽的功能交互细节。</p>
+<p>因此，最占大头的验收条件部分，实际上是最不应该占据BA精力的一部分，BA应该把起码百分之50以上的精力放在业务的价值分析和验证上。</p>
+<p>当前期的业务问题和persona都分析好了，solution的优先级层级拆清楚了，那么一张可以放进迭代的、业务价值明确的故事卡，BA需要写的验收标准的粒度也应该只止步于帮助团队和利益相关者对于功能的期望达成场景和范围的共识，而不是具体的实现细节。</p>
+<p>至于客户项目中客观存在的诸如开发需要什么样的粒度来进行复杂度估算&#x2F;客户需要以故事卡详细的验收标准为依据进行生产的回归验收等等问题，BA可以根据具体的项目情况，和QA&#x2F;开发磨合一套稳定的协作节奏，在适当的时机和QA or 开发一起pair将细节补充完整（毕竟QA得写测试用例，开发得拆task写测试嘛不是）；</p>
+<p>比如如果你的项目需要跟客户签卡才能进迭代，那就尽早开始和团队产生沟通，在签卡前先拉齐团队认知，共同对需求达成一致，将卡pair写好。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后借用不知道从哪看来的一句话：敏捷无定式，最重要的是它的思想。</p>
+<p>希望我们都能不断深入理解对自己所做的事情的意义，永远以目标为导向使用手段，而不被标准所束缚。</p>
+<p>尼采在《偶像的黄昏》里说：If you have your why for life, you can get by with almost any how. 生活如此，工作也如此。</p>
+<p>参考资料<br>《用户故事地图》：作者：Jeff Patton</p>
+<p>《用户故事和敏捷方法》：作者：Mike Cohn<br>《极限编程》：作者：Kent Beck等人</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>TW</category>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>BA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>请留意这些反敏捷的行为</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E8%AF%B7%E7%95%99%E6%84%8F%E8%BF%99%E4%BA%9B%E5%8F%8D%E6%95%8F%E6%8D%B7%E7%9A%84%E8%A1%8C%E4%B8%BA/</url>
+    <content><![CDATA[<p>早在 1995 年被提出的 Scrum 就提出了三大支柱：<code>透明</code>、<code>检视</code>、<code>调整</code>，Scrum 3355 中的提到了5项价值观：<code>承诺</code>、<code>勇气</code>、<code>开放</code>、<code>专注</code>、<code>尊重</code>。早在1999年发布的极限编程也提到了 5 项价值观：简单、沟通、反馈、勇气、尊重。</p>
+<p>理解这些词的人深知它们意味着什么，不理解的人也很难去思考这些对于团队的价值。每当谈起价值观，难免会觉的空无，总有人挑战：</p>
+<ul>
+<li>不是说要有勇气么，挑战高难度的Scope来彰显一下勇气可好！</li>
+<li>经常会有很多人跟我提谁谁谁的反馈，我觉得大家还挺乐意提反馈的啊！</li>
+<li>我们可爱自省了，Retro会议也从不落下，每次Retro完会有一些行动项下发下去！</li>
+<li>……<br>有人说，做敏捷开发容易啊，不就是开几个会、搞一些实践嘛！但我想告诉你，做敏捷开发也有点难，难在那些不容易被意识到但又经常在你眼前晃来晃去的东西 – 团队里的日常行为点滴以及这些点滴背后的价值主张。</li>
+</ul>
+<p>本文我尝试通过极短的篇幅列举一些在交付过程中团队中展现出来的违反敏捷价值理念的行为模式，不求全面，但源于现实。</p>
+<h2 id="关于透明、检视和调整"><a href="#关于透明、检视和调整" class="headerlink" title="关于透明、检视和调整"></a>关于透明、检视和调整</h2><ul>
+<li>团队成员经常突然被告知谁谁谁要 roll off，经常突然接收到某个决策通知。<ul>
+<li>信息不透明会失去团队的信任</li>
+</ul>
+</li>
+<li>团队的管理成员公布决策时忽略了解释 Why，只宣告 What 和 How。<ul>
+<li>不透明的决策难以得到认同</li>
+</ul>
+</li>
+<li>团队成员的日常交付工作优先级经常被临时切来切去，没有提前被同步计划安排。<ul>
+<li>生产力呗消耗，专注也受到了破坏</li>
+</ul>
+</li>
+<li>团队连续多次 Retro 中出现相同或类似的问题和行动项。<ul>
+<li>行动项不能闭环，反复消耗团队的信任和信心</li>
+</ul>
+</li>
+<li>Retro 行动项没有具体Owner以及不知如何衡量是否完成。<ul>
+<li>这样的行动项很难被负责</li>
+</ul>
+</li>
+<li>Retro 提出关于解决团队资源和支持的行动项多次没有得到落实。<ul>
+<li>管理团队会失去信任</li>
+</ul>
+</li>
+</ul>
+<h2 id="关于反馈和沟通"><a href="#关于反馈和沟通" class="headerlink" title="关于反馈和沟通"></a>关于反馈和沟通</h2><ul>
+<li>团队成员提反馈的主要途径是私下1对1找PM或者TL（吐槽居多）。<ul>
+<li>TL或PM千万别得意自己跟大家关系处的好，这可能意味着团队的反馈机制失效了</li>
+</ul>
+</li>
+<li>某人向你吐槽另外一个人，只有主观评价却给不出具体Fact。<ul>
+<li>这种无效反馈不仅无法帮助他人做出改进</li>
+</ul>
+</li>
+<li>你向某人直接请求反馈时收到的是一些不痛不痒的反馈，而你却从其他人那里听到他关于你的负面吐槽。<ul>
+<li>不但无法帮助你做改进，还让你想远离某人</li>
+</ul>
+</li>
+<li>团队的管理成员长时间收不到团队直接的反馈，却经常通过小道消息听到一些成员的抱怨和吐槽。<ul>
+<li>管理成员失去了信任，团队不愿意正面沟通和反馈</li>
+</ul>
+</li>
+<li>你要给TL或PM提出建议性的反馈时有较大的心里压力，或者你提过几次反馈，却发现几乎没有任何变化，不再想提。 <ul>
+<li>团队已经不安全，反馈机制不凑效了</li>
+</ul>
+</li>
+<li>团队成员经常表现出的 Bad Apple 的行为得不到明确有效的指导，而是其他人在背后的议论吐槽。<ul>
+<li>营造了只会抱怨却纵容 Bad Apple 的团队氛围</li>
+</ul>
+</li>
+<li>团队新人在询问一些老人问题，经常得到类似的回复：“我昨天不是刚刚才讲了么！”、“这个我不是在群里通知过了么！”<ul>
+<li>这种回复隐藏着责怪：“你不该再浪费时间问！”</li>
+</ul>
+</li>
+</ul>
+<h2 id="关于尊重和勇气"><a href="#关于尊重和勇气" class="headerlink" title="关于尊重和勇气"></a>关于尊重和勇气</h2><ul>
+<li>团队有人给你提反馈，却不愿意听你澄清。 <ul>
+<li>封闭型心态的反馈，自居上帝给别人贴标签，丢掉了尊重。</li>
+</ul>
+</li>
+<li>Retro的时候，经常听到针对某一种角色或者某些具体成员的负面评价。<ul>
+<li>对人不对事，被针对的人感受到不被尊重</li>
+</ul>
+</li>
+<li>当 Senior 成员无法就某个方案有效说服 Junior 成员时，采取这样的回应：“等你成为Senior之后你就会懂了！”<ul>
+<li>职权影响力打压，失去了基本的尊重</li>
+</ul>
+</li>
+<li>当 Junior 成员询问 Senior成员为什么要这么做时，得到的回应：“你别问那么多，照着做就行了！”<ul>
+<li>职权影响力打压，失去了基本的尊重</li>
+</ul>
+</li>
+<li>PM 长期使用高于团队实际的速率做交付计划，并“激励”团队鼓起勇气挑战更大难度。<ul>
+<li>勇气不是不切实际的鲁莽，保持持续且健康的状态需要勇气</li>
+</ul>
+</li>
+<li>你不敢尝试一些新的想法，因为担心一旦犯错后会被贴上不胜任的标签。<ul>
+<li>不尊重新想法，不包容犯错，难以有效成长</li>
+</ul>
+</li>
+<li>团队成员因为被盯着个人的开发速率，不得不倾向选择坐视代码库变坏而不去重构优化。<ul>
+<li>因为花时间改进会拖慢自己的速率，有被扣上不胜任帽子的风险</li>
+</ul>
+</li>
+<li>Team Code Review 的时候谁Senior谁一言堂或者TL经常一言堂。<ul>
+<li>这样会扼杀很多好的想法，大家逐渐也失去了表达的欲望</li>
+</ul>
+</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>团队在磨合的过程出现这些问题其实是很正常的现象，但如果团队的核心成员意识不到这些行为的危害性，不真正想办法纠正这些行为，可能会导致团队中越来越多的人开始装睡，或者越来越多的人没勇气清醒。</p>
+<p>另外，有时土壤太贫瘠或者外部约束不可破，也不用难为自己，非把自己套在敏捷开发框架里做事，正如 2018年，《敏捷宣言》签署人、XP 联合创始人 Ron Jeffries 发表文章《开发人员应该放弃敏捷》并表示开发者应该放弃敏捷：</p>
+<p>如果不恰当地运用“敏捷”，会导致对开发人员的干扰更大，完成工作的时间更少，压力更大，并被要求 “进行得更快”。这对开发人员是不利的，最终对企业也是不利的，因为“敏捷” 做得不好往往会导致更多的缺陷，以及更慢的进度。通常，优秀的开发人员会离开这样的组织，进而导致企业的效率不如实施 “敏捷” 之前。</p>
+<p>而一个体内流着“敏捷”血液的团队，即便不按照敏捷开发框架去做事，他们照样会在过程中不断地检视和调整，努力营造安全信任的氛围，建立有效透明的反馈机制，真正在做持续改进。有了这些，敏捷开发中提倡的会议和实践只是水到渠成的事情。</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>TW</category>
+        <category>博客</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>反敏捷</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Q1：项目经理应不应该只盯交付 Deadline？</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/Q1:%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86%E5%BA%94%E4%B8%8D%E5%BA%94%E8%AF%A5%E5%8F%AA%E7%9B%AF%E4%BA%A4%E4%BB%98Deadline/</url>
+    <content><![CDATA[<aside>
+💡 **核心观点：在知识构建领域，对任务与时间的管理是无效的；只有对「认知提升」进行管理，才可能有效**
+
+</aside>
+
+<p><img src="/assets/images/8.png"></p>
+<p>问题思考脑图</p>
+<h1 id="🤔-问题引言"><a href="#🤔-问题引言" class="headerlink" title="🤔 问题引言"></a><strong>🤔</strong> 问题引言</h1><p>几乎所有的专业项目管理课程都会教授如何制定计划、如何执行计划、如何追赶进度、如何监管风险等等。但这一切的前提都是需要项目经理手握一张「项目进度表」，软件研发行业也会成为「甘特图」，以下是一张项目进度表的示例。但无论项目进度表是什么样的，其中总包含这样几个元素：</p>
+<ol>
+<li>项目目标或愿景：大家可以一起使劲的理由</li>
+<li>分解任务项：为了达到目标需要分解成几个可达成的子项</li>
+<li>任务关系：观察任务之间是否存有依赖关系，是否可以并行</li>
+<li>风险项：在整体项目中最可能出现的风险与替代方案</li>
+<li>责任人：为了更加明确认责主题，同时激发个体责任心</li>
+<li>时长：作为任务项所需要花费的时长与精力</li>
+<li>里程碑：确认阶段目标与里程碑时间点，有时会加上度量指标</li>
+<li>最优路径：通过以上约束限制，找出项目达成节点的「最佳」完成顺序</li>
+<li>预算：计算任务项支出成本与预测收益，从而判断项目的财务状况</li>
+</ol>
+<p><img src="/assets/images/15.png"></p>
+<p>当你有了以上一张表后，项目经理随后几乎所有的时间都需要确保这张表格的<strong>「照常发生」</strong><br>，但哪有一帆风顺的项目，因此才会有项目经理天天救火、心力交瘁、项目进度一再拖延、新 PDCA（Plan - Delay - Cancle -<br>Apologized）诞生的局面。</p>
+<p>但这背后其实都揭示了一个问题：你的进度表中为了所谓的「数字好看」，背后叠加了多少假设？假设需求背景大家都清楚、假设需求范围不会蔓延、假设时间估算是靠谱的、假设团队没有人请假、假设监管是起效果的…</p>
+<p>那么恭喜你，在计划之初团队做下的这些假设，在项目管理的过程中必然要保证这些假设的发生。稍有偏差，假设的计划表就会不堪一击。</p>
+<p>而你的计划表也不过是华丽的空中楼阁，不是一份 <strong>足够抗击脆弱</strong> 的 <strong>可信赖的</strong> 交付策略</p>
+<h1 id="1-项目经理管的是什么？"><a href="#1-项目经理管的是什么？" class="headerlink" title="1. 项目经理管的是什么？"></a>1. 项目经理管的是什么？</h1><p>如果依照之前的推论，软件研发中真正的产品是「是蕴含在软件中的知识」，那么项目管理真正要管的即为「软件中的知识管理」。</p>
+<p>由此，在知识管理的领域中，任务与进度变得不再可控。难度可以类比于「编辑管理作家写书的进度」、「画廊管理艺术家创作的进度」，知识的获取、灵感的转化变成整个过程的重点。</p>
+<p>那么项目经理也需要将大量的时间花在，如何管理软件中的知识。借鉴知识管理领域中，可知其中有三部分：</p>
+<aside>
+💡 美国学者 Tom Davenport 在 1994 年提出：**知识管理是获取、分配和有效利用的过程。**
+
+</aside>
+
+<ul>
+<li>知识的获取：如何可以最快速获取最准确的信息</li>
+<li>知识的构建：如何可以搭建出团队容易理解的知识地图</li>
+<li>知识的运用：如何可以更高效更高频的运用团队知识</li>
+</ul>
+<p>与其他团队管理知识的顺序不同，BeeArt 团队更多的考虑顺序将从知识运用 - 知识构建 - 知识获取，毕竟 <strong>消费才能拉动内需</strong>。</p>
+<h1 id="2-如何管理知识的运用"><a href="#2-如何管理知识的运用" class="headerlink" title="2. 如何管理知识的运用"></a>2. 如何管理知识的运用</h1><p>为了避免团队成为「数字仓鼠🐹」，陷入文档编写与收藏的谬误，感觉某个人写完一篇文档，就等于全团队学习到。</p>
+<p>但实际上团队应该正视「知晓某事」并不是「知道某事」；「一人知晓某事」并不是「团队知晓某事」。因此，项目经理需要最先优化的是在软件开发的流程中，什么知识最应该被运用？</p>
+<ol>
+<li>用户：你的软件的用户是谁？他们的目标是什么？痛点是什么？</li>
+<li>解决方案：最初你设定的解决方案是什么？解决了用户哪些方面的问题？与自身企业、团队的目标关系是什么？</li>
+<li>如何成功匹配：整个方案中你的假设是什么？什么时候去做验证？</li>
+</ol>
+<p>我相信以上这些问题，在大部分软件交付的初期都被讨论梳理汇报过，不过最后都被放入了团队的「收藏夹」中。只有在新人 OnBoarding<br>的时候，翻出来看看，但也不会检查吸收的效果。可是，团队成员在查看文档库时，更像是将信息进行搬运（而非加工），途中没有增加任何知识。如果日常工作中再不加以运用，那这些搬运的知识将会很快被大脑清洗掉（潜意识会默认过滤掉大量无用信息，这一点很难觉察到）</p>
+<p>因此，我们需要一种方式，在日常的软件研发过程中，不断的提醒大脑，团队的知识是什么？我们的假设是否是正确的？</p>
+<h2 id="2-1-知识运用-故事卡范式"><a href="#2-1-知识运用-故事卡范式" class="headerlink" title="2.1 知识运用 - 故事卡范式"></a>2.1 知识运用 - 故事卡范式</h2><p>在敏捷研发中<strong>「故事卡」</strong>正是日常软件中被高频使用的「需求载体」，更是研发与业务之间的<strong>「知识集中交换地」</strong></p>
+<p>由此团队重新定义了「故事卡」的生命周期与范式：</p>
+<table>
+<thead>
+<tr>
+<th><strong>缩略图：</strong>需要采用用户故事三句话中的「so that 价值」作为卡片标题，同时表明 用户画像（照片）、Epic 归属（白板中 Container）、迭代号（I8）、迭代内优先级（Iteration Priority:9）、复杂度点数（8）、负责人（KW）</th>
+<th><strong>详情：</strong>分为三段共同描述，由业务分析师 BA 着重阐述用户故事三句话、由业务与技术共同完成 AC 部分（业务和技术各写一版，IPM上讨论）、由用户体验设计师 UX 附设计稿或 DS 运用规则</th>
+<th><strong>Logseq 知识库：</strong>由技术人员共同将故事卡中故事与领域模型对应，并完成模型展开与工序拆分（详见实践集），并将每个工序标注预计完成时间与研发工程师</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/assets/images/16.png"></td>
+<td><img src="/assets/images/17.png"></td>
+<td><img src="/assets/images/18.png"></td>
+</tr>
+<tr>
+<td>Trello 中故事卡 - 缩略图</td>
+<td>Trello 中故事卡 - 详情</td>
+<td>Logseq 中故事卡 - 详情</td>
+</tr>
+</tbody></table>
+<h2 id="2-2-管理知识运用-工作堆积与认知堵塞点"><a href="#2-2-管理知识运用-工作堆积与认知堵塞点" class="headerlink" title="2.2 管理知识运用 - 工作堆积与认知堵塞点"></a>2.2 管理知识运用 - 工作堆积与认知堵塞点</h2><p>通过团队每日最高频接触的「故事卡」，如此可以确保团队知识的运用场景</p>
+<p>而作为项目经理，每天着重需要管理的「时间进度」也就变更成为寻找<strong>「工作堆积与认知堵塞点」</strong></p>
+<aside>
+📖 一种考虑整个系统吞吐量的方法是 **约束理论**。约束理论认为任何系统在某一时间只存在一个约束（偶尔也会存在两个）。要提高系统的整体吞吐量率，那么必须首先找出那个约束，并确保它能够全速工作，然后再寻咋某些办法，或者增加约束的容量，来分流一部分工作到其他非约束部分，或者完全消除约束。 
+— 《解析极限编程 - 拥抱变化》第 86 页
+
+</aside>
+
+<p>同样的，在软件研发过程中，一张故事卡也是具有生命周期的，是由需求转化为方案、转化为验收标准、转化为研发工序，其中需要经过业务分析师、用户体验设计师、研发、测试工程师等角色。</p>
+<p>因此每一步都需要时间，但如果一张故事卡在某一个环节 <strong>停留</strong><br>过久后，花费的时间过长后，整个流程变出现了堆积点，这个堆积点会造成整个流程的瓶颈，降低吞吐率。而造成的背后很有可能就是团队的认知堵塞点。</p>
+<p>作为项目经理可以结合每日站会上团队更新的累积流图中判断出，本迭代内哪里出现了工作堆积，需要如何处理与应对。</p>
+<ul>
+<li>需求侧出现堆积：需要引入用户调研、需要引入产品路演从而消除业务对产品的不确定…</li>
+<li>研发侧出现堆积：需要判断是否是故事卡拆分过大、还是研发对需求上下文不理解导致频繁沟通与返工…</li>
+<li>测试侧出现堆积：需要判断是否测试人手不足、还是自动化测试过少…</li>
+</ul>
+<h1 id="3-如何管理知识的构建"><a href="#3-如何管理知识的构建" class="headerlink" title="3. 如何管理知识的构建"></a>3. 如何管理知识的构建</h1><p>在知识的构建部分需要先理解什么是「认知负荷」，谈到认知负荷，我们可以简单地将其理解为任何一个人在给定的时间内大脑中所能保存的信息量是有上限的。对于任何一个团队来说，简单地将所有团队成员的认知能力累加起来即可。</p>
+<p>结合 <a href="https://en.wikipedia.org/wiki/Cynefin_framework">Cynefin Framework</a> 中，可以简单的理解为团队整体对某个知识的认知「从<br>Complex 到 Complicated 到 Obvious」的 <strong>总攀登阶梯数。</strong></p>
+<p>但是现在，当项目经理给一个团队分配职责或者软件构建的时候，我们几乎不会考虑认知负荷。可能是因为认知水平与负荷都难以量化，又或者本身就希望团队能够不假思索地完成被交代的工作。</p>
+<p>如果不考虑认知负荷，团队会做过多大量疲于奔命的工作，从而导致了计划延迟、质量等问题。团队中无意超出认知负荷的实例有：</p>
+<ol>
+<li>提出不可能的任务：让现有研发工程师 3个月内复制 ChatGPT</li>
+<li>过分自治：研发工程师身兼多个系统与平台的研发</li>
+<li>阶段目标过多：阶段内的故事卡横跨多个领域与目标用户</li>
+</ol>
+<p><img src="/assets/images/19.png"></p>
+<p>因此，我们鼓励项目经理在思考团队任务时，去限制他们的认知负荷。将认知负荷明确作为团队规模、分配职责和建立团队边界的有力工具。</p>
+<h2 id="3-1-认知负荷的种类"><a href="#3-1-认知负荷的种类" class="headerlink" title="3.1 认知负荷的种类"></a>3.1 认知负荷的种类</h2><p>在 1988年，心理学家 John Sweller 将认知负荷定义为「工作记忆中使用的脑力劳动总量」。Sweller 定义了三种不同的认知负荷：</p>
+<ul>
+<li><strong>内在认知负荷，</strong>与问题领域的基本任务相关，比如：Java 类的结构是什么样的？TDD<br>知识本身。就像「冰山的自重」，在我们学习任何知识的时候，都一定会带来认知负荷，属于中性，谈不上好坏<ul>
+<li><strong>外在认知负荷，</strong>与任务处理的环境相关，比如：我要如何重新部署这个组建？我要如何配置这个服务？类似于<br>「北极熊带来的额外压力」，它会加重本来就不轻的认知负荷，使得学习更为困难，是「坏」的负荷</li>
+<li><strong>相关认知负荷，</strong>与那些需要格外关注学习和高性能方面的任务相关，比如：这个服务是如何与其他服务进行交互的？它是「海水的浮力」，它会减轻学习过程中的认知负荷，是「好」的负荷</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/20.png"></p>
+<p>有了这幅图作为隐喻，对认知负荷的三个种类的理解就应该比较容易了！</p>
+<ul>
+<li><strong>内在认知负荷</strong>，对于特定的学习者（所掌握的先进知识）、特定的学习材料（难度），内在认知负荷是确定的。例如：在软件研发中，你的用户是谁，你的软件是属于什么行业的，所包含了哪些知识？</li>
+<li><strong>外在认知负荷</strong><br>，是由信息的组织方式和呈现方式带来的，信息的组织方式。在日常任务重应是最为重视的，同样的内容，用不同的信息呈现方式，知识吸收效果（以及认知负荷）是不同的。例如：同样是表述场景与功能之间关系，功能列表与用户故事地图就是不同的呈现方式</li>
+<li><strong>相关认知负荷</strong>，这是唯一能够产生「浮力」的要素，因此对于知识传递起到 <strong>关键性作用</strong><br>。在项目中好的知识管理，应该将知识分类呈现，并建立一定的关联关系。例如：在拆分工序的时候引入模型展开，不仅可以降低拆分工序的难度，同时也加深对模型的认知与理解。</li>
+</ul>
+<h2 id="3-2-管理知识构建-团队中三张地图"><a href="#3-2-管理知识构建-团队中三张地图" class="headerlink" title="3.2 管理知识构建 - 团队中三张地图"></a>3.2 管理知识构建 - 团队中三张地图</h2><p>在软件研发的过程中，作为项目经理有三张地图可以帮助团队降低知识的「外在认知负荷」，将产品中有效的信息串联起来</p>
+<table>
+<thead>
+<tr>
+<th>需求地图：用户故事地图，可以关联 <strong>用户目标</strong> 与 <strong>产品的需求模块</strong>，讲清楚每个需求存在的价值</th>
+<th>研发地图：领域模型图，可以关联 <strong>产品需求模块</strong> 与 <strong>软件实现架构</strong>，保证软件实现与业务逻辑之间相匹配</th>
+<th>管理地图：估点与速率偏差统计，可以将 <strong>实际损耗人天</strong> 与 <strong>估算进行偏差统计</strong>，从而找到团队认知最薄弱的模块，迭代中通过学习时间集中补充知识</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/assets/images/21.png"></td>
+<td><img src="/assets/images/22.png"></td>
+<td><img src="/assets/images/23.png"></td>
+</tr>
+<tr>
+<td>用户故事地图</td>
+<td>领域模型图</td>
+<td>估点与速率偏差统计</td>
+</tr>
+</tbody></table>
+<p>而提升「相关认知负荷」就需要靠外界工具帮忙，BeeArt 团队采用的是白板 + Logseq 的双链方式。</p>
+<h1 id="4-如何管理知识的获取"><a href="#4-如何管理知识的获取" class="headerlink" title="4. 如何管理知识的获取"></a>4. 如何管理知识的获取</h1><p>根据消费决定需求的方式，软件研发的团队主要需要获取以下 5类知识：</p>
+<ol>
+<li>业务知识：对市场、对行业、对趋势、对竞品的理解</li>
+<li>用户知识：对目标用户、对使用场景的理解</li>
+<li>商业化知识：对产品自身竞争力、对企业平台战略的理解</li>
+<li>技术知识：对先进技术的尝试、对技术可反哺业务的创新</li>
+<li>团队能力：对团队认知现状的了解</li>
+</ol>
+<p>作为项目经理，不仅需要让团队有主动自发获取知识的 <strong>源动力</strong>，更需要有让团队有互相交流被动获取的 <strong>安全空间</strong></p>
+<p>但我们不得不承认，让团队在工作中主动承认自己需要学习，对每个人都是需要勇气的。</p>
+<p>但项目经理也必须承认，团队的学习时间是「必要的浪费」，因为如果不学习猜测无法变成事实，决策无法可靠，团队的错误也会反复发生</p>
+<h2 id="4-1-自发获取专业知识"><a href="#4-1-自发获取专业知识" class="headerlink" title="4.1 自发获取专业知识"></a>4.1 自发获取专业知识</h2><p>团队成员主动自发的获取知识一方面是方式方法，但更多的需要团队成员的心态调整。</p>
+<p>需要从「专家心态」，调整成为空杯的「初学者心态」。团队成员需要承认自己的猜测与假设，而不是一味的「藏马脚」</p>
+<p>在 BeeArt 181 团队组建第一天，团队原则中边有两条与主动学习有关：</p>
+<ol>
+<li>BA 是一定帽子，全员要当<br>BA。背后的原因是我们需要用于承认产品研发的高风险性与不确定性，我们不能指望产品经理或业务分析师一人就可以掌握全部的业务知识，就可以让产品走向成功。因此思考业务与用户知识，因为是全团队的行为，包括研发与测试，不分角色</li>
+<li>对团队来说足够好的东西，对你来说永远都不够好。要从错误中学习，要互相学习。背后的原因是无论业务与技术需要不断追求「卓越」与「不确定」，不能「受困于」足够好的现状</li>
+</ol>
+<p>因此我们的实践在基础的敏捷研发工程中，多加了</p>
+<ul>
+<li>OnBoarding 书单：团队具有固定书单，书单中有与业务密切相关的图书，读完后对全团队演讲，团队认可后才可开始工作</li>
+<li>产品路演 Roadshow：区别于迭代 Showcase，定期与目标用户沟通，讲述自己的猜测并获得用户的反馈与验证</li>
+<li>反串讲：业务进行模型实例化展开并向技术讲解，技术拆分故事卡的 AC 并向业务求证</li>
+</ul>
+<h2 id="4-2-被动获取关联知识"><a href="#4-2-被动获取关联知识" class="headerlink" title="4.2 被动获取关联知识"></a>4.2 被动获取关联知识</h2><p>被动获取知识需要团队有安全开放的学习环境</p>
+<p>首先需要团队领导者承认学习的必要性，而非只看时间进度的机械式管理</p>
+<p>因此，在BeeArt 181 中，我们有以下「时间的浪费」，来保证团队认知的整体提升</p>
+<ol>
+<li>每天站会后占用工作时间 30分钟，研发进行 Rotation 轮转卡，保证自己可以将手中故事卡的业务讲解清楚，并传递给下一个研发工程师</li>
+<li>每天中午占用工作时间 30分钟，每人都会轮流进行 Session 分享，但要求必须与团队知识相关，可以是先进技术，也可以是业务商业知识</li>
+<li>每周五下午占用工作时间 1小时，进行实践总结会，总结每周高效的工作方法与实践，并思考可以解决什么项目问题</li>
+<li>每个迭代 IPM 后，研发需要 0.5 - 1天的时间分析本迭代所有故事卡，并集中进行模型展开与工序拆分，不着急开卡进入写代码环节</li>
+<li>每个研发工程师在开始一个工序超过 40分钟后还未提交，需要在团队内部举手，提出自己是否遇到困难，而团队中的其他小伙伴是否可以<br>pair 帮忙</li>
+<li>每个新人需要完成人传人 OnBoarding，近 1个月，完全掌握业务上下文与技术模型后，才成为正式成员，编写生产代码</li>
+<li>每人轮流成为 IM（迭代经理），理解迭代交付风险与认知提升的管理办法</li>
+</ol>
+<p>以上就是 BeeArt 所提倡的根据提升团队认知，从而进行的项目管理</p>
+<p>因为知识领域下的项目管理需要更科学的管理手段与方法，如果只是盯流程、盯时间、盯责任人、开会催进度，将会严重的伤害团队工作意愿</p>
+<p>毕竟，虽然人人都可以成为项目经理，但也有好坏之分！</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>交付手册</category>
+        <category>PM项目经理</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>项目经理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>人传人 OnBoarding</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/%E4%BA%BA%E4%BC%A0%E4%BA%BAonboarding/</url>
+    <content><![CDATA[<h1 id="人传人-OnBoarding"><a href="#人传人-OnBoarding" class="headerlink" title="人传人 OnBoarding"></a>人传人 OnBoarding</h1><h1 id="1-WHAT-实践简介"><a href="#1-WHAT-实践简介" class="headerlink" title="1. WHAT 实践简介"></a>1. WHAT 实践简介</h1><p>在 BeeArt，虽然我们有完整的 Onboarding 文档，以及每次讲解 Onboarding 文档时的录屏，但是我们并不认为 Onboarding 就是看文档和看录屏，我们坚持每次由「老人」对「新人」进行口口相传的方式进行 Onboarding，当然过程可能还是对着 Onboarding 文档进行讲解，但是实际的效果远比让「新人」自己闷头看视频要好的多，而且这么做同样会加强和巩固「老人」对于现有知识的理解。</p>
+<h1 id="2-WHY-实践背后的原因"><a href="#2-WHY-实践背后的原因" class="headerlink" title="2. WHY 实践背后的原因"></a>2. WHY 实践背后的原因</h1><p>大多数时候，项目上的 OnBoarding 会由 BA，或项目元老讲述一遍，录制好视频后。每次项目中上新人时，直接让新人看文档和录屏。</p>
+<p>但这种方式，由于学习金字塔的诅咒（被动听讲只能吸收信息 5%），会直接导致无法有效检验项目成员是否真的理解项目知识与上下文</p>
+<p><img src="/assets/images/1.png"><br><img src="/assets/images/2.png"></p>
+<h1 id="3-HOW-如何运用"><a href="#3-HOW-如何运用" class="headerlink" title="3. HOW 如何运用"></a>3. HOW 如何运用</h1><p>我们采用「<strong>输入帮助输出，输出倒逼输入</strong>」的 人传人OnBoarding 方法</p>
+<p>对于「新人」而言：</p>
+<ul>
+<li>通过老人面授，知识的初次吸收效率提升<strong>（被动学习 吸收 20%）</strong></li>
+<li>完成 OnBoarding 作业，如果业务人员无法对模型进行展开，那么业务人员就不能进行需求分析；开发人员无法有效使用工序，那么开发人员就不能去写生产代码<strong>（主动学习 吸收 70%）</strong></li>
+</ul>
+<p>对于「老人」而言：</p>
+<ul>
+<li>需要通过教会新人，以此检验自己对于项目的熟悉度<strong>（主动学习 最后吸收 90%）</strong></li>
+</ul>
+<p>因此，对于项目成员完整的 OnBoarding 环节，需要教会一个「新人」为止，才算结束</p>
+<h1 id="4-BeeArt-V4-0-真实场景"><a href="#4-BeeArt-V4-0-真实场景" class="headerlink" title="4. BeeArt V4.0 真实场景"></a>4. BeeArt V4.0 真实场景</h1><p><img src="/assets/images/3.png"></p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>交付手册</category>
+        <category>PM项目经理</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>项目经理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>累积流图</title>
+    <url>/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/%E7%B4%AF%E7%A7%AF%E6%B5%81%E5%9B%BE/</url>
+    <content><![CDATA[<h1 id="累积流图"><a href="#累积流图" class="headerlink" title="累积流图"></a>累积流图</h1><h1 id="1-WHAT-实践简介"><a href="#1-WHAT-实践简介" class="headerlink" title="1. WHAT 实践简介"></a>1. WHAT 实践简介</h1><p>累积流图（Cumulative Flow Diagram）是敏捷项目管理中的一种面积图，可以用于表示任务在工作流程中不同阶段的变化，它也是敏捷迭代管理的重要工具之一。团队可以通过累积流图可视化当前任务进展情况，从而发现瓶颈，识别潜在问题。团队也可以通过累积流图跟踪工作流程中每个阶段中的任务数量以及每个阶段工作的持续时间。同时，累积流图可以帮助团队优化工作流程，确保任务以稳定的速度完成，并最终为客户交付卓越的产品。通过对任务进展情况的监测，团队可以分析当前工作流程的有效性并进行必要的调整。团队可以根据项目的需求，以每日、每周或每月的时间段在累积流图中调整对项目进度的观测。</p>
+<p>对于 BeeArt V4.0 来说，累积流图是一个非常有效且使用最频繁的项目管理工具之一。累积流图可以将项目中潜在的问题以图的形式直观地暴露出来。</p>
+<p>在 BeeArt V4.0 中，每个迭代周期为两周，项目成员会轮流作为 IM（迭代经理）这个角色，在当天结束时更新累积流图，并在每日站会时向团队呈现最新的累积流图，并通过识别团队当前遇到的障碍或困难来分析和推进问题被解决。此外，迭代经理角色的轮换是也是 BeeArt V4.0 上一个非常有效的实践，它可以让团队成员轮流地去更新累积流图，并持续关注项目进度。</p>
+<p>使用累积流图的首要前提就是得确定项目上任务的工作流程。BeeArt V4.0 里的工作流程包括「待开始」、「开发中」、「测试中」和「已完成」四个阶段。然后，团队可以更具实际情况，选择一个合适的观测周期，如每日、每周或每月去记录每个阶段完成的任务数量，可以使用电子表格或其他跟踪工具来计算指定时间间隔内每个阶段的工作项数量。此外，可以使用类似 Google Sheets 或 Excel 等图表应用程序创建累积流图。</p>
+<h1 id="2-HOW-如何运用"><a href="#2-HOW-如何运用" class="headerlink" title="2. HOW 如何运用"></a>2. HOW 如何运用</h1><h2 id="2-1-观测指标"><a href="#2-1-观测指标" class="headerlink" title="2.1 观测指标"></a>2.1 观测指标</h2><p>累积流图的一些指标可以用于观测任务在项目中随时间变化的情况:</p>
+<ul>
+<li>进行中的任务（WIP）：指当前正在进行的工作量，通常位于“开发中”和“已结束”之间。如果临近交付日期，累积流图显示 WIP 水平很高，很可能意味着项目存在交付瓶颈或延期的风险。</li>
+<li>交付时间（Lead Time）：从任务进入迭代到完成完成所需的时间。它包任务在工作流程中花费的时间以及工作流程之外的等待时间或延迟时间等。交付时间可用于确定工作流程的整体效率，并评估完成某一任务所需的时间。</li>
+<li>循环时间（Cycle Time）：在进入工作流程后，任务从开始到结束所需的时间，不包括工作流程之外的任何等待时间或延迟时间。循环时间可用于确定工作流的效率并评估完成任务所需的时间。</li>
+<li>吞吐量（Throughput）：任务在给定时间内完成的速率，通常以每天、每周或每个迭代来衡量。吞吐量可用于评估团队的生产力，并确定可能影响其有效完成工作项的潜在问题。</li>
+<li>计划任务数量（Scope）：当前工作流程中的的所有任务，通常在每个迭代开始时会进行调整。</li>
+<li>预计交付日期（Estimated Delivery Date）：任务完成并交付给客户所需的时间。通常基于多种因素，包括任务涉及的范围、团队的能力以及任何已知的限制或依赖等。<br><img src="/assets/images/4.png"></li>
+</ul>
+<p>尽管一些其他的指标在 BeeArt V4.0 的累积流图中没有被使用到，但它们仍然很重要。团队可以根据项目实际情况选择合适的观测指标，进行有针对性的迭代管理。总的来说，通过这些观测指标，项目可以了解团队成员和任务的情况，并确定是否需要进行有针对性的改进。通过将关键的数据指标与迭代管理技术相结合，团队可以不断改进其工作流向客户提供更好的价值。</p>
+<h2 id="2-2-迭代速率与累积流图"><a href="#2-2-迭代速率与累积流图" class="headerlink" title="2.2 迭代速率与累积流图"></a>2.2 迭代速率与累积流图</h2><p>迭代速率（Velocity）是根据迭代期间内完成的用户故事点数除以可用人天计算得出。在准备迭代任务时，我们可以根据历史迭代速率设置一个较为合适的目标速率，从而评估团队可完成的工作量以及预计交付时间。制定和跟踪团队迭代速率在每个迭代都非常重要，因为迭代速率本身就是一个很有效的迭代管理工具，在累积流图中的也有观察迭代速率的方式。</p>
+<p>累积流图和迭代速率是通常可以一起用来跟踪项目情况。迭代速率衡量团队在特定时间内可完成的任务数，而累积流图显示了在特定时间段内每个阶段所完成的任务数量。通过结合累积流图和迭代速率，团队可以有效地监控任务进度，并识别可能阻碍完成任务的问题。通过查看累积流图上的斜率，可以确定每个阶段在不同时间段的实际速率和目标速率，从而评估工作效率和生产力，团队能够进行必要的调整，以确保项目按时交付。通过迭代速率，团队还可以更有效地管理其工作量，分配资源，并预测项目完成的时间等。因此，在敏捷迭代管理中使用累积流图时，迭代速率也是一个关键指标。</p>
+<h2 id="2-3-常见模式"><a href="#2-3-常见模式" class="headerlink" title="2.3 常见模式"></a>2.3 常见模式</h2><p>累积流图中出现的四种常见模式是线性（Linear）、高原（Plateau）、曲棍球棒（Hockey Stick）和混乱（Chaotic）。理解这些模式并利用它们分析团队目前面临的问题是累积流图的最为关键的用途。一般来说，这些模式会在累积流图中一起出现，但是团队可以根据某一时间段出现的异常模式来分析问题和瓶颈，以下是每个模式的简要描述。<br><img src="/assets/images/5.png"></p>
+<ol>
+<li><strong>线性模式（Linear）</strong>是指随着时间的推移，在每个工作流程中，任务都处于稳定逐渐增加的模式，且不同阶段的增长速率几乎一致。这个模式可以表明计划任务在每个流程中都正常且有效运作，并以一致的速度完成。这通常是团队表现良好的标志，因为它表明任务按时完成，流程有效。但如果斜率在某段实践内处于下降状态的话，可能表明当前工作流程中的任务或整个团队遇到了与工作流程相关问题，如项目内的流水线或测试环境出现问题等，团队可以通过累积流图显示的瓶颈并根据项目实际情况定位和发现潜在问题，并进行有针对性的改进从而解决问题。</li>
+<li><strong>高原模式（Plateau）</strong>中，每个工作流程步骤中的任务数量在某一段内时间上没有变化。这不是一个乐观的模式，因为它表明任务在某一阶段的一段时间内的速率是零，项目上可能存在需要解决的障碍。出现这种模式一般来说会由两种情况导致：1.可能是由于一个很严重的问题，使得所有人都无法正常进行开发、测试等任务，所以任务会在工作流中一直停滞不前；2.也可能时由于一次漫长的假期，没有人在工作。总之，出现这个模式可能没有问题出现，也可能是由于重大问题导致的。</li>
+<li><strong>曲棍球棒模式（Hockey Stick）</strong>的特点是在初始阶段有相对稳定的增长，但在后期任务数量会急剧增加。这种模式可能意味着任务在工作流程的初始阶段被拖延或阻塞，但在后期阶段可能由于各种原因，使得任务涌入某一阶段。由于任务数量的快速增加，团队的工作量也会因此突然增加，这可能会对团队的工作质量产生影响。产生这个问题的原因可能是迫于交付压力，在临近交付日期前团队成员都有尽快完成交付任务的一致的想法，降低了开发任务或测试的质量。往往出现这种模式时，需要尽可能分析出产生问题的原因，从而避免再次发生。</li>
+<li><strong>混沌模式（Chaotic）</strong>下，随着时间的推移，每个工作流程阶段中任务的数量和速率的变化都没有明显的规律，表明项目没有按计划或规律以恒定增长的速度进行。造成这种模式的因素有很多，可能是由于需求不清晰、频繁的范围变更或无效的团队沟通等导致任务没有在与其时间内在工作流中变化，这可能会对整个团队的效率产生负面影响。</li>
+</ol>
+<h2 id="2-4-典型示例"><a href="#2-4-典型示例" class="headerlink" title="2.4 典型示例"></a>2.4 典型示例</h2><p>事实上，累积流图可以通过分析之前提到的观测指标和常见模式来跟踪和评估项目的健康状况。一般来说，如果对这些指标和模式有一定的熟悉程度，项目管理者可以快速有效地根据累积流图定位和发现项目潜在的问题和瓶颈，当然这也是需要经过反复多次的刻意练习才能达到的程度。此外，由于各种因素，一个实际项目上的累积流图不会特别「好看」，可能是各种模式混杂而成。以下是六个常见的累积图的简单示例：</p>
+<h3 id="示例-A"><a href="#示例-A" class="headerlink" title="示例 A"></a>示例 A</h3><p>示例 A 的问题主要在于越来越多的任务进入到「开发中」，且增长的速率远远高于「测试中」和「已完成」，而且可以明显地看出「开发中」和「已完成」之间的差距很大。在这个例子中，交付时间（Lead Time）会变得越来越长，提高了项目的交付风险。那么，造成这个问题的潜在原因是什么呢？在进行中的任务则没有稳定完成的情况下，越来越多的任务进入开发中，可能导致多人同时在多个任务上。如果当前团队处于扩大的状态且开发资源逐渐增加的时期，这可能不是一个主要问题。但如果开发数量保持不变，可能需要注意下是否每个开发都严格专注于一个任务上。</p>
+<p><img src="/assets/images/6.png"></p>
+<h3 id="示例-B"><a href="#示例-B" class="headerlink" title="示例 B"></a>示例 B</h3><p>与示例 A 相比，示例 B 中测试任务会完成地更好一点，因为「测试中」和「已完成」两条线线几乎重合，大部分任务处于开发阶段，而且开发任务不断增加积压，一直没有进入到「测试中」。示例 B 间接表明了开发团队的速率是稳定的，因为进入到「测试中」的任务数量以稳定的速率在增长。造成这个问题的原因可能是开发资源不足造成，如果开发人数不足，即使有更多的任务进入到开发中，开发团队也只能以相同的速率完成。在这种情况下，「测试中」和「已完成」阶段很可能会出现曲棍球棒模式（Hockey Stick），也就是在交付后期，测试的压力会急剧增加。如果是这个问题造成的，团队可以考虑增加开发资源，加快任务完成速度并减轻测试的负担。</p>
+<p><img src="/assets/images/7.png"></p>
+<h3 id="示例-C"><a href="#示例-C" class="headerlink" title="示例 C"></a>示例 C</h3><p>示例 C 的「已完成」这条线是最引人注目的，以阶梯式的形式增长。这张图一眼望去可能会觉得是测试人员的问题，因为很多任务都处于「测试中」的阶段，没有稳定地进入到「已完成」阶段。但如果进一步调查发现，更有可能是开发人员的问题。如果开发任务质量不高，在测试过程中会发现许多缺陷，这可能导致任务一直处于「测试中」或返工到「开发中」，所以可能会在某一阶段中停留很长时间。如果开发人员在「测试中」的工作还没有测试完成转移到下一个阶段的情况下，又继续开始了新的开发任务，那么会造成开发人员承受新任务和有缺陷的任务未完成的双重压力，这将会阻碍任务进入到「已完成」的阶段。如果新任务正在开发过程中，「测试中」的任务也返工，会造成一个开发人员工作到多个任务上的情况，那么某些任务在一定程度上会被忽视。这其实是一种很常见的情况，在 BeeArt V4.0 中的某些迭代内也发生过类似的场景。比较好的解决办法是严格根据工序将开发任务分解成多个合理大小的的可测试的任务，然后通过测试驱动开发确保每个任务的功能都正常工作且不会被破坏。这样可以很大程度上保证开发质量，减少返工率。</p>
+<p><img src="/assets/images/9.png"></p>
+<h3 id="示例-D"><a href="#示例-D" class="headerlink" title="示例 D"></a>示例 D</h3><p>示例 D 中展示的也是一种很常见的情况，它也对应于高原模式（Plateau）。在一段时间内，没有任务移动到下一个阶段。实际项目中应该都会出现这种情况，比如节假日，没有人工作在任何任务上，自然就会出现任务不增长的情况。然而，这种模式也可能表明项目出现了较为严重的问题，例如整个团队因测试环境失败或 CI &#x2F; CD 流水线问题而停滞不前，使得所有人无法正常工作。因此，如果出现这种情况，可能是没有问题出现，也可能是出现了重大的问题。</p>
+<p><img src="/assets/images/10.png"></p>
+<h3 id="示例-E"><a href="#示例-E" class="headerlink" title="示例 E"></a>示例 E</h3><p>在示例E中，也存在一部分的平坦线，特别是当「测试中」和「已完成」完全平坦且重叠时，而「开发中」的任务不断上升。这里存在的问题可能是由于测试环境或开发用 CI &#x2F; CD 流水线出现故障，导致没有任务能进入到「测试中」。或者是由于另一个更严重更隐蔽的问题导致：在「测试中」的任务数量没有任何增长的情况下，「开发中」的任务数量仍在继续增加。这其实潜在地表明了开发人员可能并不关心测试环境或 CI &#x2F; CD 流水线的问题，而是继续开始新的任务。这也间接地说明了开发人员没有工作在优先级最高的事情上，以及不太关心团队基础设施。</p>
+<p><img src="/assets/images/11.png"></p>
+<h3 id="示例-F"><a href="#示例-F" class="headerlink" title="示例 F"></a>示例 F</h3><p>示例 F 中包含典型的棍球棒模式（Hockey Stick）的部分，在时间的后期，「测试中」和「已完成」任务数量的急剧上升。这种现象很可能是由于项目处于强烈的交付压力下，例如接近交付日期或上线日期，但仍有许多任务尚未完成。在这样的压力下，团队成员会有意地妥协测试标准，并将基本能工作的任务到「已完成」，从而导致了这样的急剧上升。这时候团队应警惕起来，因为降低交付质量会增加生产事故的可能性，并降低客户信心。</p>
+<p><img src="/assets/images/12.png"></p>
+<h2 id="2-5-近乎完美的累积流图"><a href="#2-5-近乎完美的累积流图" class="headerlink" title="2.5 近乎完美的累积流图"></a>2.5 近乎完美的累积流图</h2><p>一个近乎完美的累积流图可能会是什么样子呢？首先，图中没有任何负面的模式，如高原（Plateau）、曲棍球棒（Hockey Stick）或混乱模式（Chaotic）。其次，任务的测试和完成的增长速率可以和开发中的任务进度保持一致，即使计划任务（Scope）不断增加。但是，这样的图只能存在于想象之中，因为在实际项目中，是无法让任务在同一时间内经历工作流程中的所有阶段的。</p>
+<p><img src="/assets/images/13.png"></p>
+<h1 id="3-BeeArt-V4-0-真实场景"><a href="#3-BeeArt-V4-0-真实场景" class="headerlink" title="3. BeeArt V4.0 真实场景"></a>3. BeeArt V4.0 真实场景</h1><p>尽管我们认为每个人都已尽其所能地在 BeeArt V4.0 做出了最大的努力，但我们的累积流图仍有很大的改进空间。完美无瑕的累积流图比比皆是，但如果我们分享我们实际遇到的困难，对您来说可能会更有益和可信。很明显的是，BeeArt V4.0 的累积流图是一个能发现很多潜在问题和瓶颈的图。</p>
+<p><img src="/assets/images/14.png"></p>
+<p>我们可以根据之前提到的四种常见模式和示例来分析 BeeArt V4.0 的累积流图。例如，A 和 C 在「开发中」堆积了大量的任务，并持续了较长的时间，这在迭代后期必然会增加测试任务的工作量，增加了交付风险。在 B 和 D 中，在很长时间一段时间内，基本上没有任务能进入到下一个工作流阶段，这意味着项目在此期间没有任何进展。这可能是由于一个重大问题，阻止了所有人的工作；或者从好的一面来说，这可能是一个假期，没有人需要去工作。在 E 中，许多任务处于「测试中」且尚未完成，但仍然有更多新的任务进入到「开发中」。这对开发人员来说是个坏消息，因为在「测试中」中的任务还没有被标记为「已完成」时，开发人员仍然在开展新的任务，而不是协助完成测试工作。此外，「开发中」多了更多新的任务意味着一个开发人员必须同时处理多个任务，这对交付来说是不可取的。最后，F 也揭示了多任务处理问题。</p>
+<h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><p>总而言之，累积流图是一种很有效的迭代管理工具，可以帮助团队跟踪进度、识别瓶颈，并做出基于数据的决策以改进其流程。通过可视化任务在工作流程中的流转，累积流图提供了一个更为全面的任务进展视图，使团队能够识别潜在问题并进行有针对性的改进，以优化其工作流程。</p>
+<h1 id="5-更多阅读"><a href="#5-更多阅读" class="headerlink" title="5. 更多阅读"></a>5. 更多阅读</h1><p><a href="http://brodzinski.com/2013/07/cumulative-flow-diagram.html">cumulative-flow-diagram.html</a></p>
+<p><a href="https://getnave.com/blog/how-to-read-the-cumulative-flow-diagram-infographic">how-to-read-the-cumulative-flow-diagram-infographic</a></p>
+<p>User Stories Applied - Mike Cohn</p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+        <category>交付手册</category>
+        <category>PM项目经理</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>项目经理</tag>
+      </tags>
+  </entry>
+</search>

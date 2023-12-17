@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇 | Yunlong的博客</title>
+  <meta name="keywords" content=" 敏捷 , 测试 ">
+  <meta name="description" content="大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇 | Yunlong的博客">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="about">
+<meta property="og:url" content="http://github.100kwhy.cn/about/index.html">
+<meta property="og:site_name" content="Yunlong的博客">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-08-03T19:20:30.000Z">
+<meta property="article:modified_time" content="2023-12-17T14:18:27.899Z">
+<meta property="article:author" content="Yunlong Wen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Yunlong Wen</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="github"
+               href="https://github.com/yunlongwen"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="email"
+               href="mailto:350394277@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(16)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            <i class="fold iconfont icon-right"></i>
+            工具
+            <small>(2)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="工具&lt;---&gt;Hexo">
+            
+            Hexo
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="安卓">
+            <i class="fold iconfont icon-right"></i>
+            安卓
+            <small>(2)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="安卓&lt;---&gt;aosp">
+            
+            aosp
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="敏捷">
+            <i class="fold iconfont icon-right"></i>
+            敏捷
+            <small>(12)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;交付手册">
+            <i class="fold iconfont icon-right"></i>
+            交付手册
+            <small>(4)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;交付手册&lt;---&gt;PM项目经理">
+            
+            PM项目经理
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;ThoughtWorks">
+            
+            ThoughtWorks
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;TW">
+            <i class="fold iconfont icon-right"></i>
+            TW
+            <small>(7)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;TW&lt;---&gt;博客">
+            
+            博客
+            <small>(7)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  site_url"
+               
+               href="/about">About</a>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="16">
+<input type="hidden" id="yelog_site_word_count" value="50.7k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>测试</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>反敏捷</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>根因分析</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>敏捷</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>项目经理</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>android</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>aosp</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>BA</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Workshop</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <div id="local-search-result">
+
+    </div>
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All 安卓 aosp "
+           href="/2023/12/17/Android/aosp/2023-0719-aosp/"
+           data-tag="aosp,android"
+           data-author="" >
+            <span class="post-title" title="AOSP 源码文件结构">AOSP 源码文件结构</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 安卓 aosp "
+           href="/2023/12/17/Android/aosp/2023-0721-download-compiled/"
+           data-tag="aosp,android"
+           data-author="" >
+            <span class="post-title" title="下载编译源代码">下载编译源代码</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 工具 Hexo "
+           href="/2023/12/17/%E5%B7%A5%E5%85%B7/Hexo/cname/"
+           data-tag="Hexo"
+           data-author="" >
+            <span class="post-title" title="Hexo怎么避免README文件以及CNAME文件的覆盖">Hexo怎么避免README文件以及CNAME文件的覆盖</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 工具 Hexo "
+           href="/2023/12/17/%E5%B7%A5%E5%85%B7/Hexo/github_actions/"
+           data-tag="Hexo"
+           data-author="" >
+            <span class="post-title" title="使用GitHub Actions部署Hexo博客">使用GitHub Actions部署Hexo博客</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 ThoughtWorks "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/about/"
+           data-tag="敏捷"
+           data-author="" >
+            <span class="post-title" title="关于">关于</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/about/"
+           data-tag="敏捷"
+           data-author="" >
+            <span class="post-title" title="关于">关于</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/ThoughtWorks%E7%9A%84%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="ThoughtWorks的敏捷测试">ThoughtWorks的敏捷测试</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A1/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇">大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A2/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇">大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A3/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（三）用户验收篇">大规模敏捷测试怎么做？----“绿皮车”测试之旅（三）用户验收篇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A6%82%E4%BD%95%E4%B8%BA%E6%95%8F%E6%8D%B7%E8%BD%AC%E5%9E%8B%E5%AE%A2%E6%88%B7%E7%BB%84%E7%BB%87%E4%B8%80%E5%9C%BA%E6%A0%B9%E5%9B%A0%E5%88%86%E6%9E%90workshop/"
+           data-tag="敏捷,Workshop,根因分析"
+           data-author="" >
+            <span class="post-title" title="如何为敏捷转型客户组织一场根因分析workshop">如何为敏捷转型客户组织一场根因分析workshop</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E7%94%A8%E6%88%B7%E6%95%85%E4%BA%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A2%AB%E6%95%8F%E6%8D%B7%E6%8E%A8%E5%B4%87/"
+           data-tag="敏捷,BA"
+           data-author="" >
+            <span class="post-title" title="探寻本源，用户故事为什么被敏捷推崇">探寻本源，用户故事为什么被敏捷推崇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E8%AF%B7%E7%95%99%E6%84%8F%E8%BF%99%E4%BA%9B%E5%8F%8D%E6%95%8F%E6%8D%B7%E7%9A%84%E8%A1%8C%E4%B8%BA/"
+           data-tag="敏捷,反敏捷"
+           data-author="" >
+            <span class="post-title" title="请留意这些反敏捷的行为">请留意这些反敏捷的行为</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 PM项目经理 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/Q1:%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86%E5%BA%94%E4%B8%8D%E5%BA%94%E8%AF%A5%E5%8F%AA%E7%9B%AF%E4%BA%A4%E4%BB%98Deadline/"
+           data-tag="敏捷,项目经理"
+           data-author="" >
+            <span class="post-title" title="Q1：项目经理应不应该只盯交付 Deadline？">Q1：项目经理应不应该只盯交付 Deadline？</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 PM项目经理 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/%E4%BA%BA%E4%BC%A0%E4%BA%BAonboarding/"
+           data-tag="敏捷,项目经理"
+           data-author="" >
+            <span class="post-title" title="人传人 OnBoarding">人传人 OnBoarding</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 PM项目经理 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/%E7%B4%AF%E7%A7%AF%E6%B5%81%E5%9B%BE/"
+           data-tag="敏捷,项目经理"
+           data-author="" >
+            <span class="post-title" title="累积流图">累积流图</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-敏捷/thoughtworks的敏捷/blog/大规模敏捷测试怎么做2" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="敏捷">敏捷</a> > 
+            
+            <a  data-rel="敏捷&lt;---&gt;TW">TW</a> > 
+            
+            <a  data-rel="敏捷&lt;---&gt;TW&lt;---&gt;博客">博客</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color3">敏捷</a>
+            
+            <a class="color3">测试</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2023-12-17 14:18:27'>2023-12-17 14:18</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:9.1k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            post.views :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E7%9A%84%E5%BF%85%E7%BB%8F%E4%B9%8B%E8%B7%AF%EF%BC%9ASIT%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95"><span class="toc-text">大规模敏捷测试的必经之路：SIT集成测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E7%9A%84%E5%88%86%E5%B1%82%E7%AD%96%E7%95%A5"><span class="toc-text">大规模敏捷测试的分层策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%86%85%E6%B5%8B%E8%AF%95"><span class="toc-text">迭代内测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SIT%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95"><span class="toc-text">SIT集成测试</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%E7%9A%84%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F"><span class="toc-text">两种集成测试的组织方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E7%9A%84SIT%E6%B5%8B%E8%AF%95%E5%9B%A2%E9%98%9F"><span class="toc-text">虚拟的SIT测试团队</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8B%AC%E7%AB%8B%E7%9A%84SIT%E6%B5%8B%E8%AF%95%E5%9B%A2%E9%98%9F"><span class="toc-text">独立的SIT测试团队</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SIT%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%E8%8A%82%E5%A5%8F"><span class="toc-text">SIT集成测试节奏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SIT%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%E5%90%AF%E5%8A%A8%E4%BC%9A"><span class="toc-text">SIT集成测试启动会</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E4%BC%9A%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="toc-text">启动会的目的</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E4%BC%9A%E7%9A%84%E5%8F%82%E4%BC%9A%E8%8C%83%E5%9B%B4"><span class="toc-text">启动会的参会范围</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E4%BC%9A%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-text">启动会的内容</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E8%A7%84%E5%88%92"><span class="toc-text">集成测试用例的设计与规划</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SIT%E8%87%AA%E6%B5%8B%E7%9A%84%E7%94%A8%E4%BE%8B%E7%BC%96%E5%86%99"><span class="toc-text">SIT自测的用例编写</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SIT%E6%8B%89%E9%80%9A%E7%9A%84%E7%94%A8%E4%BE%8B%E7%BC%96%E5%86%99"><span class="toc-text">SIT拉通的用例编写</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E7%AD%96%E7%95%A5%E5%8F%8ASIT%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D%E6%9C%BA%E5%88%B6"><span class="toc-text">分支策略及SIT问题修复机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SIT%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E5%87%86%E5%A4%87%E4%B8%8E%E5%8D%87%E7%BA%A7%E7%AD%96%E7%95%A5"><span class="toc-text">SIT测试环境的准备与升级策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E5%8D%87%E7%BA%A7"><span class="toc-text">统一升级</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5%E5%B8%B8%E5%8F%91%E7%89%88"><span class="toc-text">日常发版</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SIT%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%E5%87%86%E5%85%A5%E5%87%86%E5%87%BA%E6%A0%87%E5%87%86"><span class="toc-text">SIT集成测试准入准出标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%E4%B8%AD%E6%8E%A5%E5%8F%A3%E5%8F%98%E6%9B%B4%E4%B9%8B%E6%AE%87"><span class="toc-text">集成测试中接口变更之殇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QA%E5%9C%A8%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%E4%B8%AD%E8%81%8C%E8%B4%A3%E7%9A%84%E8%BD%AC%E5%8F%98"><span class="toc-text">QA在集成测试中职责的转变</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA%E6%B5%8B%E8%AF%95Coach%E5%AF%B9ITPO%E8%B5%8B%E8%83%BD"><span class="toc-text">作为测试Coach对ITPO赋能</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA%E5%9B%A2%E9%98%9F%E5%BC%95%E6%93%8E%E9%A9%B1%E5%8A%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="toc-text">作为团队引擎驱动问题解决</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA%E4%BB%B7%E5%80%BC%E5%AE%88%E6%8A%A4%E8%80%85"><span class="toc-text">作为价值守护者</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">写在前面：之前和大家一起回顾了大规模敏捷测试的基础，良好的迭代内敏捷实践以及团队协作的一些小tips。既然说到大规模，一定要说到集成测试。对于0-1实现的系统，如何组织多个团队，多个服务甚至多个产品之间的进行有效的大规模集成测试，是我们这趟测试之旅中要经历的重点。</span><br></pre></td></tr></table></figure>
+
+<h2 id="大规模敏捷测试的必经之路：SIT集成测试"><a href="#大规模敏捷测试的必经之路：SIT集成测试" class="headerlink" title="大规模敏捷测试的必经之路：SIT集成测试"></a>大规模敏捷测试的必经之路：SIT集成测试</h2><h3 id="大规模敏捷测试的分层策略"><a href="#大规模敏捷测试的分层策略" class="headerlink" title="大规模敏捷测试的分层策略"></a>大规模敏捷测试的分层策略</h3><p>随着分布式架构的流行，使得大规模的产品开发更加灵活和便捷，但这同时也为质量保障活动带来了挑战。为了更高效地进行测试，往往采用测试分层的策略。从关注每个服务的测试，到关注某个模块的多个服务集成，再包括一个产品内不同模块间的基础测试，最后再到整个端到端多个产品间的集成测试。</p>
+<h4 id="迭代内测试"><a href="#迭代内测试" class="headerlink" title="迭代内测试"></a>迭代内测试</h4><p>迭代内测试主要关注两个方面的测试：</p>
+<ul>
+<li><p>每个服务的功能测试</p>
+</li>
+<li><p>每个模块内的服务集成，比如订单模块的测试。</p>
+</li>
+</ul>
+<p>上一个基础篇中，我们已经针对迭代内测试进行了详细阐述，这里不再赘述。</p>
+<h4 id="SIT集成测试"><a href="#SIT集成测试" class="headerlink" title="SIT集成测试"></a>SIT集成测试</h4><p>系统集成测试我又称为SIT集成测试，分成了两个阶段：</p>
+<ul>
+<li><p>第一个阶段是SIT产品内的集成测试，又叫SIT产品自测，主要关注产品内不同服务间的集成测试，和第三方产品的接口暂时使用mock。</p>
+</li>
+<li><p>第二个阶段是SIT产品间的集成测试，又叫SIT拉通测试，主要关注不同产品间的接口集成。由于产品众多，又分为几条主线。将十几个甚至几十个产品一起拉通，那场面有点壮观。</p>
+</li>
+</ul>
+<p>该项目中的SIT集成测试有两个重要的特征：</p>
+<ul>
+<li><p>产品是0到1的数字化转型，所有的集成基础都从0开始。</p>
+</li>
+<li><p>端到端的场景涉及多个产品集成，涉及组织复杂，参与人员众多。</p>
+</li>
+</ul>
+<h3 id="两种集成测试的组织方式"><a href="#两种集成测试的组织方式" class="headerlink" title="两种集成测试的组织方式"></a>两种集成测试的组织方式</h3><p>大规模产品的集成测试一般有两种组织方式。</p>
+<h4 id="虚拟的SIT测试团队"><a href="#虚拟的SIT测试团队" class="headerlink" title="虚拟的SIT测试团队"></a>虚拟的SIT测试团队</h4><ul>
+<li><p>组织方式：<br>每个Scrum团队出一个SIT接口人，作为整体SIT测试和各个团队之间的桥梁。SIT Lead负责SIT整体的组织，协调，策略，规范，机制等。各个Scrum团队负责SIT的测试执行。</p>
+</li>
+<li><p>优势：<br>这种组织方式相对灵活，SIT接口人可以统筹小组内SIT的任务与团队内的迭代任务。一般来说SIT任务优先级更高。如果SIT任务集中时，可以牺牲迭代内的任务来支持SIT。如果SIT相对任务较少时，可以支持更多迭代内的任务。<br>同时这种组织方式信息更加透明，知识能够及时共享。接口人可以将SIT发现的问题更快地分享给团队内，团队内可以针对问题及时调整。同时接口人也可以及时获得迭代内开发新功能的信息，支持后续SIT测试。</p>
+</li>
+<li><p>缺点：<br>SIT任务和迭代内容易发生资源冲突，迭代内需要留一定buffer给SIT。人员切换频繁会导致SIT测试效率低。</p>
+</li>
+</ul>
+<h4 id="独立的SIT测试团队"><a href="#独立的SIT测试团队" class="headerlink" title="独立的SIT测试团队"></a>独立的SIT测试团队</h4><ul>
+<li><p>组织方式：<br>独立的SIT集成测试团队，团队成员专门负责系统集成测试执行，与Scrum团队是弱连接。SIT<br>Lead负责SIT整体的组织，协调，策略，规范，机制等，并负责SIT团队成员的培养以及与各个Scrum团队之间的协作和知识传递。</p>
+</li>
+<li><p>优势：<br>这种组织方式执行力强，SIT团队专门负责集成测试，可以快速沉淀集成测试经验，资源专项专用，执行力更强。<br>同时还可以隔离对迭代内的影响，迭代内的测试比较容易计划和控制，不受SIT太多影响。</p>
+</li>
+<li><p>缺点：<br>但是这种组织方式协作成本很高。SIT团队和迭代内团队是两个独立的组织，容易形成谷仓效应。SIT团队成员需要和每个团队对接学习业务及架构的知识，并高效及时地与Scrum团队沟通发现的问题，沟通成本高。<br>而且资源独占，不够灵活，对于人员的要求也很高。SIT团队的成员需要在短时间内对整体的业务理解透彻，不断地学习新功能，才能更有效的发现集成问题。</p>
+</li>
+</ul>
+<p>在这个项目中，我们采用了第一种虚拟SIT测试团队的方式。但是对于不同的子团队，还采用了不同的协作方式。有的团队更独立，能过很好的协调团队内部SIT测试和迭代内测试，那么SIT接口人只需了解总体的策略，原则，机制和规范，做到定时沟通即可。而有些团队希望有专门的人来负责SIT测试，甚至SIT问题的修复，从而屏蔽对迭代内的过多影响。但是即使是相对固定的人参与SIT，他仍旧参与迭代内站会，及时同步SIT信息。如果SIT需要团队更多的支持，则阶段性地协商支持方式。如果SIT工作量较小时，则成员还可以及时支持迭代内工作。</p>
+<p>无论哪种方式，都要有统一的原则，测试策略，问题响应机制和测试管理规范，才能有效地协调一致，共同完成集成测试。</p>
+<h3 id="SIT集成测试节奏"><a href="#SIT集成测试节奏" class="headerlink" title="SIT集成测试节奏"></a>SIT集成测试节奏</h3><p>在大规模项目中，集成测试的节奏取决于项目的迭代节奏和产品的复杂度。一般来说较为成熟的产品建议每个迭代都进行集成测试，或者每个功能发布前进行快速集成。然而对于0-1的大规模数字化转型项目来说，初期很难做到频繁集成。那么多长时间进行一次集成测试是一个比较好的节奏呢？<br>在该项目上，由于业务和产品的复杂性，我们采用了滚动式逐步加速的方式来进行集成。逐步加速是采用前松后紧的方式来进行的。我们知道越是频繁的集成对于质量保障是越有利的，但是我们也要考虑到产品的复杂性，0-1的初始阶段等多种因素。集成的频率分为了四个阶段：</p>
+<ul>
+<li><p>阶段一：MVP集成。第一次基础是基于0-1MVP来集成的。<br>经过初期调研，产品设计，架构设计，多个迭代的开发（当前项目是6个迭代），产品核心雏形基本完成。除了前期Showcase时进行的轻量级集成，P0级别需求（MVP）完成的节点是第一次系统的正式的集成测试。</p>
+</li>
+<li><p>阶段二：大需求集成。 第二次集成是P1级别需求完成后进行。由于P1中仍有些大的需求，难以拆分，所以中间可以采用稍微长一点的时间（e.g.2个迭代）之后再集成。</p>
+</li>
+<li><p>阶段三：按迭代集成。 后续需求相对较小，可以更容易拆分，就可以按照每个迭代的频率来进行。</p>
+</li>
+<li><p>阶段四：按需集成。 而在做集成测试的过程中，还会陆续的识别到一些新的小需求，为了赶上集成以及拉通的窗口，我们会安排一些按需集成。可以每周，或者每个需求完成就部署到集成环境。</p>
+</li>
+</ul>
+<p>由于业务的复杂性，一个端到端的场景往往涉及到多个模块，甚至多个产品线，SIT的自测和拉通测试，以及UAT验收都需要并行滚动进行，每次迭代内工作完成后都要经历SIT自测，SIT拉通，UAT产品验收，UAT拉通验收四个步骤。有可能第一阶段的拉通还没有完成，就要进行第二阶段的SIT自测，需要规划不同环境的升级计划，拉出不同的分支，平衡资源等，为整个质量保障工作带来了非常大的挑战。<br>逐步加速的集成测试节奏能够帮助我们在前期做好准备，带领团队熟悉集成的工作流程，培养团队对集成测试的认知，形成良好的工作习惯，这样才能在后续多个并行工作的复杂环境中保持快速集成的节奏。</p>
+<h3 id="SIT集成测试启动会"><a href="#SIT集成测试启动会" class="headerlink" title="SIT集成测试启动会"></a>SIT集成测试启动会</h3><p>集成测试一般可以分为三步走，测试计划与准备，测试执行与监控，测试收尾与总结。每个步骤都有相应的实施活动。</p>
+<p>所有的集成中，第一次的集成测试最为重要，有三个主要目标：</p>
+<ul>
+<li><p>PO完成对于迭代内工作的验收：他们会参与集成测试，并集中在场景的测试上。</p>
+</li>
+<li><p>完成各模块间的集成测试：验证各模块之间的接口是否工作正常，满足需求。这个主要由QA来承担，除了PO场景的测试外，要更关注在边界，异常情况上。</p>
+</li>
+<li><p>培养团队习惯：还有一个更为重要的目标是培养团队习惯，让所有相关的团队成员能够熟悉集成测试概念，目标，原则，策略，流程规范等，并不断地持续改进，为后续的快节奏集成打下坚实的基础。</p>
+</li>
+</ul>
+<p>第一次集成一切都是从0开始，无论是从具体的流程，规范，环境，工具，还是人员意识，职责划分上大家都带有着自己以前的认知。为了统一认识，对齐目标，在集成测试之前举行SIT测试启动会是一个非常必要的环节。</p>
+<h4 id="启动会的目的"><a href="#启动会的目的" class="headerlink" title="启动会的目的"></a>启动会的目的</h4><ul>
+<li><p>普及集成测试的概念</p>
+</li>
+<li><p>各角色对齐集成测试的目标</p>
+</li>
+<li><p>宣贯集成测试的策略，原则，流程规范，管理机制，度量指标等</p>
+</li>
+<li><p>澄清各角色在集成测试中的职责</p>
+</li>
+</ul>
+<h4 id="启动会的参会范围"><a href="#启动会的参会范围" class="headerlink" title="启动会的参会范围"></a>启动会的参会范围</h4><ul>
+<li><p>集成测试涉及到的关键角色，包括：Scrum团队的PO， BA，PM，TL，QA。集成测试不仅仅是QA的事情，即使你采用独立的SIT团队，也需要和其他角色紧密合作才能完成集成测试。</p>
+</li>
+<li><p>Tips-1：在实际项目中，依据人员认知能力，可能在启动会前后需要多次和不同角色进行单独的沟通。有的项目成员可能没有经历过大规模复杂项目，往往会用小的scrum团队认知来衡量大规模集成的工作，造成认知偏差。</p>
+</li>
+<li><p>Tips-2:  需要注意要用各个角色能够理解的语言解释集成测试中的各种原则和策略，尤其是分支策略，升级计划等。人们容易掉进知识诅咒的陷阱，互相假设对方理解，结果造成实施中的偏差。</p>
+</li>
+</ul>
+<h4 id="启动会的内容"><a href="#启动会的内容" class="headerlink" title="启动会的内容"></a>启动会的内容</h4><p>启动会上要把各个角色为更好完成SIT集成测试所需要的信息都对齐，一般来说包含以下的内容：</p>
+<ul>
+<li><p>集成测试目标和策略</p>
+</li>
+<li><p>集成测试的整体计划（时间，人员，范围）</p>
+</li>
+<li><p>集成测试的准入准出标准及度量指标</p>
+</li>
+<li><p>集成测试的问题响应机制</p>
+</li>
+<li><p>分支策略和问题修复流程</p>
+</li>
+<li><p>缺陷管理流程及规范</p>
+</li>
+<li><p>环境升级策略及规范</p>
+</li>
+<li><p>工具平台使用规范</p>
+</li>
+<li><p>对迭代内开发的影响</p>
+</li>
+<li><p>可能存在的风险及举措</p>
+</li>
+<li><p>各个相关负责人</p>
+</li>
+<li><p>沟通计划及问题升级流程</p>
+</li>
+<li><p>各角色职责及分工</p>
+</li>
+<li><p>其他问题</p>
+</li>
+</ul>
+<p>如果你是SIT<br>Lead，你需要在启动会之前做好线下调研，和各个关键角色对齐相关内容。启动会只是一个宣贯和所有角色对齐的动作，真正的对齐要发生在线下。否则启动会将变成一个争吵大会。如果不幸第一次变成这样的一个大会，你还需要准备第二次启动会直到对齐。尤其对于各个角色的职责与分工，一定要在会议上进行澄清，以免发生不同理解导致后续协作困难。<br>比如：PM要规划SIT测试支持与迭代内工作量的平衡；开发人员要完善服务配置工作，环境配置工作，理解缺陷修复规范，理解分支策略和问题修复策略，理解响应优先级等；BA要留出时间支持SIT过程中遇到的业务方案争议，做出决策；QA要做好测试用例设计，环境验证，数据初始化，问题响应，对PO进行支持等工作；而公共模块负责人和运维人员也要相应的提前准备，测试环境基础设施，部署流水线，做好部署升级准备，做好问题响应，修复准备等。</p>
+<h3 id="集成测试用例的设计与规划"><a href="#集成测试用例的设计与规划" class="headerlink" title="集成测试用例的设计与规划"></a>集成测试用例的设计与规划</h3><p>测试用例的设计与编写是集成测试成功的关键，它决定了测试的方向和深入程度。而对于SIT自测和SIT拉通测试，显然测试用例的设计是不同的。SIT自测更注重本产品内的功能，而SIT拉通测试更注重端到端的场景衔接。</p>
+<h4 id="SIT自测的用例编写"><a href="#SIT自测的用例编写" class="headerlink" title="SIT自测的用例编写"></a>SIT自测的用例编写</h4><p>前面我们讲到，SIT自测有两个主要目标，一个是为PO验收迭代内实现的功能，一个是验证模块和模块间的接口集成。所以SIT自测阶段的测试用例也分为两个部分：</p>
+<ul>
+<li><p>一是由系统的用户（业务）联合PO从用户视角进行编写。由QA和IT PO审核修改完成的，进行测试的时候会根据业务场景和用例执行。</p>
+<ul>
+<li><p>优点是用例的场景更能贴近实际的业务，同时在编写用例的过程中可以让用户更加了解系统逻辑，是一个交流对齐的过程。</p>
+</li>
+<li><p>缺点一是存在重复测试，描述不足以及期望结果和系统内的实现可能不一致（业务期望全集而不只是一个一期的MVP）。二是耗时耗力，用例编写涉及人员众多，工程庞大，花费比较多的精力去组织协调。但是为了0-1转型打好基础，并节省后面UAT验收的成本，采用了这种方式。</p>
+</li>
+</ul>
+</li>
+<li><p>二是QA基于接口进行一些边界及异常场景的测试。这部分并没有以正式的测试用例形式出现，而是采用脑图的方式节约设计成本。</p>
+</li>
+</ul>
+<h4 id="SIT拉通的用例编写"><a href="#SIT拉通的用例编写" class="headerlink" title="SIT拉通的用例编写"></a>SIT拉通的用例编写</h4><p>SIT拉通测试和SIT自测的侧重点不同，它更关注从上游到下游整个贯通的场景。测试用例如何设计也是非常有挑战的事情。每个产品都在SIT自测时设计了自己的测试用例，如果用笛卡尔集拼接，数量将指数级增长，估计得测上几个月也测不完。但是按照一个产品，又有缺失场景的风险。最后是将整个产品集分成若干个主线，以主线场景为主，从自测用例中挑选合适的用例，组成端到端的测试场景。<br>最后我们产品所在的主线，大约挑选出250多个场景。在做测试计划时，为这些场景进行编号xxx-001，xxx-002，并基于编号进行测试规划。测试计划中依据每个场景在不同产品中的流转，规划每一天开始场景号，结束场景号，从而把几十个系统的集成，几百号人的集成拉通测试组织起来。下图就是整个SIT拉通测试组织计划图。分为5个主线，N个产品。不过这样拉通的成本也是非常高的，如果不是0-1的数字化转型，一般也无法组织起这么大规模的拉通测试。</p>
+<p>img</p>
+<h3 id="分支策略及SIT问题修复机制"><a href="#分支策略及SIT问题修复机制" class="headerlink" title="分支策略及SIT问题修复机制"></a>分支策略及SIT问题修复机制</h3><p>Scrum中针对每个服务的开发，一般我们都推荐采用主干开发的策略来管理代码，这更符合我们敏捷中尽早持续集成的理念。然而对于大规模的复杂产品来讲，如果我们有较长的集成测试阶段，集成期间就需要保持一定的代码稳定性，那么集成中发现问题的修复和新功能的开发之间就会产生冲突，这时候就不得不考虑更好的分支策略。<br>这个项目中我们就遇到了这个问题，滚动式集成策略使得同时可能最多会有三条线并行。也就是我们除了主干之外，需要有两个分支。第一个分支可能还在做SIT拉通集成，另一个分支在做SIT自测，主干进行迭代内开发。那么当集成测试中发现了问题后，该在哪个上面进行修复，如何保障几条线同步呢？我们采用了哪里发现问题，哪里修复的原则，之后再Cherry<br>Pick到其他线。</p>
+<p>这里如果某个集成分支发现的问题，就在这个集成分支上进行修复，之后再Cherry Pick到主干。如果还有另外一个分支并行，也要再Cherry<br>Pick到另一个分支。 这里如果代码差异很大，Cherry Pick可能不行，就需要手动修改代码。</p>
+<ul>
+<li>分支策略的优势</li>
+</ul>
+<p>要说这种分支策略的优势，其实就是满足了大规模敏捷测试中滚动式并行集成的复杂需求。这样使得我们可以阶段性的尽早地进行集成活动，尽早发现问题，一定程度的测试左移。<br>否则是无法进行这种复杂场景下的集成测试的。然而这种方式也是有成本的。</p>
+<ul>
+<li>分支策略的成本和风险</li>
+</ul>
+<p>这种方式的成本是显而易见的，开发同学必须一个问题进行多个分支的代码修改或者merge动作，测试同学必须在多个环境上进行验证。这无疑是带来了很大的工作量。<br>风险也同样明显，如果开发同学忘记merge到主干或者其他分支，这个问题会被遗漏，在将来再次出现，带来质量风险。</p>
+<ul>
+<li><p>风险应对策略</p>
+</li>
+<li><p>从流程规范上定义清晰，规避风险。</p>
+</li>
+<li><p>包括问题筛选分级，在缺陷中写入明确Comments，甚至duplicate一个缺陷或者task来track其他分支上的merge动作，把这个流程写进代码规范,<br>最后消除分支时再次进行检查等等。 这里有一个问题修复机制的流程示例。</p>
+</li>
+</ul>
+<p>前期Monitor执行情况，及时纠正，养成习惯。<br>即使这样有规范流程，在前期还是会出现很多遗漏和错误，测试Lead和TL需要在前期进行更细致的Monitor，来帮助团队养成习惯。</p>
+<h3 id="SIT测试环境的准备与升级策略"><a href="#SIT测试环境的准备与升级策略" class="headerlink" title="SIT测试环境的准备与升级策略"></a>SIT测试环境的准备与升级策略</h3><p>测试环境是集成测试中非常重要的基础。在迭代内测试中，我们主要使用Dev环境和Test环境来进行开发自测和QA测试。在集成测试中，我们需要准备集成测试的环境。由于该项目把集成测试分成了两个阶段，还需要准备两个环境SIT自测环境，SIT拉通环境。而环境的升级也分为两种，一种是统一升级，迭代测试结束后，要进入到集成测试阶段，这时要做整个迭代开发代码的统一升级。另一种是测试过程中发现的bug修复后进行的升级，我们叫它日常发版。无论是那种升级都需要很多的准备工作，也有可能踩很多坑。</p>
+<h4 id="统一升级"><a href="#统一升级" class="headerlink" title="统一升级"></a>统一升级</h4><p>由于我们采用的滚动式逐步加速的集成节奏，从一开始0-1搭建环境，到后期频繁升级，都有着很多痛苦的经历。最开始从0到1的环境搭建花费了近一周的时间，从基础设施搭建，公共服务部署，各服务部署与配置，到环境验证和主场景冒烟测试，真的是问题百出，险象环生，负责部署的同学一直熬了几个晚上。</p>
+<p>最突出的问题有以下几个方面：</p>
+<ul>
+<li>计划不明晰，信息不透明；</li>
+</ul>
+<p>最开始的时候，虽然也有环境升级的计划环节，但是并没有通知到所有的角色和执行人，导致在搭建和部署过程中发现问题时，才现抓人解决。有的人找不到，有的人找到也不明白上下文，感觉上一片混乱。<br>显然环境搭建和部署并不是某一个人的事情，它涉及到各个角色的协作，包括运维、TL、各模块的开发、QA，甚至需要验证的PO。不同的角色要协同一致，各司其职，才能保障环境的顺利升级。</p>
+<p>改进方案：<br>经过一轮的问题分析和讨论，决定三个手段来保障信息透明。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- 升级启动会：每次升级前一两天开一个环境升级启动会，邀请所有相关人员，对齐升级的时间，环境，版本等信息。10到20分钟快速信息对齐。</span><br><span class="line"></span><br><span class="line">- 环境升级群：建立环境升级群，相关信息一律同步到群中。升级过程中有问题随时发群里，升级进度等也在群里实时体现。</span><br><span class="line"></span><br><span class="line">- 升级Always-on-call：升级过程中，建立Always-on-call，随时交流信息。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置问题频繁出现；<br>虽然有配置中心，虽然也有环境配置管理，但是总还是有很多需要手工去记录，更改的地方。在前期升级过程中，频繁出现配置问题，无论是服务的配置参数丢失，配错，还是环境配置参数忘记修改，都导致非常多的问题。排查问题也造成了很多的资源浪费。<br>这里有流程问题，技术问题，也有意识问题。有很多团队成员觉得配置问题不算是问题，只有代码的问题才是真正的bug。然而配置问题带来的危害一点不比真正的代码问题小。</li>
+</ul>
+<p>改进方案：<br>为此我们对所有的环境和配置问题进行了根因分析归类，找出共性问题，通过下列手段解决：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 创建升级检查checklist ：要求每个团队为自己负责的模块和服务都创建服务配置及环境配置检查单，TL评审后，升级期间由负责人员对照检查。同时还记录每次部署完成，验证完成具体时长，以便后续提升。</span><br><span class="line"></span><br><span class="line">- 创建环境验证及冒烟Checklist：QA 创建环境验证和主场景冒烟场景检查单，其中包括环境配置验证，定时任务验证，数据验证以及主场景验证等。避免漏查，漏测。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>单独升级某个服务，却由于模块间的互相依赖导致回滚；<br>协调所有模块一起升级是最安全的一个做法，但是它也是有成本的。尤其到后期更频繁的集成时，升级频率也非常的高。一起升级有时显得很笨拙。也曾有过单个模块单独升级的时候，然而大规模产品的共性问题就是有互相的依赖摆脱不开。虽然采用了微服务方式，但是一方面对于公共模块有依赖，尤其是前端公共基座的修改。另一方面集成测试有些场景涉及几个模块，需要进度对齐，一起升级。</li>
+</ul>
+<p>改进方案：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对一些关键需求依赖提前识别，协调不同团队的开发资源和进度，尽量能够节奏一致。但是也开放exception的流程，提出由关键角色评审后，可以不跟随大节奏，单独或者几个服务一起升级。</span><br></pre></td></tr></table></figure>
+
+<h4 id="日常发版"><a href="#日常发版" class="headerlink" title="日常发版"></a>日常发版</h4><p>日常发版主要是缺陷修复后的升级。这个升级要简单很多，但是也会存在一定的风险，尤其是拉通测试时，一个服务出现问题，可能会导致整体的场景被阻塞，那影响的范围将是上百人，所以不能随意进行升级。要从几个方面去限制：</p>
+<ul>
+<li><p>规定可升级的时间段: 比如上午9:00之前，中午12:00-2:00，下午6:00-7:00，晚上9:30之后。如果存在一些紧急升级，需要PMO和测试Lead同意才能破例升级。</p>
+</li>
+<li><p>控制可升级的人群: 基本上每个模块分配一个QA能够升级，而限制其他人的权限，避免一些因信息缺失导致的错误升级。</p>
+</li>
+<li><p>每次升级留痕：每次升级都要留下记录，以备后续发现问题回溯查找。</p>
+</li>
+</ul>
+<h3 id="SIT集成测试准入准出标准"><a href="#SIT集成测试准入准出标准" class="headerlink" title="SIT集成测试准入准出标准"></a>SIT集成测试准入准出标准</h3><p>前面我们提到过，每个需求都要经历迭代内测试，SIT自测，SIT拉通，UAT产品验收，UAT拉通验收几个阶段之后才符合上线标准。那么每个测试阶段都有准入准出的标准。每个公司或者项目都可以依据自己不同的实际情况制定准入准出标准，主要包括几个方面：需求代码完成情况，上一阶段测试完成情况，以及缺陷修复完成情况。基本比较雷同，这里仅给出一个样例。</p>
+<p><strong>SIT准入标准：</strong></p>
+<ul>
+<li><p>开发编码完成，单元测试通过</p>
+</li>
+<li><p>迭代内测试100%完成并通过</p>
+</li>
+<li><p>缺陷修复率</p>
+</li>
+<li><p>阻塞&#x2F;严重缺陷 100%修复</p>
+</li>
+<li><p>普通&#x2F;优化缺陷&gt;95%修复</p>
+</li>
+<li><p>遗留问题都已评审并在系统中标注解决方案</p>
+</li>
+</ul>
+<p><strong>SIT准出标准：</strong></p>
+<ul>
+<li><p>计划的测试100%完成并通过</p>
+</li>
+<li><p>缺陷修复率</p>
+</li>
+<li><p>阻塞&#x2F;严重缺陷 100%修复</p>
+</li>
+<li><p>普通&#x2F;优化缺陷&gt;95%修复</p>
+</li>
+<li><p>遗留问题都已评审并在系统中标注解决方案</p>
+</li>
+</ul>
+<h3 id="集成测试中接口变更之殇"><a href="#集成测试中接口变更之殇" class="headerlink" title="集成测试中接口变更之殇"></a>集成测试中接口变更之殇</h3><p>SIT自测时关注的是产品内不同模块间的接口，一个产品内的团队至少联调机会多，有很多时候在test环境就已经放开mock，大胆集成了。所以接口问题没有那么突出，顶多是长链条涉及模块多的一些场景会有一些偏差，导致少量接口变更。</p>
+<p>然而在SIT拉通测试中，接口变更确成为最痛的痛点。<br>我们的产品处在上游，接口一般由下游消费方来提出需求。虽然前期也有约定，甚至接口集成平台上写得明明白白，但是由于这种0-1大规模的赶工产品交付，在前期必然思考的不那么周密，联调时的约定，也按不住后期方案的变更，需求的增多，理解的偏差，代码的混乱。于是乎，拉通测试中接口问题频频暴露，而接口的定义在这个项目环境下非常灵活。上游和下游总是会争得面红耳赤，都想在这场变与不变中处于有利位置。整个拉通现场堪比热闹的菜市场，争执声此起彼伏，一天下来不仅嗓子哑了，耳朵也接近聋了。参数不对，类型不对，必填非必填等等各种接口变更的问题，更离谱的甚至还有一个因为下游系统都对某个字段理解错误，按照错误的来实现，为了整体节约成本，也要上游来改接口。别人犯错，你来买单。</p>
+<p>这大大超出了我们对于接口变更带来的工作量的预期。<br>如果没有合适的接口变更处理机制，这些对第三方来说几乎无成本的变更会无穷无尽地扑面而来。于是为了控制变更膨胀，制定接口变更机制成为当务之急。作为供应商，更得把新需求和缺陷定义清晰。所以接口变更的流程和机制就呼之欲出。</p>
+<ul>
+<li>接口变更机制<br>出现问题后首先由QA，BA和PO共同协商判断，如果确定之前定义接口清晰明了，现在需要变更，就由PO起草新需求，按照新需求进入迭代内处理。如果之前有清晰定义，实现有误，就按缺陷处理。如果无法达成一致，就上报决策小组，最终决策小组形成决定。<br>但是集成测试中如果出现阻塞问题，需要立刻处理，否则会影响整个集成的进度。所以又把问题分为两种类型：</li>
+</ul>
+<p>阻塞场景：先响应，再记录。</p>
+<p>由于拉通测试的特殊性，当存在阻塞场景拉通的问题出现时，不管该问题最终被定义为缺陷还是需求变更，都需要第一优先级进行修复。为了处理这样的情况，即使是新需求，或者无法达成一致，团队也会立刻响应处理，随后再记录。</p>
+<p>普通场景：按照一般流程处理。</p>
+<p>这么大规模的E2E拉通测试真的很像一场战争，对于整个团队都是一个巨大的考验，QA更是这里的漩涡，如果不能提前做好规划和快速推动决策调整，任何一环节出现问题都会导致整个测试阻塞，耽误的就是几百号人的时间和精力。</p>
+<h3 id="QA在集成测试中职责的转变"><a href="#QA在集成测试中职责的转变" class="headerlink" title="QA在集成测试中职责的转变"></a>QA在集成测试中职责的转变</h3><p>QA在迭代内主要是进行故事卡的测试，最多是负责一些Showcase的准备和演示工作。但是在SIT测试中，QA的作用和职责发生了很大的变化。由于参与SIT测试的人员众多，尤其在后期拉通测试中，还要和其他产品团队一起测试。QA的职责从单一的测试执行转变为一专多能。首先转变为一个测试Coach，赋能IT<br>PO来进行测试；其次转变为一个Agent，问题解决的引擎。对每个问题进行分析，澄清，分发，驱动PO，开发，BA，甚至运维共同协作，快速解决问题；最后还是一个价值守护者，不仅守护着产品的质量，更要守护业务的价值，对拉通中产生的不断变化业务方案，接口定义，从用户角度，从ROI角度，据理力争，并基于问题不断调整测试策略。</p>
+<h4 id="作为测试Coach对ITPO赋能"><a href="#作为测试Coach对ITPO赋能" class="headerlink" title="作为测试Coach对ITPO赋能"></a>作为测试Coach对ITPO赋能</h4><p>IT PO第一次参与到测试中来，他们摩拳擦掌想要看到自己产品的样子是否满足自己的方案，同时还要对这些功能进行验收，为未来业务的验收做准备。为了帮助IT<br>PO尽快掌握的测试能力，QA变身为一个测试Coach，一对一的为IT<br>PO进行赋能。首先用业务的语言讲解系统实现的功能，方便其理解系统的交互逻辑以及一些简单的后端处理逻辑。其次用技术的手段帮助他们能够快速上手，将系统需要的配置以及跳过第三方依赖所需要的mock使用方法文档化，可以及时查阅。最后变为支持者，帮助他们定位问题，确定缺陷严重级别，建立与团队的沟通，将问题尽量描述清晰等等。在后续的各种集成测试，<br>UAT测试中，经过赋能的ITPO都发挥了重要的作用。</p>
+<h4 id="作为团队引擎驱动问题解决"><a href="#作为团队引擎驱动问题解决" class="headerlink" title="作为团队引擎驱动问题解决"></a>作为团队引擎驱动问题解决</h4><p>当PO或者其他产品人员在集成测试中发现问题时，QA首先要进行一个基础判断，是否是配置问题，数据问题，环境问题，那么马上就可以解决。如果确实是缺陷，则在缺陷上补充自己的分析和判断，流转给开发同学及时修复。如果是新的需求或者业务方案问题，则引入BA一起讨论澄清。QA在集成测试中是最关键的角色，像一个引擎，驱动整个团队来快速解决问题，使得集成测试能够顺利进行。</p>
+<p>QA同学也作为Scrum团队的一个屏障，将非代码问题都屏蔽在团队之外，减轻团队的工作量，有效地保障迭代内的交付。</p>
+<h4 id="作为价值守护者"><a href="#作为价值守护者" class="headerlink" title="作为价值守护者"></a>作为价值守护者</h4><p>QA是质量的守护者，同时也是价值的守护者。在集成测试中，除了代码的问题，更多时候会有接口的问题，业务方案的问题。在与业务，PO，BA以及其他产品的人员讨论中，QA作为业务和技术的结合点，需要提出自己的认知，从用户的使用角度，从技术的成本角度，统一考虑，以最优的成本守护价值。<br>同时要根据迭代内的测试反馈，不断地调整测试策略，制定重点的测试场景，对迭代内测试不充分，SIT发现问题较多和风险较高的功能进行回归测试。</p>
+<p><strong>一点感悟：</strong><br>大规模的系统总是要经历这样的SIT集成测试阶段，当然这次这个规模大得有点离谱，但是也让我们从中深刻体会到前期质量内建工作的重要性以及集成准备工作的必要性。在这样大规模的集成中，如果没有每个小团队很好的敏捷实践作为基础，实现了良好的质量内建，预防了很多问题，单是在集成中爆发这些问题，那后果不敢想象。很多其他产品（非TW涉及的产品）都深陷于其中，当初接口设计随意，业务逻辑没有理顺，一集成发现接口完全不能满足业务需要。当初没有持续集成，当前一大堆功能集成，改一个问题引入一大堆问题，这样高强度，大规模的集成，任何闪失都会暴露在聚光灯下，导致几百人工作的延迟，可想而知后果是什么。这里我要感谢我们的那些可靠实践IKM，开卡结卡，流水线，单元测试，Showcase等等。也许你觉得司空见惯，也许我们还有很多可以提升的地方，但是它们确实帮助我们在人员交替，新人无数的困难情况下顺利渡过了这场没有硝烟的战争。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">写在后面:</span><br><span class="line">在做交付时往往有一种感受，我司咨询中有那么多完美的方案和实践，可是真到自己交付时却有千种难，美好的理想难以落地让人苦恼，可是这也正是现实的真相。有很多实践需要土壤，需要环境，需要很多基础，你能做的是要洞察当前的状况，选择最适合的做法。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 350394277@qq.com </span>
+    </div>
+</article>
+
+<!--  -->
+<!-- <p> -->
+<!--     <a  class="dashang" onclick="dashangToggle()">donation.button</a> -->
+<!-- </p> -->
+<!--  -->
+
+<div class="article_copyright">
+    <p><span class="copy-title">Title:</span>大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇</p>
+    <p><span class="copy-title">Count:</span><span class="post-count">9.1k</span></p>
+    <p><span class="copy-title">Author:</span><a  title="Yunlong Wen">Yunlong Wen</a></p>
+    <p><span class="copy-title">Created At:</span>2023-12-17, 14:18:27</p>
+    <p><span class="copy-title">Updated At:</span>2023-12-17, 14:18:27</p>
+<!--     <span class="copy-title">post.url:</span><a class="post-url" href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A2/" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇">http://github.100kwhy.cn/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A2/</a> -->
+<!--     <p> -->
+<!--         <span class="copy-title">post.copyright:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">post.copyright1</a> post.copyright2 -->
+<!--     </p> -->
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><span class="miit">
+                <img src="/img/gov.png" title="中华人民共和国工业和信息化部">
+                <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/">陕ICP备2023006299号</a>
+        </span>
+    
+    ©2016-2023 Yunlong
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>donation.headline</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">donation.alipay</label></span><span><label><input type="radio" name="pay" value="weixin">donation.weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

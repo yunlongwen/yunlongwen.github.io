@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>下载编译源代码 | Yunlong的博客</title>
+  <meta name="keywords" content=" aosp , android ">
+  <meta name="description" content="下载编译源代码 | Yunlong的博客">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="about">
+<meta property="og:url" content="http://github.100kwhy.cn/about/index.html">
+<meta property="og:site_name" content="Yunlong的博客">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-08-03T19:20:30.000Z">
+<meta property="article:modified_time" content="2023-12-17T14:18:27.899Z">
+<meta property="article:author" content="Yunlong Wen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>Yunlong Wen</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="github"
+               href="https://github.com/yunlongwen"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="email"
+               href="mailto:350394277@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(16)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具">
+            <i class="fold iconfont icon-right"></i>
+            工具
+            <small>(2)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="工具&lt;---&gt;Hexo">
+            
+            Hexo
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="安卓">
+            <i class="fold iconfont icon-right"></i>
+            安卓
+            <small>(2)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="安卓&lt;---&gt;aosp">
+            
+            aosp
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="敏捷">
+            <i class="fold iconfont icon-right"></i>
+            敏捷
+            <small>(12)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;交付手册">
+            <i class="fold iconfont icon-right"></i>
+            交付手册
+            <small>(4)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;交付手册&lt;---&gt;PM项目经理">
+            
+            PM项目经理
+            <small>(3)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;ThoughtWorks">
+            
+            ThoughtWorks
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;TW">
+            <i class="fold iconfont icon-right"></i>
+            TW
+            <small>(7)</small>
+        </div>
+        
+            <ul class="sub hide">
+                
+                    
+    <li>
+        <div data-rel="敏捷&lt;---&gt;TW&lt;---&gt;博客">
+            
+            博客
+            <small>(7)</small>
+        </div>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+                
+            </ul>
+        
+    </li>
+
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  site_url"
+               
+               href="/about">About</a>
+        
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="16">
+<input type="hidden" id="yelog_site_word_count" value="50.7k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>测试</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>反敏捷</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>根因分析</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>敏捷</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>项目经理</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>android</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>aosp</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>BA</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Hexo</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Workshop</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <div id="local-search-result">
+
+    </div>
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All 安卓 aosp "
+           href="/2023/12/17/Android/aosp/2023-0719-aosp/"
+           data-tag="aosp,android"
+           data-author="" >
+            <span class="post-title" title="AOSP 源码文件结构">AOSP 源码文件结构</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 安卓 aosp "
+           href="/2023/12/17/Android/aosp/2023-0721-download-compiled/"
+           data-tag="aosp,android"
+           data-author="" >
+            <span class="post-title" title="下载编译源代码">下载编译源代码</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 工具 Hexo "
+           href="/2023/12/17/%E5%B7%A5%E5%85%B7/Hexo/cname/"
+           data-tag="Hexo"
+           data-author="" >
+            <span class="post-title" title="Hexo怎么避免README文件以及CNAME文件的覆盖">Hexo怎么避免README文件以及CNAME文件的覆盖</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 工具 Hexo "
+           href="/2023/12/17/%E5%B7%A5%E5%85%B7/Hexo/github_actions/"
+           data-tag="Hexo"
+           data-author="" >
+            <span class="post-title" title="使用GitHub Actions部署Hexo博客">使用GitHub Actions部署Hexo博客</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 ThoughtWorks "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/about/"
+           data-tag="敏捷"
+           data-author="" >
+            <span class="post-title" title="关于">关于</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/about/"
+           data-tag="敏捷"
+           data-author="" >
+            <span class="post-title" title="关于">关于</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/ThoughtWorks%E7%9A%84%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="ThoughtWorks的敏捷测试">ThoughtWorks的敏捷测试</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A1/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇">大规模敏捷测试怎么做？----“绿皮车”测试之旅（一）基础篇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A2/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇">大规模敏捷测试怎么做？----“绿皮车”测试之旅（二）集成篇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E6%80%8E%E4%B9%88%E5%81%9A3/"
+           data-tag="敏捷,测试"
+           data-author="" >
+            <span class="post-title" title="大规模敏捷测试怎么做？----“绿皮车”测试之旅（三）用户验收篇">大规模敏捷测试怎么做？----“绿皮车”测试之旅（三）用户验收篇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E5%A6%82%E4%BD%95%E4%B8%BA%E6%95%8F%E6%8D%B7%E8%BD%AC%E5%9E%8B%E5%AE%A2%E6%88%B7%E7%BB%84%E7%BB%87%E4%B8%80%E5%9C%BA%E6%A0%B9%E5%9B%A0%E5%88%86%E6%9E%90workshop/"
+           data-tag="敏捷,Workshop,根因分析"
+           data-author="" >
+            <span class="post-title" title="如何为敏捷转型客户组织一场根因分析workshop">如何为敏捷转型客户组织一场根因分析workshop</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E7%94%A8%E6%88%B7%E6%95%85%E4%BA%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A2%AB%E6%95%8F%E6%8D%B7%E6%8E%A8%E5%B4%87/"
+           data-tag="敏捷,BA"
+           data-author="" >
+            <span class="post-title" title="探寻本源，用户故事为什么被敏捷推崇">探寻本源，用户故事为什么被敏捷推崇</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 TW 博客 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/thoughtworks%E7%9A%84%E6%95%8F%E6%8D%B7/blog/%E8%AF%B7%E7%95%99%E6%84%8F%E8%BF%99%E4%BA%9B%E5%8F%8D%E6%95%8F%E6%8D%B7%E7%9A%84%E8%A1%8C%E4%B8%BA/"
+           data-tag="敏捷,反敏捷"
+           data-author="" >
+            <span class="post-title" title="请留意这些反敏捷的行为">请留意这些反敏捷的行为</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 PM项目经理 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/Q1:%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86%E5%BA%94%E4%B8%8D%E5%BA%94%E8%AF%A5%E5%8F%AA%E7%9B%AF%E4%BA%A4%E4%BB%98Deadline/"
+           data-tag="敏捷,项目经理"
+           data-author="" >
+            <span class="post-title" title="Q1：项目经理应不应该只盯交付 Deadline？">Q1：项目经理应不应该只盯交付 Deadline？</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 PM项目经理 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/%E4%BA%BA%E4%BC%A0%E4%BA%BAonboarding/"
+           data-tag="敏捷,项目经理"
+           data-author="" >
+            <span class="post-title" title="人传人 OnBoarding">人传人 OnBoarding</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        
+        <a  class="All 敏捷 交付手册 PM项目经理 "
+           href="/2023/12/17/%E6%95%8F%E6%8D%B7/%E4%BA%A4%E4%BB%98%E6%89%8B%E5%86%8C/PM%E9%A1%B9%E7%9B%AE%E7%BB%8F%E7%90%86/%E7%B4%AF%E7%A7%AF%E6%B5%81%E5%9B%BE/"
+           data-tag="敏捷,项目经理"
+           data-author="" >
+            <span class="post-title" title="累积流图">累积流图</span>
+            <span class="post-date" title="2023-12-17 14:18:27">2023/12/17</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-Android/aosp/2023-0721-download-compiled" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">下载编译源代码</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="安卓">安卓</a> > 
+            
+            <a  data-rel="安卓&lt;---&gt;aosp">aosp</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">aosp</a>
+            
+            <a class="color3">android</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2023-12-17 14:18:27'>2023-12-17 14:18</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:1.9k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            post.views :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="toc-text">下载源代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96Manifest"><span class="toc-text">初始化Manifest</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="toc-text">同步源代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="toc-text">编译源代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83"><span class="toc-text">设置编译环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E7%BC%96%E8%AF%91%E7%9B%AE%E6%A0%87"><span class="toc-text">选择编译目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E4%BB%A3%E7%A0%81"><span class="toc-text">编译代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="toc-text">修改源代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E4%BA%A7%E7%94%9F%E7%89%A9"><span class="toc-text">编译产生物</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E9%95%9C%E5%83%8F"><span class="toc-text">编译镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%B8%B8%E7%94%A8jar%E5%8C%85%E8%B7%AF%E5%BE%84"><span class="toc-text">系统常用jar包路径</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="下载源代码"><a href="#下载源代码" class="headerlink" title="下载源代码"></a>下载源代码</h2><h3 id="初始化Manifest"><a href="#初始化Manifest" class="headerlink" title="初始化Manifest"></a>初始化Manifest</h3><p>repo init –depth&#x3D;1 -u <a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/manifest">https://android.googlesource.com/platform/manifest</a> -b android13-release<br>镜像使用：将 <a target="_blank" rel="noopener" href="https://android.googlesource.com/">https://android.googlesource.com/</a> 全部使用 <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/">https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/</a> 代替即可。</p>
+<p>repo init –depth&#x3D;1 -u <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest">https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest</a> -b android13-release</p>
+<table>
+<thead>
+<tr>
+<th>-b</th>
+<th>指定下载分支为android13-release</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–depth&#x3D;1</td>
+<td>只下载最新的提交，不下载历史记录，会加速很多</td>
+</tr>
+</tbody></table>
+<p>此Manifest非彼Manifest,他是用来描述Repo的目录结构的,它显式的描述每一个工程是从哪个代<br>码仓库来的,是哪个分支,哪个Tag。它在$DIR&#x2F;.repo目录下存在一个default.xml,里面就是这个manifest文件。我们在$DIR&#x2F;.repo&#x2F;local_manifests&#x2F;*<br>.xml创建本地文件,里面配置修改的工程。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;manifest&gt;</span><br><span class="line">    &lt;project path=&quot;manifest&quot; name=&quot;tools/manifest&quot; /&gt;</span><br><span class="line">    &lt;project path=&quot;platform-manifest&quot; name=&quot;platform/manifest&quot; /&gt;</span><br><span class="line">&lt;/manifest&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="同步源代码"><a href="#同步源代码" class="headerlink" title="同步源代码"></a>同步源代码</h3><p>使用命令行将仓库的代码下载到本地：<br>repo sync -c –no-clone-bundle –no-tags -j8<br>参数说明</p>
+<table>
+<thead>
+<tr>
+<th>-c</th>
+<th>使用当前分支，不下载其他分支源代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–no-clone-bundle</td>
+<td>不下载bundle的文件</td>
+</tr>
+<tr>
+<td>–no-tags</td>
+<td>不下载tags</td>
+</tr>
+<tr>
+<td>-j8</td>
+<td>使用8个线程进行下载</td>
+</tr>
+</tbody></table>
+<h2 id="编译源代码"><a href="#编译源代码" class="headerlink" title="编译源代码"></a>编译源代码</h2><p>在完成源代码下载之后，需要进行源代码的编译工作，产生重要的镜像文件(Image)</p>
+<h3 id="设置编译环境"><a href="#设置编译环境" class="headerlink" title="设置编译环境"></a>设置编译环境</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source build/envsetup.sh</span><br></pre></td></tr></table></figure>
+
+<p>每次启动 terminal 的时候都需要重新设置编译环境,否则会出现找不到文件路径和命令的情况。</p>
+<h3 id="选择编译目标"><a href="#选择编译目标" class="headerlink" title="选择编译目标"></a>选择编译目标</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lunch</span><br></pre></td></tr></table></figure>
+
+<p>选择适配的目标构建版本（开发板或者模拟器），所有构建目标都采用 BUILD-BUILDTYPE 形式，其中 BUILD 是表示特定功能组合的代号。BUILDTYPE<br>是以下类型之一：</p>
+<table>
+<thead>
+<tr>
+<th>构建类型</th>
+<th>使用情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user</td>
+<td>权限受限；适用于生产环境</td>
+</tr>
+<tr>
+<td>userdebug</td>
+<td>与“user”类似，但具有 root 权限和调试功能；是进行调试时的首选编译类型</td>
+</tr>
+<tr>
+<td>eng</td>
+<td>具有额外调试工具的开发配置</td>
+</tr>
+</tbody></table>
+<p>根据我们的模拟器环境,选择x86(Intel芯片的mac)或者 arm(m系列的mac)的系统镜像。<br>备注：⻋机模拟器运行类型以“sdk_car_”开头</p>
+<h3 id="编译代码"><a href="#编译代码" class="headerlink" title="编译代码"></a>编译代码</h3><p>使用envsetup脚本中提供的编译命令，来进行系统镜像的编译</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m -j8</span><br></pre></td></tr></table></figure>
+
+<p>参数说明</p>
+<table>
+<thead>
+<tr>
+<th>-j8</th>
+<th>使用8个线程进行下载</th>
+</tr>
+</thead>
+</table>
+<p>可以通过在 m 命令行中列出相应名称来构建特定模块，而不是构建完整的设备映像。此外，m 还针对各种特殊目的提供了一些伪目标。以下是一些示例：</p>
+<ul>
+<li>droid - m droid 是正常 build。此目标在此处，因为默认目标需要名称。</li>
+<li>all - m all 会构建 m droid 构建的所有内容，加上不包含 droid 标记的所有内容。构建服务器会运行此命令，以确保包含在树中且包含</li>
+<li>Android.mk 文件的所有元素都会构建。</li>
+<li>m - 从树的顶部运行构建系统。这很有用，因为您可以在子目录中运行 make。如果您设置了 TOP<br>环境变量，它便会使用此变量。如果您未设置此变量，它便会从当前目录中查找相应的树，以尝试找到树的顶层。您可以通过运行不包含参数的<br>m 来构建整个源代码树，也可以通过指定相应名称来构建特定目标。</li>
+<li>mma - 构建当前目录中的所有模块及其依赖项。</li>
+<li>mmma - 构建提供的目录中的所有模块及其依赖项。</li>
+<li>croot - cd 到树顶部。</li>
+<li>clean - m clean 会删除此配置的所有输出和中间文件。此内容与 rm -rf out&#x2F; 相同。<br>说明：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make/m</span><br></pre></td></tr></table></figure>
+
+<p>该命令会编译所有的代码。我们可以通过添加参数-jN来并发加速执行,这将极大加速我们编译系统速度。<br>第一次编译如果是-j12的话,时间大概是6小时,如果默认的话,时间会变成12小时。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mm/mmm</span><br></pre></td></tr></table></figure>
+
+<p>如果每次的编译都要等待6个小时,那么我们的工作就很难开展。Android系统支持增量编译，还支持独立编译Module。mm命令就提供我们一种可能性,它编译当前目录下的所有模块。以services.jar为例，mm编译的时间在10分钟，可以极大的提高我们的开发效率。</p>
+<h3 id="修改源代码"><a href="#修改源代码" class="headerlink" title="修改源代码"></a>修改源代码</h3><p>官方给我们提供了很多快捷指令来帮助我们修改更新源代码，关于修改验证会在后续的章节详细介绍，这里不做过多的讲解。以下罗列一些常见的指令：</p>
+<ul>
+<li>croot 快速切换回源代码根目录</li>
+<li>cgrep 在本地所有的C&#x2F;C++文件中寻找内容</li>
+<li>jgrep 在本地所有的Java文件中寻找内容</li>
+</ul>
+<h3 id="编译产生物"><a href="#编译产生物" class="headerlink" title="编译产生物"></a>编译产生物</h3><h4 id="编译镜像"><a href="#编译镜像" class="headerlink" title="编译镜像"></a>编译镜像</h4><p>编译完成后,会产生编译好的镜像。位于以下目录中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$DIR/out/target/product/$Lunch_Target/</span><br></pre></td></tr></table></figure>
+
+<p>这里面有两个镜像非常重要，一个是Boot.img，另一个是System.img</p>
+<table>
+<thead>
+<tr>
+<th>- Boot.img</th>
+<th>主要包含Linux kernel以及Ramdisk根文件系统</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>- System.img</td>
+<td>包含整个Android系统,&#x2F;system目录的内容,包含系统应用,Android框架等等</td>
+</tr>
+<tr>
+<td>- Userdata.img</td>
+<td>包含了用户安装的应用信息跟数据,在&#x2F;data目录</td>
+</tr>
+</tbody></table>
+<h4 id="系统常用jar包路径"><a href="#系统常用jar包路径" class="headerlink" title="系统常用jar包路径"></a>系统常用jar包路径</h4><p>当需要进行系统应用或者服务开发时，有一些API是内部internel级别或者hide级别，需要我们引入AOSP的原生jar包来解决。</p>
+<p>如何找到对应目录的jar包？</p>
+<ul>
+<li>在AOSP根目录下通过<code>find -name “*xxx*</code>查找到所有路径</li>
+<li>在Android13后，应该在这个路径下进行挑选：<code>./out/soong/.intermediates/packages/…/android_common/**</code><br>或者<code>out/target/common/obj/JAVA_LIBRARIES/</code>目录下寻找。</li>
+</ul>
+<p>出现多个不同地址jar包如何选择？<br>这些jar包会出现在多个路径中，例如：’withres-withoutdex&#x2F;’, ‘aligned&#x2F;’, ‘dex&#x2F;’,’turbine-combined&#x2F;’, ‘turbine&#x2F;’, ‘javac&#x2F;‘等等：</p>
+<ul>
+<li>withres-withoutdex: 这个目录下的JAR文件包含了所有的.class文件和资源文件，但没有被打包成dex格式。</li>
+<li>aligned: 这个目录下的JAR文件包含了所有的.class文件和资源文件，并且已经被对齐和压缩过。</li>
+<li>dex: 这个目录下的JAR文件是一个标准的dex文件，里面包含了所有的.class文件。</li>
+<li>turbine-combined: 这个目录下的JAR文件包含了用于编译Java代码的Turbine编译器生成的代码。</li>
+<li>turbine: 这个目录下的JAR文件包含了Turbine编译器生成的代码，但是这些代码没有被合并成单个文件。</li>
+<li>javac: 这个目录下的JAR文件包含了用于编译Java代码的Javac编译器生成的代码。<br>注意：如果需要引入jar包参与编译，不能选择turbine或者turbine-combined的jar包，否则会遇到desugar异常。</li>
+</ul>
+<p>下面罗列一些常见的<a target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/13U4WTmeYd48nqe0aC_LGuOagPwcggdpZ?usp=sharing">jar包地址</a>：<br>Framework.jar<br><del>AOSP&#x2F;out&#x2F;soong&#x2F;.intermediates&#x2F;frameworks&#x2F;base&#x2F;framework-minus-apex&#x2F;android_common&#x2F;combined&#x2F;framework-minus-apex.jar<br>注意：这个framework.jar不能从</del>AOSP&#x2F;out&#x2F;target&#x2F;product&#x2F;emulator_car_x86_64&#x2F;system&#x2F;framework&#x2F;framework.jar，这里面的jar包不全，缺少东西</p>
+<p>Framework-bluetooth.jar<br>~AOSP&#x2F;out&#x2F;target&#x2F;common&#x2F;obj&#x2F;JAVA_LIBRARIES&#x2F;framework-bluetooth.com.android.btservices_intermediates&#x2F;classes.jar</p>
+<p>Framework-wifi.jar<br>~AOSP&#x2F;out&#x2F;target&#x2F;common&#x2F;obj&#x2F;JAVA_LIBRARIES&#x2F;framework-wifi.com.android.wifi_intermediates&#x2F;classes.jar</p>
+<p>Car-lib.jar<br>~<br>AOSP&#x2F;out&#x2F;soong&#x2F;.intermediates&#x2F;packages&#x2F;services&#x2F;Car&#x2F;car-lib&#x2F;android.car&#x2F;android_common&#x2F;withres-withoutdex&#x2F;android.car.jar</p>
+<p>Core-libart.jar<br>~AOSP&#x2F;out&#x2F;soong&#x2F;.intermediates&#x2F;libcore&#x2F;core-libart&#x2F;android_common_apex31&#x2F;withres-withoutdex&#x2F;core-libart.jar</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 350394277@qq.com </span>
+    </div>
+</article>
+
+<!--  -->
+<!-- <p> -->
+<!--     <a  class="dashang" onclick="dashangToggle()">donation.button</a> -->
+<!-- </p> -->
+<!--  -->
+
+<div class="article_copyright">
+    <p><span class="copy-title">Title:</span>下载编译源代码</p>
+    <p><span class="copy-title">Count:</span><span class="post-count">1.9k</span></p>
+    <p><span class="copy-title">Author:</span><a  title="Yunlong Wen">Yunlong Wen</a></p>
+    <p><span class="copy-title">Created At:</span>2023-12-17, 14:18:27</p>
+    <p><span class="copy-title">Updated At:</span>2023-12-17, 14:18:27</p>
+<!--     <span class="copy-title">post.url:</span><a class="post-url" href="/2023/12/17/Android/aosp/2023-0721-download-compiled/" title="下载编译源代码">http://github.100kwhy.cn/2023/12/17/Android/aosp/2023-0721-download-compiled/</a> -->
+<!--     <p> -->
+<!--         <span class="copy-title">post.copyright:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">post.copyright1</a> post.copyright2 -->
+<!--     </p> -->
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><span class="miit">
+                <img src="/img/gov.png" title="中华人民共和国工业和信息化部">
+                <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/">陕ICP备2023006299号</a>
+        </span>
+    
+    ©2016-2023 Yunlong
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>donation.headline</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.jpg" class="alipay" title="扫码支持">
+            <img src="/img/weixin.jpg" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">donation.alipay</label></span><span><label><input type="radio" name="pay" value="weixin">donation.weixin</label></span>
+    </div>
+</div>
+
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
